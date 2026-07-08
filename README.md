@@ -1,1 +1,1631 @@
-# jadenare.github.io
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JADE NARE</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* =============================================
+   0. RESET & BASE
+   ============================================= */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background: #F5F2EA;
+  background-image:
+    radial-gradient(ellipse at 15% 20%, rgba(61,112,35,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 85% 80%, rgba(201,160,60,0.05) 0%, transparent 60%);
+  font-family: 'Noto Sans KR', 'Malgun Gothic', -apple-system, sans-serif;
+  min-height:100vh;
+  padding:0;
+  color:#1F2A1A;
+  line-height:1.6;
+}
+
+/* =============================================
+   1. HEADER BANNER (鞓ル箘旆?鐜?- Jade theme)
+   ============================================= */
+.header-banner{
+  background: linear-gradient(135deg, #2D5A18 0%, #3D7023 40%, #4A8030 100%);
+  padding:32px 24px 28px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 4px 20px rgba(45,90,24,0.25);
+}
+.header-banner::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent, transparent 40px,
+    rgba(255,215,0,0.04) 40px, rgba(255,215,0,0.04) 41px
+  );
+  pointer-events:none;
+}
+.header-inner{
+  position:relative;
+  z-index:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+}
+.brand-logo-wrap{
+  width:88px;
+  height:88px;
+  border-radius:50%;
+  background:#F8F4EB;
+  padding:4px;
+  box-shadow:0 4px 14px rgba(0,0,0,0.2), 0 0 0 3px #C9A03C;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.brand-logo-wrap img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  border-radius:50%;
+}
+.header-banner h1{
+  font-family: 'Noto Serif SC', serif;
+  font-weight:700;
+  font-size:26px;
+  color:#F5E6B8;
+  letter-spacing:5px;
+  text-shadow:0 2px 8px rgba(0,0,0,0.35);
+}
+.header-banner .subtitle{
+  color:rgba(245,230,184,0.85);
+  font-size:13px;
+  letter-spacing:2.5px;
+  font-weight:300;
+}
+.header-ornament{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:14px;
+  margin-top:2px;
+}
+.header-ornament .cloud{
+  color:#C9A03C;
+  font-size:18px;
+  line-height:1;
+}
+.header-ornament span.line{
+  width:60px;
+  height:1px;
+  background:linear-gradient(90deg, transparent, rgba(245,230,184,0.5), transparent);
+}
+
+/* =============================================
+   2. WRAPPER
+   ============================================= */
+.content-wrapper{
+  max-width:1100px;
+  margin:0 auto;
+  padding:24px 16px 32px;
+}
+
+/* =============================================
+   3. SECTION HEADERS
+   ============================================= */
+.section-title{
+  font-family: 'Noto Serif SC', serif;
+  font-size:17px;
+  font-weight:600;
+  color:#2D5A18;
+  margin-bottom:16px;
+  padding-bottom:10px;
+  border-bottom:2px solid #E5DCC9;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  position:relative;
+}
+.section-title::before{
+  content:'鈼?;
+  color:#C9A03C;
+  font-size:14px;
+}
+.section-title::after{
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:-2px;
+  width:60px;
+  height:2px;
+  background:linear-gradient(90deg, #3D7023, transparent);
+}
+
+/* =============================================
+   4. CARDS (.box)
+   ============================================= */
+.box{
+  background:#FFFFFF;
+  border-radius:12px;
+  padding:22px 24px;
+  margin-bottom:18px;
+  box-shadow:0 2px 12px rgba(45,90,24,0.06), 0 1px 3px rgba(0,0,0,0.04);
+  border:1px solid #ECE4D2;
+  transition:box-shadow 0.3s ease;
+  position:relative;
+}
+.box:hover{box-shadow:0 4px 20px rgba(45,90,24,0.10), 0 2px 6px rgba(0,0,0,0.05);}
+
+/* Version & info tag */
+.version-tag{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:6px 16px;
+}
+.version-tag .version-badge{
+  display:inline-block;
+  background:linear-gradient(135deg, #2D5A18, #3D7023);
+  color:#F5E6B8;
+  padding:3px 12px;
+  border-radius:4px;
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:1px;
+}
+.version-tag small{
+  color:#6B5B3A;
+  font-size:12px;
+}
+
+/* =============================================
+   5. GRID (.row)
+   ============================================= */
+.row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+  margin-bottom:8px;
+}
+@media(max-width:768px){
+  .row{grid-template-columns:1fr;}
+}
+
+/* =============================================
+   6. FORM ELEMENTS
+   ============================================= */
+label{
+  display:block;
+  margin-bottom:5px;
+  font-size:13px;
+  font-weight:500;
+  color:#4A5B3A;
+  letter-spacing:0.3px;
+}
+input,select{
+  width:100%;
+  padding:9px 12px;
+  border:1.5px solid #DDD2BC;
+  border-radius:8px;
+  font-size:14px;
+  font-family:inherit;
+  color:#1F2A1A;
+  background:#FDFBF6;
+  transition:border-color 0.2s, box-shadow 0.2s;
+  outline:none;
+}
+input:focus,select:focus{
+  border-color:#3D7023;
+  box-shadow:0 0 0 3px rgba(61,112,35,0.15);
+  background:#FFFFFF;
+}
+small{
+  display:block;
+  color:#7B6B5A;
+  font-size:11.5px;
+  margin-top:4px;
+  line-height:1.4;
+}
+
+/* =============================================
+   7. BUTTON GROUP
+   ============================================= */
+.btn-group{
+  display:flex;
+  gap:5px;
+  margin-bottom:6px;
+  flex-wrap:wrap !important;
+}
+.option-btn{
+  min-width:62px;
+  flex:1 0 auto;
+  padding:7px 8px;
+  border:1.5px solid #DDD2BC;
+  border-radius:8px;
+  background:#FDFBF6;
+  cursor:pointer;
+  font-size:12.5px;
+  font-family:inherit;
+  font-weight:400;
+  text-align:center;
+  transition:all 0.2s ease;
+  white-space:normal !important;
+  overflow:visible !important;
+  text-overflow:unset !important;
+  line-height:1.35;
+  color:#3D4535;
+  position:relative;
+  user-select:none;
+}
+.option-btn:hover{
+  background:#F0F4EA;
+  border-color:#3D7023;
+  transform:translateY(-1px);
+  box-shadow:0 2px 6px rgba(61,112,35,0.12);
+}
+.option-btn:active{transform:translateY(0);}
+.option-btn.active{
+  background:linear-gradient(135deg, #2D5A18 0%, #3D7023 100%);
+  color:#F5E6B8;
+  border-color:#2D5A18;
+  box-shadow:0 2px 8px rgba(45,90,24,0.25);
+  font-weight:500;
+}
+.option-btn:disabled{
+  background:#EEEAE0;
+  color:#A8A090;
+  cursor:not-allowed;
+  border-color:#D8D2C5;
+  box-shadow:none;
+  transform:none;
+}
+.option-btn:disabled.active{
+  background:linear-gradient(135deg, #6B7860 0%, #7B8870 100%);
+  color:#DDD;
+  border-color:#6B7860;
+}
+
+/* =============================================
+   8. TOGGLE HIDE
+   ============================================= */
+.toggle-hide{display:none !important;}
+
+/* =============================================
+   9. SPECIAL BUTTONS
+   ============================================= */
+.def-add-btn,.add-color-add-btn{
+  margin-top:12px;
+  padding:8px 18px;
+  background:linear-gradient(135deg, #2D5A18, #3D7023);
+  color:#F5E6B8;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:13px;
+  font-family:inherit;
+  font-weight:500;
+  transition:all 0.2s ease;
+  letter-spacing:0.5px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+}
+.def-add-btn:hover,.add-color-add-btn:hover{
+  background:linear-gradient(135deg, #3D7023, #4A8030);
+  transform:translateY(-1px);
+  box-shadow:0 3px 10px rgba(45,90,24,0.25);
+}
+.def-add-btn:active,.add-color-add-btn:active{transform:translateY(0);}
+
+/* =============================================
+   10. DEFECT ITEM
+   ============================================= */
+.def-item-wrap{
+  margin:12px 0;
+  padding:16px;
+  background:#FAF6EC;
+  border:1px solid #ECE4D2;
+  border-radius:10px;
+  transition:border-color 0.2s;
+}
+.def-item-wrap:hover{border-color:#C9A03C;}
+.def-item-wrap label{
+  color:#5B4B3A;
+  font-size:12.5px;
+}
+
+/* =============================================
+   11. ADD COLOR ITEM
+   ============================================= */
+.add-color-item-wrap{
+  margin:12px 0;
+  padding:16px;
+  background:#FAF6EC;
+  border:1px solid #ECE4D2;
+  border-radius:10px;
+}
+.add-color-item-wrap:hover{border-color:#C9A03C;}
+
+/* =============================================
+   12. SUMMARY SECTION
+   ============================================= */
+.summary-box{
+  background:linear-gradient(135deg, #F8F4EB, #FFFCF5);
+  border:1.5px solid #C9A03C;
+  border-radius:12px;
+  padding:20px 24px;
+  margin-top:8px;
+  font-size:14px;
+  position:relative;
+}
+.summary-box::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg, #3D7023, #C9A03C, #3D7023);
+  border-radius:12px 12px 0 0;
+}
+.summary-box h3{
+  font-family: 'Noto Serif SC', serif;
+  color:#2D5A18;
+  font-size:16px;
+  margin-bottom:14px;
+  padding-bottom:8px;
+  border-bottom:2px solid #E5DCC9;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.summary-box h3::before{
+  content:'鈼?;
+  color:#C9A03C;
+  font-size:13px;
+}
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:10px;
+}
+.summary-item{
+  display:flex;
+  flex-direction:column;
+  padding:6px 8px;
+  background:rgba(255,255,255,0.6);
+  border-radius:6px;
+}
+.summary-label{
+  font-weight:600;
+  font-size:12px;
+  color:#5B4B3A;
+  margin-bottom:1px;
+  letter-spacing:0.3px;
+}
+.summary-value{
+  font-weight:400;
+  font-size:13px;
+  color:#1F2A1A;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.summary-sub{
+  font-size:11.5px;
+  color:#7B6B5A;
+  margin-top:2px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media(max-width:768px){
+  .summary-grid{grid-template-columns:1fr;}
+}
+
+/* =============================================
+   13. RESULT CARDS
+   ============================================= */
+.result{
+  background:linear-gradient(135deg, #2D5A18 0%, #3D7023 50%, #4A8030 100%);
+  border:2px solid #C9A03C;
+  padding:22px 24px;
+  text-align:center;
+  font-size:24px;
+  font-weight:700;
+  color:#F5E6B8;
+  margin-top:12px;
+  border-radius:12px;
+  letter-spacing:1px;
+  box-shadow:0 4px 18px rgba(45,90,24,0.20);
+  position:relative;
+  overflow:hidden;
+}
+.result::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg, #C9A03C, #F5E6B8, #C9A03C);
+}
+.target-result{
+  background:linear-gradient(135deg, #F8F4EB, #FDFBF6);
+  border:1.5px solid #C9A03C;
+  padding:14px 20px;
+  text-align:center;
+  font-size:20px;
+  font-weight:600;
+  color:#2D5A18;
+  margin-top:10px;
+  border-radius:10px;
+  letter-spacing:0.5px;
+}
+
+/* =============================================
+   14. EXCHANGE RATE INFO
+   ============================================= */
+.exchange-rate{
+  font-size:12px;
+  color:#4A5B3A;
+  margin-top:6px;
+  display:block;
+  font-weight:500;
+}
+.exchange-update{
+  font-size:11px;
+  color:#7B6B5A;
+  margin-top:2px;
+  display:block;
+}
+
+/* =============================================
+   15. BEAD COUNT
+   ============================================= */
+.bead-cnt-wrap{display:none;}
+.bead-cnt-wrap.show{display:block;}
+
+/* =============================================
+   16. SPECIAL COLOR BUTTONS
+   ============================================= */
+.special-color-btn{display:none;}
+.special-color-btn.show{display:block;}
+
+/* =============================================
+   17. FOOTER
+   ============================================= */
+.page-footer{
+  text-align:center;
+  padding:24px 16px 8px;
+  color:#7B6B5A;
+  font-size:12px;
+  letter-spacing:1px;
+}
+.page-footer .footer-ornament{
+  color:#C9A03C;
+  font-size:14px;
+  letter-spacing:8px;
+  margin-bottom:6px;
+}
+.page-footer .footer-brand{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:10px;
+  margin-top:6px;
+  color:#3D7023;
+  font-weight:500;
+  font-size:13px;
+}
+
+/* =============================================
+   18. ANIMATIONS
+   ============================================= */
+@keyframes fadeSlideIn{
+  from{opacity:0;transform:translateY(8px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.box{animation:fadeSlideIn 0.4s ease both;}
+.box:nth-child(1){animation-delay:0s;}
+.box:nth-child(2){animation-delay:0.05s;}
+.box:nth-child(3){animation-delay:0.10s;}
+.box:nth-child(4){animation-delay:0.15s;}
+.box:nth-child(5){animation-delay:0.20s;}
+.box:nth-child(6){animation-delay:0.25s;}
+
+@keyframes resultPulse{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.015);}
+  100%{transform:scale(1);}
+}
+.result-updated{animation:resultPulse 0.35s ease;}
+
+@keyframes brandRotate{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+.brand-logo-wrap{
+  transition:transform 0.4s ease;
+}
+.brand-logo-wrap:hover{
+  transform:scale(1.05) rotate(2deg);
+}
+
+/* =============================================
+   19. RESPONSIVE
+   ============================================= */
+@media(max-width:600px){
+  .header-banner{padding:24px 16px 22px;}
+  .header-banner h1{font-size:20px;letter-spacing:2px;}
+  .brand-logo-wrap{width:72px;height:72px;}
+  .box{padding:16px;}
+  .option-btn{min-width:52px;font-size:11.5px;padding:6px 5px;}
+  .result{font-size:20px;padding:16px;}
+  .target-result{font-size:17px;padding:12px;}
+  .content-wrapper{padding:16px 10px 32px;}
+}
+@media(min-width:769px){
+  .row{gap:20px;}
+}
+
+/* =============================================
+   20. HIDDEN INPUTS
+   ============================================= */
+.hidden-input{display:none;}
+
+</style>
+</head>
+<body>
+
+<!-- ===== CONTENT ===== -->
+<div class="content-wrapper">
+  <!-- Version / Info -->
+  </style>
+</head>
+<body>
+<h1>비취 제품 가격 자동 계산기</h1>
+
+<div class="box">
+  <div class="row">
+    <div>
+      <label>[MADE BY 옥조각 창작소 _ NARE] ver.2_260626_1 </label>
+            <small>옥조각 창작소 카페에서만 배포중입니다. </small>
+              <small>정확한 데이터가 아니오니 참고용으로만 이용해 주세요. </small>
+              <small>아직 테스트 버전이라 수치가 변동될 수 있습니다. </small>
+    </div>
+  </div>
+</div>
+<div class="box">
+  <div class="row">
+    <div>
+      <label>기본 단가(원/한화)</label>
+      <input type="number" id="basePrice" value="220">
+      <small> RMB 환률 기준 시장 평균 단가 / 환율에 따라 자동 변환됩니다</small>
+      <span id="exchangeInfo" class="exchange-rate"></span>
+      <span id="exchangeUpdateInfo" class="exchange-update"></span>
+    </div>
+    <div>
+      <label>목표 단가(원/한화)</label>
+      <input type="number" id="targetPrice" value="0">
+      <small> 원하는 목표 단가를 입력하세요. (0 입력 시 표시되지 않음)</small>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+  <h3 style="margin-bottom:12px;">종류 설정</h3>
+  <div class="row">
+    <!-- 산지 선택 항목 추가 -->
+    <div>
+      <label>산지</label>
+      <div class="btn-group" id="originGroup">
+        <button class="option-btn active" data-value="1">미얀마</button>
+        <button class="option-btn" data-value="0.1">과테말라</button>
+      </div>
+      <input type="hidden" id="origin" class="hidden-input" value="1">
+      <small>비취의 산지를 선택해주세요</small>
+    </div>
+    
+    <div>
+      <label>종种 종류</label>
+      <div class="btn-group" id="stoneTypeGroup">
+        <button class="option-btn active" data-value="1">두종</button>
+        <button class="option-btn" data-value="5">나종</button>
+        <button class="option-btn" data-value="10">세나종</button>
+        <button class="option-btn" data-value="25">나화종</button>
+        <button class="option-btn" data-value="50">나빙종</button>
+        <button class="option-btn" data-value="125">빙종</button>
+        <button class="option-btn" data-value="500">고빙종</button>
+        <button class="option-btn" data-value="1000">유리종</button>
+      </div>
+      <input type="hidden" id="stoneType" class="hidden-input" value="1">
+      <small>주관적인 판단의 종种의 종류를 선택해주세요 </small>
+    </div>
+    
+    <div>
+      <label>메인 바탕 색상</label>
+      <div class="btn-group" id="mainColorGroup">
+        <button class="option-btn active" data-value="0.2">백</button>
+        <button class="option-btn" data-value="1">녹</button>
+        <button class="option-btn" data-value="0.6">황</button>
+        <button class="option-btn" data-value="0.76">라벤더</button>
+        <button class="option-btn" data-value="0.7">청</button>
+        <button class="option-btn" data-value="0.4">오계/흑</button>
+        <button class="option-btn" data-value="0.7">묵</button>
+        <button class="option-btn" data-value="0.5">남</button>
+        <button class="option-btn" data-value="0.3">유청</button>
+        <!-- 과테말라 전용 색상 추가 -->
+        <button class="option-btn special-color-btn" data-value="0.18">회색</button>
+        <button class="option-btn special-color-btn" data-value="0.45">청회색</button>
+        <button class="option-btn special-color-btn" data-value="0.82">녹회색</button>
+      </div>
+      <input type="hidden" id="mainColor" class="hidden-input" value="0.2">
+      <small>기본 색상을 선택해주세요.구워서 색을 만든 비취의 경우 바탕색을 백색으로 두세요</small>
+    </div>
+    
+    <div>
+      <label>색 농도 단계</label>
+      <div class="btn-group" id="colorDepthGroup">
+        <button class="option-btn active" data-value="0.5">무색</button>
+        <button class="option-btn" data-value="0.25" disabled>아주 연함 (10%)</button>
+        <button class="option-btn" data-value="0.5" disabled>연함 (25%)</button>
+        <button class="option-btn" data-value="1" disabled>보통 (50%)</button>
+        <button class="option-btn" data-value="2" disabled>진함 (70%)</button>
+        <button class="option-btn" data-value="3" disabled>아주 진함 (100%)</button>
+      </div>
+      <input type="hidden" id="colorDepth" class="hidden-input" value="0.5">
+      <small>가장 선명하고 짙다고 생각되는 색상 기준 100%입니다.</small>
+    </div>
+
+    <!-- 추가색상 유무 토글 (개선 버전) -->
+    <div>
+      <label>추가 색상 유무</label>
+      <div class="btn-group" id="addColorToggleGroup">
+        <button class="option-btn" data-val="1">유</button>
+        <button class="option-btn active" data-val="0">무</button>
+        
+      </div>
+      <input type="hidden" id="addColorToggle" value="0">
+      <small>메인색상 이외의 색상이 있는경우 선택해주세요</small>
+    </div>
+    
+    <!-- 추가 색상 컨테이너 -->
+    <div id="addColorContainer" class="toggle-hide">
+      <div id="addColorListWrap">
+        <!-- 기본 추가 색상 아이템 -->
+        <div class="add-color-item-wrap" data-coloridx="0">
+          <label>추가색상 #1</label>
+          <div class="btn-group" id="addColorGroup_0">
+            <button class="option-btn active" data-value="1.5">녹</button>
+            <button class="option-btn" data-value="0.9">황/쇄금</button>
+            <button class="option-btn" data-value="1.1">라벤더</button>
+            <button class="option-btn" data-value="1.1">청</button>
+            <button class="option-btn" data-value="0.8">남</button>
+            <button class="option-btn" data-value="0.6">오계/흑</button>
+            <button class="option-btn" data-value="1">묵</button>
+            <button class="option-btn" data-value="0.8">표화</button>
+            <button class="option-btn" data-value="1.5">금사녹</button>
+            <button class="option-btn" data-value="0.5">유청</button>
+          </div>
+          <input type="hidden" id="addColor_0" class="add-color-hidden" value="1.5">
+          
+          <label>추가색 면적 비율 (%)</label>
+          <input type="number" id="colorArea_0" value="0" min="0" max="100" step="5">
+          <small>추가색이 제품 전체 대비 비율을 작성해주세요.</small>
+          
+          <label>추가색 농도 배율</label>
+          <div class="btn-group" id="colorDepthGroup_0">
+            <button class="option-btn active" data-value="0.5">무</button>
+            <button class="option-btn" data-value="1">아주 연함 (10%)</button>
+            <button class="option-btn" data-value="2">연함 (25%)</button>
+            <button class="option-btn" data-value="3">보통 (50%)</button>
+            <button class="option-btn" data-value="4">진함 (70%)</button>
+            <button class="option-btn" data-value="5">아주 진함 (100%)</button>
+          </div>
+          <input type="hidden" id="colorDepth_0" class="color-depth-hidden" value="0.5">
+        </div>
+      </div>
+      <button type="button" class="add-color-add-btn" id="addColorBtn">색상 추가</button>
+    </div>
+
+    <!-- 굽기 유무 토글 -->
+    <div>
+      <label>비취 굽기 유무</label>
+      <div class="btn-group" id="bakeToggleGroup">
+        <button class="option-btn" data-val="1">유</button>
+        <button class="option-btn active" data-val="0">무</button>
+        
+      </div>
+      <input type="hidden" id="bakeToggle" value="0">
+      <small>굽기 가공 여부 선택</small>
+    </div>
+    <div id="bakeLevelWrap" class="toggle-hide">
+      <label>비취 굽기 정도</label>
+      <div class="btn-group" id="bakeLevelGroup">
+        <button class="option-btn" data-value="0.7">레몬색으로 연함</button>
+        <button class="option-btn" data-value="0.5">이븐하게 노랑</button>
+        <button class="option-btn" data-value="0.2">새빨갛게 탐</button>
+      </div>
+      <input type="hidden" id="bakeLevel" class="hidden-input" value="1">
+      <small>비취를 구운 정도에 따른 배율입니다.</small>
+    </div>
+    <div id="bakeRangeWrap" class="toggle-hide">
+      <label>비취 굽기 범위</label>
+      <div class="btn-group" id="bakeRangeGroup">
+        <button class="option-btn" data-value="0.9">표면약간</button>
+        <button class="option-btn" data-value="0.8">표면절반</button>
+        <button class="option-btn" data-value="0.7">표면전부</button>
+        <button class="option-btn" data-value="0.6">내부50%</button>
+        <button class="option-btn" data-value="0.5">전체100%</button>
+      </div>
+      <input type="hidden" id="bakeRange" class="hidden-input" value="1">
+      <small>비취가 구워진 범위에 따른 배율입니다.</small>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+  <h3 style="margin-bottom:12px;">제품 형태 & 크기</h3>
+  <div class="row">
+    <div>
+      <label>제품 종류</label>
+      <div class="btn-group" id="itemTypeGroup">
+        <button class="option-btn active" data-value="2.5">원형패조각</button>
+        <button class="option-btn" data-value="1.6">사각패조각</button>
+        <button class="option-btn" data-value="1.2">30mm이하 조각</button>
+        <button class="option-btn" data-value="1.6">100mm이하 조각</button>
+        <button class="option-btn" data-value="2">100mm이상 조각</button>
+        <button class="option-btn" data-value="3">원형무사패</button>
+        <button class="option-btn" data-value="2">사각무사패</button>
+        <button class="option-btn" data-value="4">뱅글</button>
+        <button class="option-btn" data-value="3.5">평안구</button>
+        <button class="option-btn" data-value="8">통반지</button>
+        <button class="option-btn" data-value="2">비즈</button>
+        <button class="option-btn" data-value="10">케보션</button>
+      </div>
+      <input type="hidden" id="itemType" class="hidden-input" value="2.5">
+      <small>제품의 형태를 선택해주세요.</small>
+    </div>
+    <!-- 비즈 수량 필드에 wrap 추가 및 초기 숨김 -->
+    <div class="bead-cnt-wrap" id="beadCntWrap">
+      <label>비즈 수량</label>
+      <input type="number" id="beadCnt" value="1" min="1">
+      <small>비즈제품의 경우 수량을 작성해주세요.</small>
+    </div>
+    <div>
+      <label>가로 (mm)</label>
+      <input type="number" id="w" value="10" step="5">
+    </div>
+    <div>
+      <label>세로 (mm)</label>
+      <input type="number" id="h" value="10" step="5">
+    </div>
+    <div>
+      <label>두께/높이 (mm)</label>
+      <input type="number" id="t" value="10" step="5">
+    </div>
+    <div>
+      <label>기타 부자재 비용</label>
+      <input type="number" id="etcCost" value="0">
+      <small>부자재의 가격을 작성해주세요.</small>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+  <h3 style="margin-bottom:12px;">품질 배율</h3>
+  <div class="row">
+    <div>
+      <label>원석 퀄리티</label>
+      <div class="btn-group" id="rawQualityGroup">
+        <button class="option-btn active" data-value="1">최상급</button>
+        <button class="option-btn" data-value="0.8">상급</button>
+        <button class="option-btn" data-value="0.6">중상급</button>
+        <button class="option-btn" data-value="0.5">중급</button>
+        <button class="option-btn" data-value="0.4">하급</button>
+      </div>
+      <input type="hidden" id="rawQuality" class="hidden-input" value="1">
+      <small>면상태와 광택이 높을수록 상급입니다.</small>
+    </div>
+    <div>
+      <label>조각 퀄리티</label>
+      <div class="btn-group" id="cutQualityGroup">
+        <button class="option-btn active" data-value="1.2">장인급</button>
+        <button class="option-btn" data-value="1.15">상급</button>
+        <button class="option-btn" data-value="1.1">중급</button>
+        <button class="option-btn" data-value="1.05">하급</button>
+        <button class="option-btn" data-value="1">양산급</button>
+      </div>
+      <input type="hidden" id="cutQuality" class="hidden-input" value="1.2">
+      <small>디테일함이 높고 독창적일수록 단계가 높습니다. 평안구나 비즈, 반지등 동일한 디자인의 제품은 양산품으로 체크해주세요.</small>
+    </div>
+  </div>
+</div>
+
+<div class="box">
+  <h3 style="margin-bottom:12px;">하자 감가 요소</h3>
+    <div class="row">
+    <div>
+      <label>하자 존재 유무</label>
+      <div class="btn-group" id="defToggleGroup">
+        <button class="option-btn" data-val="1">유</button>
+        <button class="option-btn active" data-val="0">무</button>
+        
+      </div>
+      <input type="hidden" id="defToggle" value="0">
+      <small>하자가 있을 경우 유 선택 후 하자 항목을 추가하세요.</small>
+    </div>
+  </div>
+  <div id="defContainer" class="toggle-hide">
+    <div id="defListWrap">
+      <!-- 기본 하자 한개 -->
+      <div class="def-item-wrap" data-defidx="0">
+        <label>하자 항목</label>
+        <div class="btn-group">
+          <button class="option-btn def-btn active" data-value="1">없음</button>
+          <button class="option-btn def-btn" data-value="0.8">크랙 소</button>
+          <button class="option-btn def-btn" data-value="0.5">크랙 중</button>
+          <button class="option-btn def-btn" data-value="0.1">크랙 대</button>
+          <button class="option-btn def-btn" data-value="0.9">샌드아이</button>
+          <button class="option-btn def-btn" data-value="0.9">불순물</button>
+          <button class="option-btn def-btn" data-value="0.9">주름</button>
+          <button class="option-btn def-btn" data-value="0.9">선화10%</button>
+          <button class="option-btn def-btn" data-value="0.8">선화20%</button>
+          <button class="option-btn def-btn" data-value="0.7">선화30%</button>
+          <button class="option-btn def-btn" data-value="0.9">면뭉침10%</button>
+          <button class="option-btn def-btn" data-value="0.8">면뭉침20%</button>
+          <button class="option-btn def-btn" data-value="0.7">면뭉침30%</button>
+          <button class="option-btn def-btn" data-value="0.9">연마 미흡</button>
+          <button class="option-btn def-btn" data-value="0.3">변종</button>
+        </div>
+        <input type="hidden" class="def-hidden" value="1">
+      </div>
+    </div>
+    <button type="button" class="def-add-btn" id="addDefBtn">하자 추가</button>
+  </div>
+</div>
+
+<!-- 요약 섹션 추가 -->
+<div class="summary-box" id="summaryBox">
+    
+  <h3>제품 정보 요약</h3>
+  <div class="summary-grid" id="summaryContent">
+      
+    <!-- 요약 내용이 동적으로 채워짐 -->
+  </div>
+  
+</div>
+
+<div class="result" id="resultBox">
+중국 시장 평균 단가: 0 원
+</div>
+<div id="targetResultBox" class="target-result" style="display:none;">
+목표 단가 기준 가격: 0 원
+</div>
+
+<script>
+// 환율 API 설정
+const EXCHANGE_API_URL = 'https://api.exchangerate-api.com/v4/latest/CNY';
+const DEFAULT_EXCHANGE_RATE = 192;
+const DEFAULT_RMB_PRICE = 1.15;
+
+// 고정 입력 요소
+const els = {
+  basePrice: document.getElementById('basePrice'),
+  targetPrice: document.getElementById('targetPrice'),
+  origin: document.getElementById('origin'), // 산지 추가
+  stoneType: document.getElementById('stoneType'),
+  mainColor: document.getElementById('mainColor'),
+  colorDepth: document.getElementById('colorDepth'),
+  addColorToggle: document.getElementById('addColorToggle'),
+  bakeToggle: document.getElementById('bakeToggle'),
+  bakeLevel: document.getElementById('bakeLevel'),
+  bakeRange: document.getElementById('bakeRange'),
+  itemType: document.getElementById('itemType'),
+  beadCnt: document.getElementById('beadCnt'),
+  beadCntWrap: document.getElementById('beadCntWrap'), // 비즈 수량 wrap 추가
+  w: document.getElementById('w'),
+  h: document.getElementById('h'),
+  t: document.getElementById('t'),
+  etcCost: document.getElementById('etcCost'),
+  rawQuality: document.getElementById('rawQuality'),
+  cutQuality: document.getElementById('cutQuality'),
+  defToggle: document.getElementById('defToggle'),
+  resultBox: document.getElementById('resultBox'),
+  targetResultBox: document.getElementById('targetResultBox'),
+  exchangeInfo: document.getElementById('exchangeInfo'),
+  exchangeUpdateInfo: document.getElementById('exchangeUpdateInfo'),
+  defContainer: document.getElementById('defContainer'),
+  defListWrap: document.getElementById('defListWrap'),
+  addDefBtn: document.getElementById('addDefBtn'),
+  addColorContainer: document.getElementById('addColorContainer'),
+  addColorListWrap: document.getElementById('addColorListWrap'),
+  addColorBtn: document.getElementById('addColorBtn'),
+  summaryBox: document.getElementById('summaryBox'),
+  summaryContent: document.getElementById('summaryContent')
+};
+
+// 전역 인덱스
+let defIndex = 1;
+let colorIndex = 1;
+
+// 메인 색상 변경 시 농도 버튼 활성화/비활성화 처리 (수정된 부분)
+function toggleColorDepthButtons(isWhite) {
+  const colorDepthButtons = document.querySelectorAll('#colorDepthGroup .option-btn');
+  colorDepthButtons.forEach(btn => {
+    btn.disabled = isWhite;
+    
+    // 백색 선택 시 무색 버튼만 활성화 상태로 설정
+    if (isWhite) {
+      // 모든 버튼의 active 클래스 제거
+      colorDepthButtons.forEach(b => b.classList.remove('active'));
+      // 무색 버튼 찾아서 active 클래스 추가
+      const colorlessBtn = Array.from(colorDepthButtons).find(b => b.textContent.trim() === '무색');
+      if (colorlessBtn) {
+        colorlessBtn.classList.add('active');
+        els.colorDepth.value = colorlessBtn.dataset.value;
+      }
+    }
+  });
+}
+
+// 비즈 수량 필드 토글 함수
+function toggleBeadCountField() {
+  const activeItem = document.querySelector('#itemTypeGroup .option-btn.active');
+  const isBead = activeItem.textContent.trim() === '비즈';
+  
+  // 비즈 수량 필드 보이기/숨기기
+  if (isBead) {
+    els.beadCntWrap.classList.add('show');
+  } else {
+    els.beadCntWrap.classList.remove('show');
+    // 비즈가 아닐 경우 수량을 1로 리셋
+    els.beadCnt.value = 1;
+  }
+  
+  calcPrice();
+  updateSummary();
+}
+
+// 산지 변경 시 특수 색상 버튼 토글
+function toggleSpecialColorButtons(isGuatemala) {
+  const specialColorButtons = document.querySelectorAll('.special-color-btn');
+  specialColorButtons.forEach(btn => {
+    if (isGuatemala) {
+      btn.classList.add('show');
+      btn.disabled = false;
+    } else {
+      btn.classList.remove('show');
+      btn.disabled = true;
+      // 미얀마 선택 시 특수 색상 버튼이 활성화된 경우 해제
+      if (btn.classList.contains('active')) {
+        // 기본 색상 중 첫 번째 버튼(백색) 활성화
+        const defaultBtn = document.querySelector('#mainColorGroup .option-btn:not(.special-color-btn).active') || 
+                          document.querySelector('#mainColorGroup .option-btn:not(.special-color-btn)');
+        if (defaultBtn) {
+          defaultBtn.click();
+        }
+      }
+    }
+  });
+}
+
+// 일반 버튼 그룹 초기화
+function initButtonGroups() {
+  // 산지 그룹 초기화
+  const originGroup = document.getElementById('originGroup');
+  const originButtons = originGroup.querySelectorAll('.option-btn');
+  originButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      originButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      els.origin.value = button.dataset.value;
+      // 과테말라 선택 여부에 따라 특수 색상 버튼 토글
+      const isGuatemala = button.dataset.value === "0.1";
+      toggleSpecialColorButtons(isGuatemala);
+      calcPrice();
+      updateSummary(); // 요약 업데이트
+    });
+  });
+
+  // 메인 색상 그룹 초기화 (별도 처리)
+  const mainColorGroup = document.getElementById('mainColorGroup');
+  const mainColorButtons = mainColorGroup.querySelectorAll('.option-btn');
+  mainColorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      // 비활성화된 버튼 클릭 방지
+      if (button.disabled) return;
+      
+      mainColorButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      els.mainColor.value = button.dataset.value;
+      // 백색 여부 확인 (데이터 값이 0.2인 경우 백색)
+      const isWhite = button.dataset.value === '0.2';
+      toggleColorDepthButtons(isWhite);
+      calcPrice();
+      updateSummary(); // 요약 업데이트
+    });
+  });
+
+  // 제품 종류 그룹은 별도 처리 (비즈 토글 포함)
+  const itemTypeGroup = document.getElementById('itemTypeGroup');
+  const itemTypeButtons = itemTypeGroup.querySelectorAll('.option-btn');
+  itemTypeButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      itemTypeButtons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+      els.itemType.value = button.dataset.value;
+      toggleBeadCountField(); // 비즈 수량 필드 토글
+      calcPrice();
+      updateSummary(); // 요약 업데이트
+    });
+  });
+
+  // 다른 버튼 그룹 초기화
+  const buttonGroups = document.querySelectorAll('.btn-group:not([id*="ToggleGroup"]):not(#mainColorGroup):not(#itemTypeGroup):not(#originGroup)');
+  buttonGroups.forEach(group => {
+    const buttons = group.querySelectorAll('.option-btn:not(.def-btn):not(.add-color-btn)');
+    const hiddenInputId = group.id.replace('Group', '');
+    const hiddenInput = document.getElementById(hiddenInputId);
+    if(!hiddenInput) return;
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        hiddenInput.value = button.dataset.value;
+        calcPrice();
+        updateSummary(); // 요약 업데이트
+      });
+    });
+  });
+}
+
+// 토글 버튼(무/유) 초기화
+function initToggleGroups(){
+  // 추가색 토글 (개선 버전)
+  const addColorTg = document.getElementById('addColorToggleGroup');
+  const addColorTgBtns = addColorTg.querySelectorAll('.option-btn');
+  addColorTgBtns.forEach(btn=>{
+    btn.onclick = ()=>{
+      addColorTgBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      els.addColorToggle.value = btn.dataset.val;
+      const show = btn.dataset.val === "1";
+      els.addColorContainer.classList.toggle('toggle-hide', !show);
+      calcPrice();
+      updateSummary(); // 요약 업데이트
+    }
+  })
+
+  // 굽기 토글
+  const bakeTg = document.getElementById('bakeToggleGroup');
+  const bakeBtns = bakeTg.querySelectorAll('.option-btn');
+  bakeBtns.forEach(btn=>{
+    btn.onclick = ()=>{
+      bakeBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      els.bakeToggle.value = btn.dataset.val;
+      const show = btn.dataset.val === "1";
+      document.getElementById('bakeLevelWrap').classList.toggle('toggle-hide', !show);
+      document.getElementById('bakeRangeWrap').classList.toggle('toggle-hide', !show);
+      calcPrice();
+      updateSummary(); // 요약 업데이트
+    }
+  })
+  
+  // 하자 유무 토글
+  const defTg = document.getElementById('defToggleGroup');
+  const defBtns = defTg.querySelectorAll('.option-btn');
+  defBtns.forEach(btn=>{
+    btn.onclick = ()=>{
+      defBtns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      els.defToggle.value = btn.dataset.val;
+      const show = btn.dataset.val === "1";
+      els.defContainer.classList.toggle('toggle-hide', !show);
+      calcPrice();
+      updateSummary(); // 요약 업데이트
+    }
+  })
+}
+
+// 하자 버튼 이벤트 바인딩
+function bindDefItemEvent(wrapEl){
+  const btns = wrapEl.querySelectorAll('.def-btn');
+  const hidden = wrapEl.querySelector('.def-hidden');
+  btns.forEach(btn=>{
+    btn.onclick = ()=>{
+      btns.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      hidden.value = btn.dataset.value;
+      calcPrice();
+      updateSummary(); // 요약 업데이트
+    }
+  })
+}
+
+// 하자 추가 버튼 초기화
+function initDefAddBtn(){
+  els.addDefBtn.onclick = ()=>{
+    const html = `
+    <div class="def-item-wrap" data-defidx="${defIndex}">
+      <label>하자 항목 ${defIndex+1}</label>
+      <div class="btn-group">
+        <button class="option-btn def-btn active" data-value="1">없음</button>
+        <button class="option-btn def-btn" data-value="0.8">크랙 소</button>
+        <button class="option-btn def-btn" data-value="0.5">크랙 중</button>
+        <button class="option-btn def-btn" data-value="0.1">크랙 대</button>
+        <button class="option-btn def-btn" data-value="0.9">샌드아이</button>
+        <button class="option-btn def-btn" data-value="0.9">불순물</button>
+        <button class="option-btn def-btn" data-value="0.9">주름</button>
+        <button class="option-btn def-btn" data-value="0.9">선화10%</button>
+        <button class="option-btn def-btn" data-value="0.8">선화20%</button>
+        <button class="option-btn def-btn" data-value="0.7">선화30%</button>
+        <button class="option-btn def-btn" data-value="0.9">면뭉침10%</button>
+        <button class="option-btn def-btn" data-value="0.8">면뭉침20%</button>
+        <button class="option-btn def-btn" data-value="0.7">면뭉침30%</button>
+        <button class="option-btn def-btn" data-value="0.9">연마 미흡</button>
+        <button class="option-btn def-btn" data-value="0.3">변종</button>
+      </div>
+      <input type="hidden" class="def-hidden" value="1">
+    </div>`;
+    els.defListWrap.insertAdjacentHTML('beforeend', html);
+    const newWrap = els.defListWrap.querySelector(`[data-defidx="${defIndex}"]`);
+    bindDefItemEvent(newWrap);
+    defIndex++;
+    calcPrice();
+    updateSummary(); // 요약 업데이트
+  }
+  // 기본 하자 이벤트 바인딩
+  const firstDefWrap = els.defListWrap.querySelector('.def-item-wrap');
+  bindDefItemEvent(firstDefWrap);
+}
+
+// 추가 색상 버튼 이벤트 바인딩
+function bindAddColorItemEvent(wrapEl, idx) {
+  // 색상 종류 버튼
+  const colorBtns = wrapEl.querySelectorAll(`#addColorGroup_${idx} .option-btn`);
+  const colorHidden = wrapEl.querySelector(`#addColor_${idx}`);
+  colorBtns.forEach(btn => {
+    btn.onclick = () => {
+      colorBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      colorHidden.value = btn.dataset.value;
+      calcPrice();
+      updateSummary(); // 요약 업데이트
+    };
+  });
+
+  // 농도 버튼
+  const depthBtns = wrapEl.querySelectorAll(`#colorDepthGroup_${idx} .option-btn`);
+  const depthHidden = wrapEl.querySelector(`#colorDepth_${idx}`);
+  depthBtns.forEach(btn => {
+    btn.onclick = () => {
+      depthBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      depthHidden.value = btn.dataset.value;
+      calcPrice();
+      updateSummary(); // 요약 업데이트
+    };
+  });
+
+  // 면적 입력 필드
+  const areaInput = wrapEl.querySelector(`#colorArea_${idx}`);
+  areaInput.addEventListener('input', () => {
+    calcPrice();
+    updateSummary(); // 요약 업데이트
+  });
+}
+
+// 추가 색상 추가 버튼 초기화
+function initAddColorBtn() {
+  els.addColorBtn.onclick = () => {
+    const html = `
+    <div class="add-color-item-wrap" data-coloridx="${colorIndex}">
+      <label>추가색상 #${colorIndex + 1}</label>
+      <div class="btn-group" id="addColorGroup_${colorIndex}">
+        <button class="option-btn active" data-value="1.5">녹</button>
+        <button class="option-btn" data-value="1.3">황/쇄금</button>
+        <button class="option-btn" data-value="1.4">라벤더</button>
+        <button class="option-btn" data-value="1.35">청</button>
+        <button class="option-btn" data-value="1.25">남</button>
+        <button class="option-btn" data-value="1.15">오계/흑</button>
+        <button class="option-btn" data-value="1.3">묵</button>
+        <button class="option-btn" data-value="1.3">표화</button>
+        <button class="option-btn" data-value="1.5">금사녹</button>
+         <button class="option-btn" data-value="1.2">유청</button>
+      </div>
+      <input type="hidden" id="addColor_${colorIndex}" class="add-color-hidden" value="1.5">
+      
+      <label>추가색 면적 비율 (%)</label>
+      <input type="number" id="colorArea_${colorIndex}" value="0" min="0" max="100" step="5">
+      <small>추가색이 제품 전체 대비 비율을 작성해주세요.</small>
+      
+      <label>추가색 농도 배율</label>
+      <div class="btn-group" id="colorDepthGroup_${colorIndex}">
+        <button class="option-btn active" data-value="0.5">무</button>
+        <button class="option-btn" data-value="1">아주 연함 (10%)</button>
+        <button class="option-btn" data-value="2">연함 (25%)</button>
+        <button class="option-btn" data-value="3">보통 (50%)</button>
+        <button class="option-btn" data-value="4">진함 (70%)</button>
+        <button class="option-btn" data-value="5">아주 진함 (100%)</button>
+      </div>
+      <input type="hidden" id="colorDepth_${colorIndex}" class="color-depth-hidden" value="0.5">
+    </div>`;
+    
+    els.addColorListWrap.insertAdjacentHTML('beforeend', html);
+    const newWrap = els.addColorListWrap.querySelector(`[data-coloridx="${colorIndex}"]`);
+    bindAddColorItemEvent(newWrap, colorIndex);
+    colorIndex++;
+    calcPrice();
+    updateSummary(); // 요약 업데이트
+  };
+
+  // 초기 추가 색상 이벤트 바인딩
+  const firstColorWrap = els.addColorListWrap.querySelector('.add-color-item-wrap');
+  bindAddColorItemEvent(firstColorWrap, 0);
+}
+
+// 환율 가져오기
+async function getExchangeRate() {
+  try {
+    const response = await fetch(EXCHANGE_API_URL);
+    if (!response.ok) throw new Error('API 응답 오류');
+    const data = await response.json();
+    const rate = data.rates.KRW || DEFAULT_EXCHANGE_RATE;
+    const now = new Date();
+    const formattedDate = now.toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    els.exchangeInfo.textContent = `현재 환율: 1 RMB = ${rate.toFixed(2)} KRW`;
+    els.exchangeUpdateInfo.textContent = `마지막 갱신: ${formattedDate}`;
+    return rate;
+  } catch (error) {
+    console.error('환율 가져오기 실패:', error);
+    const now = new Date();
+    const formattedDate = now.toLocaleString('ko-KR');
+    els.exchangeInfo.textContent = `환율 업데이트 실패 (기본값 사용): 1 RMB = ${DEFAULT_EXCHANGE_RATE} KRW`;
+    els.exchangeUpdateInfo.textContent = `오류 발생: ${formattedDate} - ${error.message}`;
+    return DEFAULT_EXCHANGE_RATE;
+  }
+}
+
+async function updateExchangeRateAndPrice() {
+  const exchangeRate = await getExchangeRate();
+  const convertedPrice = Math.round(DEFAULT_RMB_PRICE * exchangeRate);
+  els.basePrice.value = convertedPrice;
+  calcPrice();
+  updateSummary(); // 요약 업데이트
+}
+
+function setupDailyExchangeUpdate() {
+  function getTimeUntilNextNoon() {
+    const now = new Date();
+    const nextNoon = new Date(now);
+    nextNoon.setHours(12, 0, 0, 0);
+    if (now > nextNoon) nextNoon.setDate(nextNoon.getDate() + 1);
+    return nextNoon - now;
+  }
+  let updateTimer = setTimeout(function runUpdate() {
+    updateExchangeRateAndPrice();
+    updateTimer = setInterval(updateExchangeRateAndPrice, 24 * 60 * 60 * 1000);
+  }, getTimeUntilNextNoon());
+  return function cancelUpdate() {
+    clearTimeout(updateTimer);
+    clearInterval(updateTimer);
+  };
+}
+
+// 가격 계산 로직 (추가 색상 처리 개선 + 산지 배율 추가)
+function calculatePrice(pricePerUnit) {
+  const origin = Number(els.origin.value) || 1; // 산지 배율 추가
+  const stone = Number(els.stoneType.value) || 1;
+  const mColor = Number(els.mainColor.value) || 1;
+  const cDepth = Number(els.colorDepth.value) || 1;
+
+  // 모든 추가 색상 처리
+  let addColorTotalRate = 1;
+  if (els.addColorToggle.value === "1") {
+    const colorItems = document.querySelectorAll('.add-color-item-wrap');
+    colorItems.forEach((item, idx) => {
+      const aColor = Number(document.getElementById(`addColor_${idx}`).value) || 1;
+      const cArea = (Number(document.getElementById(`colorArea_${idx}`).value) || 0) / 100;
+      const cDepth = Number(document.getElementById(`colorDepth_${idx}`).value) || 1;
+      
+      const itemRate = 1 + (cArea * (aColor * cDepth - 1));
+      addColorTotalRate *= itemRate;
+    });
+  }
+
+  let bakeLvl = 1, bakeRng = 1;
+  if(els.bakeToggle.value === "1"){
+    bakeLvl = Number(els.bakeLevel.value) || 1;
+    bakeRng = Number(els.bakeRange.value) || 1;
+  }
+
+  const item = Number(els.itemType.value) || 1;
+  const bead = Number(els.beadCnt.value) || 1;
+  const w = Number(els.w.value) || 0;
+  const h = Number(els.h.value) || 0;
+  const t = Number(els.t.value) || 0;
+  const etc = Number(els.etcCost.value) || 0;
+  const rawQ = Number(els.rawQuality.value) || 1;
+  const cutQ = Number(els.cutQuality.value) || 1;
+
+  // 동적 하자 값 전체 곱하기
+  let defTotal = 1;
+  document.querySelectorAll('.def-hidden').forEach(input=>{
+    defTotal *= Number(input.value) || 1;
+  })
+
+  const vol = w * h * t;
+  const totalRate = origin * stone * mColor * cDepth // 산지 배율 추가
+    * addColorTotalRate
+    * bakeLvl * bakeRng
+    * item * rawQ * cutQ * defTotal;
+
+  let price = pricePerUnit * vol * totalRate;
+  price = price * bead;
+  price += etc;
+  price = Math.max(0, price);
+  price = price / 100;
+  price = Math.round(price);
+  return price;
+}
+
+function calcPrice(){
+  const base = Number(els.basePrice.value) || 0;
+  const basePriceResult = calculatePrice(base);
+  const fmtBase = basePriceResult.toLocaleString('ko-KR');
+  els.resultBox.textContent = `중국 시장 평균 단가: ${fmtBase} 원`;
+
+  const target = Number(els.targetPrice.value) || 0;
+  if (target > 0) {
+    const targetPriceResult = calculatePrice(target);
+    const fmtTarget = targetPriceResult.toLocaleString('ko-KR');
+    els.targetResultBox.textContent = `목표 단가 기준 가격: ${fmtTarget} 원`;
+    els.targetResultBox.style.display = 'block';
+  } else {
+    els.targetResultBox.style.display = 'none';
+  }
+}
+
+// 선택된 버튼의 텍스트 가져오기
+function getActiveButtonText(groupId) {
+  const group = document.getElementById(groupId);
+  if (!group) return '미선택';
+  const activeBtn = group.querySelector('.option-btn.active');
+  return activeBtn ? activeBtn.textContent.trim() : '미선택';
+}
+
+// 요약 정보 업데이트 함수
+function updateSummary() {
+  // 기본 정보 수집
+  const summaryData = [
+    { label: '산지', value: getActiveButtonText('originGroup') },
+    { label: '종种 종류', value: getActiveButtonText('stoneTypeGroup') },
+    { label: '메인 바탕 색상', value: getActiveButtonText('mainColorGroup')},
+    { label: '색 농도 단계', value: getActiveButtonText('colorDepthGroup')},
+    { label: '추가 색상', value: els.addColorToggle.value === "1" ? '유' : '무', sub: '' },
+    { label: '굽기 유무', value: els.bakeToggle.value === "1" ? '유' : '무', sub: '' },
+    { label: '제품 종류', value: getActiveButtonText('itemTypeGroup')},
+    { label: '제품 크기', value: `${els.w.value} × ${els.h.value} × ${els.t.value} mm` },
+    { label: '원석 퀄리티', value: getActiveButtonText('rawQualityGroup')},
+    { label: '조각 퀄리티', value: getActiveButtonText('cutQualityGroup')},
+    { label: '하자 유무', value: els.defToggle.value === "1" ? '유' : '무', sub: '' },
+    { label: '기타 부자재 비용', value: `${Number(els.etcCost.value).toLocaleString('ko-KR')} 원`, sub: '' }
+  ];
+
+  // 요약 HTML 생성
+  let summaryHtml = '';
+  summaryData.forEach(item => {
+    summaryHtml += `
+      <div class="summary-item">
+        <span class="summary-label">${item.label}</span>
+        <span class="summary-value">${item.value}</span>
+        ${item.sub ? `<span class="summary-sub">${item.sub}</span>` : ''}
+      </div>
+    `;
+  });
+
+  // 요약 내용 업데이트
+  els.summaryContent.innerHTML = summaryHtml;
+}
+
+// 상태 저장 함수
+function saveState() {
+  const state = {
+    basePrice: els.basePrice.value,
+    targetPrice: els.targetPrice.value,
+    origin: els.origin.value,
+    stoneType: els.stoneType.value,
+    mainColor: els.mainColor.value,
+    colorDepth: els.colorDepth.value,
+    addColorToggle: els.addColorToggle.value,
+    bakeToggle: els.bakeToggle.value,
+    bakeLevel: els.bakeLevel.value,
+    bakeRange: els.bakeRange.value,
+    itemType: els.itemType.value,
+    beadCnt: els.beadCnt.value,
+    w: els.w.value,
+    h: els.h.value,
+    t: els.t.value,
+    etcCost: els.etcCost.value,
+    rawQuality: els.rawQuality.value,
+    cutQuality: els.cutQuality.value,
+    defToggle: els.defToggle.value,
+    // 동적 요소들의 상태도 저장 필요
+  };
+  localStorage.setItem('jadeCalculatorState', JSON.stringify(state));
+}
+
+// 상태 복원 함수
+function loadState() {
+  const saved = localStorage.getItem('jadeCalculatorState');
+  if (!saved) return false;
+  
+  try {
+    const state = JSON.parse(saved);
+    // 기본 입력값 복원
+    els.basePrice.value = state.basePrice || 220;
+    els.targetPrice.value = state.targetPrice || 0;
+    // 나머지 값들도 복원...
+    return true;
+  } catch (e) {
+    console.error('상태 복원 실패:', e);
+    return false;
+  }
+}
+
+// 전체 초기화 함수
+function resetAll() {
+  // localStorage 비우기
+  localStorage.removeItem('jadeCalculatorState');
+  
+  // 1. 기본/목표 단가 초기값 복구
+  els.basePrice.value = 220;
+  els.targetPrice.value = 0;
+  
+  // 2. 모든 선택 버튼 기본 선택으로 복구
+  // 산지: 미얀마
+  document.querySelectorAll('#originGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#originGroup .option-btn[data-value="1"]').classList.add('active');
+  els.origin.value = 1;
+  
+  // 종류: 두종
+  document.querySelectorAll('#stoneTypeGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#stoneTypeGroup .option-btn[data-value="1"]').classList.add('active');
+  els.stoneType.value = 1;
+  
+  // 메인 색상: 백
+  document.querySelectorAll('#mainColorGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#mainColorGroup .option-btn[data-value="0.2"]').classList.add('active');
+  els.mainColor.value = 0.2;
+  
+  // 색 농도: 무색
+  document.querySelectorAll('#colorDepthGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#colorDepthGroup .option-btn[data-value="0.5"]').classList.add('active');
+  els.colorDepth.value = 0.5;
+  
+  // 제품 종류: 원형패조각
+  document.querySelectorAll('#itemTypeGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#itemTypeGroup .option-btn[data-value="2.5"]').classList.add('active');
+  els.itemType.value = 2.5;
+  
+  // 원석 퀄리티: 최상급
+  document.querySelectorAll('#rawQualityGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#rawQualityGroup .option-btn[data-value="1"]').classList.add('active');
+  els.rawQuality.value = 1;
+  
+  // 조각 퀄리티: 장인급
+  document.querySelectorAll('#cutQualityGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#cutQualityGroup .option-btn[data-value="1.2"]').classList.add('active');
+  els.cutQuality.value = 1.2;
+  
+  // 3. 토글 버튼들 초기화 (추가색상: 무, 굽기: 무, 하자: 무)
+  // 추가색상 토글
+  document.querySelectorAll('#addColorToggleGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#addColorToggleGroup .option-btn[data-val="0"]').classList.add('active');
+  els.addColorToggle.value = 0;
+  els.addColorContainer.classList.add('toggle-hide');
+  
+  // 굽기 토글
+  document.querySelectorAll('#bakeToggleGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#bakeToggleGroup .option-btn[data-val="0"]').classList.add('active');
+  els.bakeToggle.value = 0;
+  document.getElementById('bakeLevelWrap').classList.add('toggle-hide');
+  document.getElementById('bakeRangeWrap').classList.add('toggle-hide');
+  
+  // 하자 토글
+  document.querySelectorAll('#defToggleGroup .option-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelector('#defToggleGroup .option-btn[data-val="0"]').classList.add('active');
+  els.defToggle.value = 0;
+  els.defContainer.classList.add('toggle-hide');
+  
+  // 4. 동적으로 추가한 하자, 추가색 전부 삭제하고 기본 1개만 남김
+  // 하자 항목 초기화
+  const defItems = els.defListWrap.querySelectorAll('.def-item-wrap');
+  for (let i = 1; i < defItems.length; i++) {
+    defItems[i].remove();
+  }
+  // 기본 하자 항목 초기화
+  const firstDef = els.defListWrap.querySelector('.def-item-wrap');
+  if (firstDef) {
+    firstDef.querySelectorAll('.def-btn').forEach(btn => btn.classList.remove('active'));
+    firstDef.querySelector('.def-btn[data-value="1"]').classList.add('active');
+    firstDef.querySelector('.def-hidden').value = 1;
+  }
+  defIndex = 1;
+  
+  // 추가색상 항목 초기화
+  const colorItems = els.addColorListWrap.querySelectorAll('.add-color-item-wrap');
+  for (let i = 1; i < colorItems.length; i++) {
+    colorItems[i].remove();
+  }
+  // 기본 추가색상 항목 초기화
+  const firstColor = els.addColorListWrap.querySelector('.add-color-item-wrap');
+  if (firstColor) {
+    firstColor.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('active'));
+    firstColor.querySelector('.option-btn[data-value="1.5"]').classList.add('active');
+    firstColor.querySelector('.add-color-hidden').value = 1.5;
+    firstColor.querySelector('.color-depth-hidden').value = 0.5;
+    firstColor.querySelector('input[type="number"]').value = 0;
+  }
+  colorIndex = 1;
+  
+  // 5. 크기 초기화
+  els.w.value = 10;
+  els.h.value = 10;
+  els.t.value = 10;
+  els.etcCost.value = 0;
+  els.beadCnt.value = 1;
+  
+  // 6. 특수 색상 버튼 상태 재설정
+  toggleSpecialColorButtons(false);
+  
+  // 7. 색 농도 버튼 상태 재설정
+  toggleColorDepthButtons(false);
+  
+  // 8. 비즈 수량 필드 숨기기
+  els.beadCntWrap.classList.remove('show');
+  
+  // 9. 가격 자동 재계산 및 요약 영역 갱신
+  calcPrice();
+  updateSummary();
+  
+  alert('모든 설정이 초기화되었습니다.');
+}
+
+// 초기화 함수
+function init() {
+  initButtonGroups();
+  initToggleGroups();
+  initDefAddBtn();
+  initAddColorBtn();
+  updateExchangeRateAndPrice();
+  setupDailyExchangeUpdate();
+  
+  // 초기 특수 색상 버튼 상태 설정 (기본값: 미얀마)
+  toggleSpecialColorButtons(false);
+  
+  // 초기 요약 정보 업데이트
+  updateSummary();
+  
+  // 입력 필드 변경 시 가격 계산 및 요약 업데이트
+  const inputFields = document.querySelectorAll('input[type="number"]');
+  inputFields.forEach(field => {
+    field.addEventListener('input', () => {
+      calcPrice();
+      updateSummary();
+    });
+  });
+  
+  // 전체 초기화 버튼 이벤트 리스너 추가
+  document.getElementById('resetAllBtn').addEventListener('click', resetAll);
+}
+
+// 페이지 로드 시 초기화
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
