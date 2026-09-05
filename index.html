@@ -594,14 +594,16 @@ small{
             <small>옥조각 창작소 카페에서만 배포중입니다. </small>
               <small>정확한 데이터가 아니오니 참고용으로만 이용해 주세요. </small>
               <small>아직 테스트 버전이라 수치가 변동될 수 있습니다. </small>
-<!-- 택배조회하러가기 버튼 -->
-<div style="display:flex;justify-content:center;margin:40px 0;">
+<!-- 가로 나란히 3개 버튼 영역 -->
+<div style="display:flex;justify-content:center;gap:12px;margin:40px 15px;flex-wrap:wrap;">
+
+  <!-- 버튼1 -->
   <a href="./tracking.html" style="
     display:inline-block;
-    padding:14px 32px;
+    padding:14px 22px;
     background:#1d4ed8;
     color:#ffffff;
-    font-size:17px;
+    font-size:16px;
     font-weight:500;
     text-decoration:none;
     border-radius:12px;
@@ -613,7 +615,47 @@ small{
   onmousedown="this.style.transform='translateY(1px)';">
     택배조회
   </a>
+
+  <!-- 버튼2 (href에 링크 직접입력) -->
+  <a href="https://www.youtube.com/@JADENARE" style="
+    display:inline-block;
+    padding:14px 22px;
+    background:#0891b2;
+    color:#ffffff;
+    font-size:16px;
+    font-weight:500;
+    text-decoration:none;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(8,145,178,0.24);
+    transition:all 0.2s ease;
+  "
+  onmouseover="this.style.background='#0e7490';this.style.transform='translateY(-2px)';"
+  onmouseout="this.style.background='#0891b2';this.style.transform='translateY(0)';"
+  onmousedown="this.style.transform='translateY(1px)';">
+    유튜브
+  </a>
+
+  <!-- 버튼3 (href에 링크 직접입력) -->
+  <a href="https://cafe.naver.com/jadenare" style="
+    display:inline-block;
+    padding:14px 22px;
+    background:#9333ea;
+    color:#ffffff;
+    font-size:16px;
+    font-weight:500;
+    text-decoration:none;
+    border-radius:12px;
+    box-shadow:0 2px 8px rgba(147,51,234,0.24);
+    transition:all 0.2s ease;
+  "
+  onmouseover="this.style.background='#7e22ce';this.style.transform='translateY(-2px)';"
+  onmouseout="this.style.background='#9333ea';this.style.transform='translateY(0)';"
+  onmousedown="this.style.transform='translateY(1px)';">
+    네이버카페
+  </a>
+
 </div>
+
 
     </div>
   </div>
