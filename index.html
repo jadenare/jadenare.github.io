@@ -651,6 +651,7 @@ small{
   onmouseover="this.style.background='#15803d';this.style.transform='translateY(-2px)';"
   onmouseout="this.style.background='#16a34a';this.style.transform='translateY(0)';"
   onmousedown="this.style.transform='translateY(1px)';">
+    네이버카페
   </a>
 </div>
 
@@ -662,15 +663,16 @@ small{
   <div class="row">
     <div>
       <label>기본 단가(원/한화)</label>
-      <input type="number" id="basePrice" value="220">
-      <small> RMB 환률 기준 시장 평균 단가 / 환율에 따라 자동 변환됩니다</small>
+      <input type="number" id="basePrice" value="225">
+      <small> RMB 환률 대비 기준 시장 평균 단가 / 환율에 따라 자동 변환됩니다</small>
       <span id="exchangeInfo" class="exchange-rate"></span>
       <span id="exchangeUpdateInfo" class="exchange-update"></span>
     </div>
     <div>
       <label>목표 단가(원/한화)</label>
       <input type="number" id="targetPrice" value="0">
-      <small> 원하는 목표 단가를 입력하세요. (0 입력 시 표시되지 않음)</small>
+      <small> 원하는 목표 단가를 입력하세요. </small>
+       <small> 국내에서 구매시 60%~70%, 중국에서 구매시 50%~60%</small>
     </div>
   </div>
 </div>
@@ -686,7 +688,7 @@ small{
         <button class="option-btn" data-value="0.1">과테말라</button>
       </div>
       <input type="hidden" id="origin" class="hidden-input" value="1">
-      <small>비취의 산지를 선택해주세요</small>
+      <small>비취의 산지를 선택해주세요. </small>
     </div>
     
     <div>
