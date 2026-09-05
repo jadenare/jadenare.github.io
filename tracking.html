@@ -33,17 +33,19 @@ iframe{width:100%;height:620px;border:1px solid #ddd;border-radius:10px;backgrou
 <div class="card">
   <div class="row">
     <label>Code + 운송장 번호 붙여넣기</label>
-    <textarea id="pasteArea"</textarea>
+    <!-- placeholder 전부 제거, 완전 공란 -->
+    <textarea id="pasteArea"></textarea>
   </div>
+
   <div class="preview-area">
     <div>✅ Code : <span id="showCode">-</span></div>
     <div>✅ Invoice : <span id="showInvoice">-</span></div>
   </div>
 
   <div class="btn-wrap">
-    <button class="btn btn-customs" id="goCustomsBtn">① 통관확인 (현재창 하단표시)</button>
-    <button class="btn btn-cj" id="goCjBtn">② 선박이용시‑CJ대한통운(새창)</button>
-    <button class="btn btn-hanjin" id="goHanjinBtn">③ 항공이용시‑한진택배(새창)</button>
+    <button class="btn btn-customs" id="goCustomsBtn">① 통관확인 (현재창 하단에 표시)</button>
+    <button class="btn btn-cj" id="goCjBtn">② 선박‑CJ대한통운(새창)</button>
+    <button class="btn btn-hanjin" id="goHanjinBtn">③ 항공‑한진택배(새창)</button>
   </div>
   <p class="note">
     • CJ, 한진은 사이트 보안정책으로 새창으로만 열립니다.
