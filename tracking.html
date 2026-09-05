@@ -18,6 +18,7 @@ textarea{width:100%;padding:13px 14px;border:1px solid #dde0e4;border-radius:10p
 .btn-customs{background:#1d4ed8;}
 .btn-cj{background:#0891b2;}
 .btn-hanjin{background:#9333ea;}
+.btn-reset{background:#6b7280;}
 .note{font-size:13px;color:#888;margin-top:12px;line-height:1.5;}
 
 .preview-area{background:#f3f4f6;padding:12px;border-radius:10px;margin-bottom:14px;font-size:14px;}
@@ -33,7 +34,6 @@ iframe{width:100%;height:620px;border:1px solid #ddd;border-radius:10px;backgrou
 <div class="card">
   <div class="row">
     <label>Code + 운송장 번호 붙여넣기</label>
-    <!-- placeholder 전부 제거, 완전 공란 -->
     <textarea id="pasteArea"></textarea>
   </div>
 
@@ -46,6 +46,8 @@ iframe{width:100%;height:620px;border:1px solid #ddd;border-radius:10px;backgrou
     <button class="btn btn-customs" id="goCustomsBtn">① 통관확인 (현재창 하단에 표시)</button>
     <button class="btn btn-cj" id="goCjBtn">② 선박‑CJ대한통운(새창)</button>
     <button class="btn btn-hanjin" id="goHanjinBtn">③ 항공‑한진택배(새창)</button>
+    <!-- 초기화 버튼 추가 -->
+    <button class="btn btn-reset" id="resetBtn">🗑 전체 지우기 / 초기화</button>
   </div>
   <p class="note">
     • CJ, 한진은 사이트 보안정책으로 새창으로만 열립니다.
@@ -64,6 +66,7 @@ const showInvoice = document.getElementById('showInvoice');
 const goCustomsBtn = document.getElementById('goCustomsBtn');
 const goCjBtn = document.getElementById('goCjBtn');
 const goHanjinBtn = document.getElementById('goHanjinBtn');
+const resetBtn = document.getElementById('resetBtn');
 const iframeWrap = document.getElementById('iframeWrap');
 const customsIframe = document.getElementById('customsIframe');
 
@@ -106,6 +109,17 @@ function renderPreview(){
 }
 
 pasteArea.addEventListener('input', parseText);
+
+// ✅ 전체 초기화 로직
+resetBtn.addEventListener('click', ()=>{
+  pasteArea.value = "";
+  codeVal = "";
+  invoiceVal = "";
+  localStorage.removeItem(STORAGE_KEY);
+  renderPreview();
+  customsIframe.src = "";
+  iframeWrap.classList.add('hidden');
+})
 
 // ① 통관 조회
 goCustomsBtn.addEventListener('click',()=>{
