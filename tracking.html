@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>통관·택배 바로가기 조회</title>
+<title>통관·택배 조회 툴</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system, BlinkMacSystemFont, "맑은 고딕", sans-serif;}
-body{background:#f5f7fa;padding:16px;color:#222;max-width:640px;margin:0 auto;}
+body{background:#f5f7fa;padding:16px;color:#222;max-width:680px;margin:0 auto;}
 h1{font-size:22px;text-align:center;margin:20px 0;color:#111;}
 .card{background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 1px 6px rgba(0,0,0,0.07);}
 .row{margin-bottom:16px;}
 label{display:block;margin-bottom:7px;font-weight:500;font-size:15px;color:#333;}
-input{width:100%;padding:13px 14px;border:1px solid #dde0e4;border-radius:10px;font-size:16px;background:#fff;}
+textarea{width:100%;padding:13px 14px;border:1px solid #dde0e4;border-radius:10px;font-size:16px;background:#fff;min-height:110px;resize:none;}
 
 .btn-wrap{margin-top:8px;display:grid;grid-template-columns:1fr;gap:10px;}
 .btn{width:100%;padding:14px;border:none;border-radius:10px;color:#fff;font-size:16px;font-weight:500;cursor:pointer;}
@@ -19,6 +19,12 @@ input{width:100%;padding:13px 14px;border:1px solid #dde0e4;border-radius:10px;f
 .btn-cj{background:#0891b2;}
 .btn-hanjin{background:#9333ea;}
 .note{font-size:13px;color:#888;margin-top:12px;line-height:1.5;}
+
+.preview-area{background:#f3f4f6;padding:12px;border-radius:10px;margin-bottom:14px;font-size:14px;}
+.iframe-area{margin-top:20px;}
+.iframe-title{font-size:16px;font-weight:600;margin-bottom:8px;}
+iframe{width:100%;height:620px;border:1px solid #ddd;border-radius:10px;background:#ffffff;}
+.hidden{display:none;}
 </style>
 </head>
 <body>
@@ -26,86 +32,110 @@ input{width:100%;padding:13px 14px;border:1px solid #dde0e4;border-radius:10px;f
 
 <div class="card">
   <div class="row">
-    <label>Code 입력 (통관)</label>
-    <input type="text" id="codeVal" placeholder="예: GR1234567890">
+    <label>Code + 운송장 번호 붙여넣기</label>
+    <textarea id="pasteArea" placeholder="아래 형식으로 복사해서 붙여넣기
+GR1234567890
+520495013312"></textarea>
   </div>
-  <div class="row">
-    <label>Invoice / 운송장 번호</label>
-    <input type="text" id="invoiceVal" placeholder="예: 1234567890">
+
+  <div class="preview-area">
+    <div>✅ Code : <span id="showCode">-</span></div>
+    <div>✅ Invoice : <span id="showInvoice">-</span></div>
   </div>
+
   <div class="btn-wrap">
-    <button class="btn btn-customs" id="goCustomsBtn">① 통관확인(새창)</button>
+    <button class="btn btn-customs" id="goCustomsBtn">① 통관확인 (현재창 하단표시)</button>
     <button class="btn btn-cj" id="goCjBtn">② 선박‑CJ대한통운(새창)</button>
     <button class="btn btn-hanjin" id="goHanjinBtn">③ 항공‑한진택배(새창)</button>
   </div>
   <p class="note">
-    • 버튼 클릭 시 해당 사이트 새탭으로 이동합니다.<br/>
+    • CJ, 한진은 사이트 보안정책으로 새창으로만 열립니다.
   </p>
 </div>
 
+<div id="iframeWrap" class="iframe-area hidden">
+  <div class="iframe-title">📋 통관 조회 결과 (with‑seller)</div>
+  <iframe id="customsIframe"></iframe>
+</div>
+
 <script>
-const codeInput = document.getElementById('codeVal');
-const invoiceInput = document.getElementById('invoiceVal');
+const pasteArea = document.getElementById('pasteArea');
+const showCode = document.getElementById('showCode');
+const showInvoice = document.getElementById('showInvoice');
 const goCustomsBtn = document.getElementById('goCustomsBtn');
 const goCjBtn = document.getElementById('goCjBtn');
 const goHanjinBtn = document.getElementById('goHanjinBtn');
+const iframeWrap = document.getElementById('iframeWrap');
+const customsIframe = document.getElementById('customsIframe');
 
+let codeVal = "";
+let invoiceVal = "";
 const STORAGE_KEY = "trace_last_input";
 
-// 페이지 로드 시 저장된 값 불러오기
+// 저장된 데이터 불러오기
 window.addEventListener('DOMContentLoaded',()=>{
   const saved = localStorage.getItem(STORAGE_KEY);
   if(saved){
     try{
       const obj = JSON.parse(saved);
-      codeInput.value = obj.code || "";
-      invoiceInput.value = obj.invoice || "";
+      codeVal = obj.code || "";
+      invoiceVal = obj.invoice || "";
+      pasteArea.value = codeVal + "\n" + invoiceVal;
+      renderPreview();
     }catch(e){}
   }
 });
 
-// 입력값 저장
 function saveInput(){
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    code: codeInput.value.trim(),
-    invoice: invoiceInput.value.trim()
-  }));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({code:codeVal,invoice:invoiceVal}));
 }
 
-// ① 통관확인 (with‑seller)
+// 텍스트 변경 시 자동 파싱
+function parseText(){
+  const text = pasteArea.value;
+  const lineList = text.split(/\r?\n/).map(item=>item.trim()).filter(item=>item);
+  codeVal = lineList[0] ?? "";
+  invoiceVal = lineList[1] ?? "";
+  renderPreview();
+  saveInput();
+}
+
+// 미리보기 갱신
+function renderPreview(){
+  showCode.innerText = codeVal || "입력되지 않음";
+  showInvoice.innerText = invoiceVal || "입력되지 않음";
+}
+
+pasteArea.addEventListener('input', parseText);
+
+// ① 통관 조회
 goCustomsBtn.addEventListener('click',()=>{
-  const code = codeInput.value.trim();
-  const invoice = invoiceInput.value.trim();
-  if(!code || !invoice){
-    alert("Code 와 Invoice 값을 모두 입력해 주세요.");
+  if(!codeVal || !invoiceVal){
+    alert("Code 와 Invoice 두 값을 전부 입력해 주세요.");
     return;
   }
-  saveInput();
-  const url = `https://with-seller.com/guide/unipass_delivery.php?code=${encodeURIComponent(code)}&invoice=${encodeURIComponent(invoice)}`;
-  window.open(url,"_blank");
+  const url = `https://with-seller.com/guide/unipass_delivery.php?code=${encodeURIComponent(codeVal)}&invoice=${encodeURIComponent(invoiceVal)}`;
+  customsIframe.src = url;
+  iframeWrap.classList.remove('hidden');
 });
 
-// ② 선박‑CJ대한통운
+// ② CJ 대한통운
 goCjBtn.addEventListener('click',()=>{
-  const invoice = invoiceInput.value.trim();
-  if(!invoice){
+  if(!invoiceVal){
     alert("운송장(Invoice) 번호를 입력해 주세요.");
     return;
   }
-  saveInput();
-  const url = `https://trace.cjlogistics.com/next/tracking.html?wblNo=${encodeURIComponent(invoice)}`;
+  const url = `https://trace.cjlogistics.com/next/tracking.html?wblNo=${encodeURIComponent(invoiceVal)}`;
   window.open(url,"_blank");
 })
 
-// ③ 항공‑한진택배
+// ③ 한진택배
 goHanjinBtn.addEventListener('click',()=>{
-  const invoice = invoiceInput.value.trim();
-  if(!invoice){
+  if(!invoiceVal){
     alert("운송장(Invoice) 번호를 입력해 주세요.");
     return;
   }
-  saveInput();
-  const url = `https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&schLang=KR&wblnumText2=${encodeURIComponent(invoice)}`;
+  const url = `https://www.hanjin.com/kor/CMS/DeliveryMgr/WaybillResult.do?mCode=MN038&schLang=KR&wblnumText2=${encodeURIComponent(invoiceVal)}`;
   window.open(url,"_blank");
 })
 </script>
