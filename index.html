@@ -326,7 +326,7 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
           <button class="option-btn" data-value="3.2">원형무사패</button>
           <button class="option-btn" data-value="2.2">사각무사패</button>
           <button class="option-btn" data-value="4">뱅글</button>
-          <button class="option-btn" data-value="6">평안구</button>
+          <button class="option-btn" data-value="6.5">평안구</button>
           <button class="option-btn" data-value="8">통반지</button>
           <button class="option-btn" data-value="2">비즈</button>
           <button class="option-btn" data-value="10">케보션</button>
@@ -362,7 +362,7 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
           <button class="option-btn" data-value="2">200mm 이상 대작</button>
         </div>
         <input type="hidden" id="sizePremium" class="hidden-input" value="1">
-        <small>가로·세로·두께 중 가장 큰 치수 기준. 큰 작품은 원석 수율이 낮아 단가 급등.</small>
+        <small>가로·세로·두께 중 가장 큰 치수 기준.</small>
       </div>
       <div>
         <label>기타 부자재 비용</label>
@@ -410,7 +410,7 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
           <button class="option-btn" data-value="1">유리광택</button>
         </div>
         <input type="hidden" id="polish" class="hidden-input" value="0.8">
-        <small>표면 연마 품질. 기스·연마 자국이 없고 빛깔이 살수록 상급.</small>
+        <small>표면 연마 품질. 기스·연마 자국이 없고 표면이 깨끗 할수록 상급.</small>
       </div>
     </div>
   </div>
@@ -773,6 +773,7 @@ function initDynamicLists() {
   c1.innerHTML = colorItemHtml(0, true);
   els.addColorListWrap.appendChild(c1);
   bindColorItem(c1, 0);
+  colorIndex = 1;
 
   els.addDefBtn.onclick = () => {
     const wrap = document.createElement('div');
@@ -821,10 +822,11 @@ function calculatePrice(pricePerUnit) {
 
   let addColorTotalRate = 1;
   if (els.addColorToggle.value === '1') {
-    document.querySelectorAll('.add-color-item-wrap').forEach((item, idx) => {
-      const aColor = Number(document.getElementById(`addColor_${idx}`).value)||1;
-      const cAreaSub = (Number(document.getElementById(`colorArea_${idx}`).value)||0)/100;
-      const cDepthI = Number(document.getElementById(`colorDepth_${idx}`).value)||1;
+    document.querySelectorAll('.add-color-item-wrap').forEach((item) => {
+      const aColor = Number(item.querySelector('.add-color-hidden').value)||1;
+      const areaEl = item.querySelector('input[type="number"]');
+      const cAreaSub = (Number(areaEl ? areaEl.value : 0)||0)/100;
+      const cDepthI = Number(item.querySelector('.color-depth-hidden').value)||1;
       addColorTotalRate *= (1 + cAreaSub*(aColor*cDepthI - 1));
     });
   }
@@ -1002,9 +1004,12 @@ function copyResult() {
   if (els.addColorToggle.value === '1') {
     const colorItems = document.querySelectorAll('.add-color-item-wrap');
     colorItems.forEach((item, idx) => {
-      const cName = document.querySelector(`#addColorGroup_${idx} .option-btn.active`)?.textContent.trim() || '';
-      const cArea = document.getElementById(`colorArea_${idx}`).value;
-      const cDepth = document.querySelector(`#colorDepthGroup_${idx} .option-btn.active`)?.textContent.trim() || '';
+      const groups = item.querySelectorAll('.btn-group');
+      const cGroup = groups[0] || null, dGroup = groups[1] || null;
+      const cName = (cGroup ? cGroup.querySelector('.option-btn.active') : null)?.textContent.trim() || '';
+      const areaEl = item.querySelector('input[type="number"]');
+      const cArea = areaEl ? areaEl.value : '0';
+      const cDepth = (dGroup ? dGroup.querySelector('.option-btn.active') : null)?.textContent.trim() || '';
       lines.push(`[추가색${idx+1} : ${cName} / 면적 ${cArea}% / ${cDepth}]`);
     });
   }
