@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JADE NARE - 비취 가격 계산기 v3.2</title>
+<title>JADE NARE - 비취 가격 계산기 v3.3</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -150,6 +150,10 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
   margin-top:6px;padding:8px 12px;background:#F0F4EA;border-radius:6px;
   font-size:12px;color:#2D5A18;font-weight:500;
 }
+.target-value-display{
+  margin-top:6px;padding:8px 12px;background:#F0F4EA;border-radius:6px;
+  font-size:13px;color:#2D5A18;font-weight:600;letter-spacing:0.3px;
+}
 .page-footer{text-align:center;padding:24px 16px 8px;color:#7B6B5A;font-size:12px;letter-spacing:1px;}
 @keyframes fadeSlideIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
 .box{animation:fadeSlideIn 0.4s ease both;}
@@ -201,9 +205,22 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
         <span id="exchangeUpdateInfo" class="exchange-update"></span>
       </div>
       <div>
-        <label>목표 단가(원/한화)</label>
-        <input type="number" id="targetPrice" value="0">
-        <small>원하는 목표 단가를 입력하세요.</small>
+        <label>목표 단가 (기본 단가의 %)</label>
+        <div class="btn-group" id="targetPercentGroup">
+          <button class="option-btn" data-percent="0.1">10%</button>
+          <button class="option-btn" data-percent="0.2">20%</button>
+          <button class="option-btn" data-percent="0.3">30%</button>
+          <button class="option-btn" data-percent="0.4">40%</button>
+          <button class="option-btn" data-percent="0.5">50%</button>
+          <button class="option-btn active" data-percent="0.6">60%</button>
+          <button class="option-btn" data-percent="0.7">70%</button>
+          <button class="option-btn" data-percent="0.8">80%</button>
+          <button class="option-btn" data-percent="0.9">90%</button>
+          <button class="option-btn" data-percent="1">100%</button>
+        </div>
+        <input type="hidden" id="targetPercent" value="0.6">
+        <input type="hidden" id="targetPrice" value="135">
+        <div class="target-value-display" id="targetValueDisplay">기본 단가 225원 × 60% = 135원</div>
         <small>국내 구매시 60~70%, 중국 구매시 50~60%</small>
       </div>
     </div>
@@ -321,7 +338,8 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
       <div>
         <label>제품 종류 (형태)</label>
         <div class="btn-group" id="itemTypeGroup">
-          <button class="option-btn active" data-value="2.5">원형패조각</button>
+          <button class="option-btn active" data-value="1">일반조각</button>
+          <button class="option-btn" data-value="2.5">원형패조각</button>
           <button class="option-btn" data-value="1.8">사각패조각</button>
           <button class="option-btn" data-value="3.2">원형무사패</button>
           <button class="option-btn" data-value="2.2">사각무사패</button>
@@ -331,7 +349,7 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
           <button class="option-btn" data-value="2">비즈</button>
           <button class="option-btn" data-value="10">케보션</button>
         </div>
-        <input type="hidden" id="itemType" class="hidden-input" value="2.5">
+        <input type="hidden" id="itemType" class="hidden-input" value="1">
         <small>제품의 형태만 선택하세요. 크기는 하단 크기 프리미엄에서.</small>
       </div>
       <div class="bead-cnt-wrap" id="beadCntWrap">
@@ -350,7 +368,6 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
       <div>
         <label>두께/높이 (mm)</label>
         <input type="number" id="t" value="10" step="1">
-        <div class="weight-display" id="weightDisplay">예상 중량: — g</div>
       </div>
       <div>
         <label>크기 프리미엄 (최장변 기준)</label>
@@ -469,12 +486,13 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
 const EXCHANGE_API_URL = 'https://api.exchangerate-api.com/v4/latest/CNY';
 const DEFAULT_EXCHANGE_RATE = 192;
 const DEFAULT_RMB_PRICE = 1.15;
-const JADE_DENSITY = 3.33;
 const WHITE_BASE = 0.2; // 흰색 바탕 기준 배율 (참고용)
 
 const els = {
   basePrice: document.getElementById('basePrice'),
   targetPrice: document.getElementById('targetPrice'),
+  targetPercent: document.getElementById('targetPercent'),
+  targetValueDisplay: document.getElementById('targetValueDisplay'),
   origin: document.getElementById('origin'),
   stoneType: document.getElementById('stoneType'),
   mainColor: document.getElementById('mainColor'),
@@ -502,7 +520,6 @@ const els = {
   addColorListWrap: document.getElementById('addColorListWrap'),
   addColorBtn: document.getElementById('addColorBtn'),
   summaryContent: document.getElementById('summaryContent'),
-  weightDisplay: document.getElementById('weightDisplay'),
   polish: document.getElementById('polish'),
   sizePremium: document.getElementById('sizePremium')
 };
@@ -586,7 +603,6 @@ function toggleBeadCountField() {
   const isBead = activeItem && activeItem.textContent.trim() === '비즈';
   if (isBead) els.beadCntWrap.classList.add('show');
   else { els.beadCntWrap.classList.remove('show'); els.beadCnt.value = 1; }
-  updateWeight();
 }
 
 function toggleSpecialColorButtons(isGuatemala) {
@@ -602,9 +618,25 @@ function toggleSpecialColorButtons(isGuatemala) {
   });
 }
 
-function updateWeight() {
-  const w = Number(els.w.value)||0, h = Number(els.h.value)||0, t = Number(els.t.value)||0;
-  els.weightDisplay.textContent = `예상 중량: 약 ${((w*h*t)/1000*JADE_DENSITY).toFixed(1)} g (밀도 ${JADE_DENSITY} 기준)`;
+function updateTargetPrice() {
+  const base = Number(els.basePrice.value)||0;
+  const pct = Number(els.targetPercent.value)||0;
+  const target = Math.round(base * pct);
+  els.targetPrice.value = target;
+  els.targetValueDisplay.textContent = `기본 단가 ${base.toLocaleString('ko-KR')}원 × ${Math.round(pct*100)}% = ${target.toLocaleString('ko-KR')}원`;
+}
+
+function initTargetPercent() {
+  const btns = document.querySelectorAll('#targetPercentGroup .option-btn');
+  btns.forEach(btn => {
+    btn.onclick = () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      els.targetPercent.value = btn.dataset.percent;
+      updateTargetPrice();
+      calcPrice(); updateSummary();
+    };
+  });
 }
 
 function bindRemoveButtons() {
@@ -811,7 +843,7 @@ async function getExchangeRate() {
 async function updateExchangeRateAndPrice() {
   const rate = await getExchangeRate();
   els.basePrice.value = Math.round(DEFAULT_RMB_PRICE * rate);
-  calcPrice(); updateSummary();
+  updateTargetPrice(); calcPrice(); updateSummary();
 }
 
 function calculatePrice(pricePerUnit) {
@@ -888,7 +920,6 @@ function updateSummary() {
     ['굽기', els.bakeToggle.value==='1'?'유':'무'],
     ['제품종류', getActiveText('itemTypeGroup')],
     ['크기', `${els.w.value} × ${els.h.value} × ${els.t.value} mm`],
-    ['예상중량', `${((Number(els.w.value)*Number(els.h.value)*Number(els.t.value))/1000*JADE_DENSITY).toFixed(1)} g`],
     ['크기프리미엄', getActiveText('sizePremiumGroup')],
     ['원석품질', getActiveText('rawQualityGroup')],
     ['조각퀄리티', getActiveText('cutQualityGroup')],
@@ -903,7 +934,7 @@ function updateSummary() {
 
 function getState() {
   return {
-    basePrice: els.basePrice.value, targetPrice: els.targetPrice.value,
+    basePrice: els.basePrice.value, targetPercent: els.targetPercent.value,
     origin: els.origin.value, stoneType: els.stoneType.value,
     mainColor: els.mainColor.value, colorDepth: els.colorDepth.value,
     addColorToggle: els.addColorToggle.value,
@@ -919,7 +950,9 @@ function getState() {
 function applyState(s) {
   if (!s) return;
   els.basePrice.value = s.basePrice||225;
-  els.targetPrice.value = s.targetPrice||0;
+  els.targetPercent.value = s.targetPercent||0.6;
+  document.querySelectorAll('#targetPercentGroup .option-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.percent===String(s.targetPercent||0.6)));
   els.w.value = s.w||40; els.h.value = s.h||70; els.t.value = s.t||10;
   els.etcCost.value = s.etcCost||0; els.beadCnt.value = s.beadCnt||1;
 
@@ -939,7 +972,7 @@ function applyState(s) {
   setBtn('colorDepthGroup', s.colorDepth||0.5);
   setBtn('rawQualityGroup', s.rawQuality||1);
   setBtn('cutQualityGroup', s.cutQuality||1.2);
-  setBtn('itemTypeGroup', s.itemType||2.5);
+  setBtn('itemTypeGroup', s.itemType||1);
   setBtn('bakeLevelGroup', s.bakeLevel||1);
   setBtn('bakeRangeGroup', s.bakeRange||1);
   setBtn('polishGroup', s.polish||0.8);
@@ -961,19 +994,19 @@ function applyState(s) {
     b.classList.toggle('active', b.dataset.val===String(s.defToggle||0)));
   els.defContainer.classList.toggle('toggle-hide', String(s.defToggle)!=='1');
 
-  toggleBeadCountField(); updateWeight(); calcPrice(); updateSummary();
+  toggleBeadCountField(); updateTargetPrice(); calcPrice(); updateSummary();
 }
 
 function resetAll() {
   localStorage.removeItem('jadeCalcState');
-  els.basePrice.value = 225; els.targetPrice.value = 0;
+  els.basePrice.value = 225; els.targetPercent.value = 0.6;
   els.w.value = 40; els.h.value = 70; els.t.value = 10;
   els.etcCost.value = 0; els.beadCnt.value = 1;
   applyState({
     origin:1, stoneType:1, mainColor:0.2, colorDepth:0.5,
     addColorToggle:0, bakeToggle:0, defToggle:0,
-    itemType:2.5, rawQuality:1, cutQuality:1.2,
-    polish:0.8, sizePremium:1
+    itemType:1, rawQuality:1, cutQuality:1.2,
+    polish:0.8, sizePremium:1, targetPercent:0.6
   });
 
   els.defListWrap.innerHTML = '';
@@ -988,7 +1021,7 @@ function resetAll() {
   bindRemoveButtons();
   defIndex = 1; colorIndex = 1;
 
-  updateWeight(); calcPrice(); updateSummary();
+  updateTargetPrice(); calcPrice(); updateSummary();
   alert('모든 설정이 초기화되었습니다.');
 }
 
@@ -1017,7 +1050,7 @@ function copyResult() {
     lines.push(`[굽기 : ${getActiveText('bakeLevelGroup')} / ${getActiveText('bakeRangeGroup')}]`);
   }
   lines.push(`[제품종류 : ${getActiveText('itemTypeGroup')}]`);
-  lines.push(`[크기 : ${els.w.value} × ${els.h.value} × ${els.t.value} mm (약 ${((Number(els.w.value)*Number(els.h.value)*Number(els.t.value))/1000*JADE_DENSITY).toFixed(1)}g)]`);
+  lines.push(`[크기 : ${els.w.value} × ${els.h.value} × ${els.t.value} mm]`);
   lines.push(`[크기프리미엄 : ${getActiveText('sizePremiumGroup')}]`);
   lines.push(`[원석퀄리티 : ${getActiveText('rawQualityGroup')}]`);
   lines.push(`[조각퀄리티 : ${getActiveText('cutQualityGroup')}]`);
@@ -1042,16 +1075,17 @@ function init() {
   initButtonGroups();
   initToggleGroups();
   initDynamicLists();
+  initTargetPercent();
   updateExchangeRateAndPrice();
 
   document.querySelectorAll('input[type="number"]').forEach(f => {
-    f.addEventListener('input', () => { updateWeight(); calcPrice(); updateSummary(); });
+    f.addEventListener('input', () => { updateTargetPrice(); calcPrice(); updateSummary(); });
   });
 
   document.getElementById('resetAllBtn').onclick = resetAll;
   document.getElementById('copyResultBtn').onclick = copyResult;
 
-  updateWeight(); calcPrice(); updateSummary();
+  updateTargetPrice(); calcPrice(); updateSummary();
 }
 
 document.addEventListener('DOMContentLoaded', init);
