@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>JADE NARE - 비취 가격 계산기 v3.3</title>
+<title>JADE NARE - 비취 가격 계산기 v3.5</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -175,6 +175,37 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
   .content-wrapper{padding:16px 10px 32px;}
 }
 @media(min-width:769px){.row{gap:20px;}}
+
+/* ===== 결과 카드 / 사진 첨부 ===== */
+.photo-drop{
+  display:flex;align-items:center;justify-content:center;
+  min-height:41px;padding:10px 14px;border:1.5px dashed #C9B98F;border-radius:8px;
+  background:#FDFBF6;color:#7B6B5A;font-size:12.5px;cursor:pointer;transition:all .2s;text-align:center;
+}
+.photo-drop:hover,.photo-drop.over{border-color:#3D7023;background:#F0F4EA;color:#2D5A18;}
+.export-preview{overflow:hidden;padding:8px 0 2px;margin-top:6px;display:flex;justify-content:center;}
+.ec-wrap{position:relative;flex:none;}
+.export-card{width:660px;background:#FFFDF7;border:1px solid #E5DCC9;border-radius:14px;overflow:hidden;box-shadow:0 6px 24px rgba(45,90,24,.10);transform-origin:top left;}
+.ec-head{background:linear-gradient(135deg,#2D5A18,#3D7023);padding:14px 22px;display:flex;justify-content:space-between;align-items:center;}
+.ec-brand{font-size:13px;letter-spacing:5px;color:#F5E6B8;font-weight:600;}
+.ec-sub{font-size:11px;letter-spacing:2px;color:rgba(245,230,184,.72);}
+.ec-body{display:block;padding:0;}
+.ec-photo{width:100%;aspect-ratio:1/1;background:#F5F1E6;display:flex;align-items:center;justify-content:center;overflow:hidden;border-bottom:1px solid #EDE5D5;}
+.ec-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.ec-photo-ph{font-size:13px;color:#A89886;letter-spacing:2px;}
+.ec-info{padding:20px 22px 22px;}
+.ec-title{font-family:'Noto Serif SC',serif;font-size:20px;line-height:1.42;color:#1F2A1A;margin-bottom:15px;word-break:keep-all;}
+.ec-rows{display:grid;grid-template-columns:1fr 1fr;gap:0 20px;}
+.ec-row{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px dashed #EDE5D5;font-size:12.5px;}
+.ec-row span{color:#7B6B5A;flex:none;}
+.ec-row b{color:#2D5A18;font-weight:600;text-align:right;max-width:68%;overflow-wrap:anywhere;}
+.ec-prices{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+.ec-price{background:linear-gradient(135deg,#2D5A18,#3D7023);border-radius:9px;padding:13px 15px;color:#F5E6B8;}
+.ec-price.alt{background:#FBF7EC;border:1.5px solid #C9A03C;color:#2D5A18;}
+.ec-price em{display:block;font-style:normal;font-size:11px;opacity:.85;margin-bottom:5px;letter-spacing:.3px;}
+.ec-price b{font-size:19px;letter-spacing:.3px;}
+.ec-price.alt em{color:#7B6B5A;}
+.ec-foot{padding:12px 22px;border-top:1px solid #EDE5D5;font-size:11px;color:#9B8B7A;display:flex;justify-content:space-between;letter-spacing:.5px;}
 </style>
 </head>
 <body>
@@ -183,7 +214,7 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
 
   <div class="box">
     <div class="version-tag">
-      <span class="version-badge">ver.3.2_260927</span>
+      <span class="version-badge">ver.3.5_261111</span>
       <small>MADE BY 옥조각 창작소 _ NARE</small>
     </div>
     <small style="margin-top:6px;">옥조각 창작소 카페에서만 배포중입니다. 정확한 데이터가 아니오니 참고용으로만 이용해 주세요.</small>
@@ -205,7 +236,7 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
         <span id="exchangeUpdateInfo" class="exchange-update"></span>
       </div>
       <div>
-        <label>목표 단가 (기본 단가의 %)</label>
+        <label>희망 목표 단가 (기본 단가의 %)</label>
         <div class="btn-group" id="targetPercentGroup">
           <button class="option-btn" data-percent="0.1">10%</button>
           <button class="option-btn" data-percent="0.2">20%</button>
@@ -460,15 +491,47 @@ small{display:block;color:#7B6B5A;font-size:11.5px;margin-top:4px;line-height:1.
   <div id="targetResultBox" class="target-result" style="display:none;">목표 단가 기준 가격: 0 원</div>
 
   <div class="box">
-    <h3>결과 복사</h3>
+    <h3>제품 사진 & 결과 내보내기</h3>
     <div class="row">
       <div>
         <label>제품명</label>
         <input type="text" id="resultTitle" placeholder="제품명을 입력해주세요" value="">
+        <small>결과 이미지 상단에 표시됩니다.</small>
       </div>
-      <div style="display:flex;align-items:flex-end;">
-        <button class="action-btn primary" id="copyResultBtn" style="width:100%;justify-content:center;padding:12px;">결과값 복사하기</button>
+      <div>
+        <label>제품 사진</label>
+        <div class="photo-drop" id="photoDrop">클릭 또는 드래그해서 사진 첨부</div>
+        <input type="file" id="photoInput" accept="image/*" style="display:none">
+        <small>정사각 권장 (1000×1000) · JPG / PNG</small>
       </div>
+    </div>
+
+    <div class="export-preview">
+      <div class="ec-wrap" id="ecWrap">
+      <div class="export-card" id="exportCard">
+        <div class="ec-head">
+          <span class="ec-brand">JADE NARE</span>
+          <span class="ec-sub">비취 가격 계산 결과</span>
+        </div>
+        <div class="ec-body">
+          <div class="ec-photo" id="ecPhoto"><div class="ec-photo-ph">제품 사진</div></div>
+          <div class="ec-info">
+            <div class="ec-title" id="ecTitle">제품명 미입력</div>
+            <div class="ec-rows" id="ecRows"></div>
+            <div class="ec-prices">
+              <div class="ec-price"><em>중국 시장 평균 단가</em><b id="ecR1">0 원</b></div>
+              <div class="ec-price alt" id="ecR2Box"><em>희망 목표 단가</em><b id="ecR2">0 원</b></div>
+            </div>
+          </div>
+        </div>
+        <div class="ec-foot"><span>옥조각 창작소 · 참고용 시뮬레이션</span><span id="ecDate"></span></div>
+      </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn primary" id="exportPngBtn">PNG로 저장</button>
+      <button class="action-btn secondary" id="removePhotoBtn">사진 삭제</button>
     </div>
   </div>
 
@@ -526,6 +589,8 @@ const els = {
 
 let defIndex = 0;
 let colorIndex = 0;
+let lastR1 = 0, lastR2 = 0;
+let photoData = null;
 
 function defItemHtml(idx) {
   return `
@@ -895,6 +960,7 @@ function calculatePrice(pricePerUnit) {
 function calcPrice() {
   const base = Number(els.basePrice.value)||0;
   const r1 = calculatePrice(base);
+  lastR1 = r1;
   els.resultBox.textContent = `중국 시장 평균 단가: ${r1.toLocaleString('ko-KR')} 원`;
   els.resultBox.classList.remove('result-updated');
   void els.resultBox.offsetWidth;
@@ -903,33 +969,65 @@ function calcPrice() {
   const target = Number(els.targetPrice.value)||0;
   if (target > 0) {
     const r2 = calculatePrice(target);
-    els.targetResultBox.textContent = `목표 단가 기준 가격: ${r2.toLocaleString('ko-KR')} 원`;
+    lastR2 = r2;
+    els.targetResultBox.textContent = `희망 목표 단가: ${r2.toLocaleString('ko-KR')} 원`;
     els.targetResultBox.style.display = 'block';
   } else {
+    lastR2 = 0;
     els.targetResultBox.style.display = 'none';
   }
+  updateExportCard();
 }
 
-function updateSummary() {
-  const data = [
+function getDefectText() {
+  if (els.defToggle.value !== '1') return '무';
+  const names = Array.from(document.querySelectorAll('.def-item-wrap .def-btn.active'))
+    .map(b => b.textContent.trim())
+    .filter(t => t && t !== '없음');
+  return names.length ? names.join(', ') : '없음';
+}
+
+function getAddColorText() {
+  if (els.addColorToggle.value !== '1') return '무';
+  const items = Array.from(document.querySelectorAll('.add-color-item-wrap'));
+  const arr = items.map(it => {
+    const cGroup = it.querySelector('[id^="addColorGroup_"]');
+    const cBtn = cGroup ? cGroup.querySelector('.option-btn.active') : null;
+    const cName = cBtn ? cBtn.textContent.trim() : '';
+    const areaEl = it.querySelector('input[type="number"]');
+    const pct = areaEl ? (areaEl.value || '0') : '0';
+    return cName ? `${cName} ${pct}%` : '';
+  }).filter(Boolean);
+  return arr.length ? arr.join(' / ') : '무';
+}
+
+function getSummaryData() {
+  const rows = [
     ['산지', getActiveText('originGroup')],
     ['종(種)', getActiveText('stoneTypeGroup')],
     ['메인색', getActiveText('mainColorGroup')],
     ['색농도', getActiveText('colorDepthGroup')],
-    ['추가색상', els.addColorToggle.value==='1'?'유':'무'],
-    ['굽기', els.bakeToggle.value==='1'?'유':'무'],
+    ['추가색상', getAddColorText()],
+    ['굽기', els.bakeToggle.value==='1' ? ('유 · ' + getActiveText('bakeLevelGroup') + ' / ' + getActiveText('bakeRangeGroup')) : '무'],
     ['제품종류', getActiveText('itemTypeGroup')],
     ['크기', `${els.w.value} × ${els.h.value} × ${els.t.value} mm`],
     ['크기프리미엄', getActiveText('sizePremiumGroup')],
     ['원석품질', getActiveText('rawQualityGroup')],
     ['조각퀄리티', getActiveText('cutQualityGroup')],
     ['광택연마', getActiveText('polishGroup')],
-    ['하자', els.defToggle.value==='1'?'유':'무'],
-    ['부자재', `${Number(els.etcCost.value).toLocaleString('ko-KR')} 원`],
+    ['하자', getDefectText()],
   ];
+  const etc = Number(els.etcCost.value) || 0;
+  if (etc > 0) rows.push(['부자재', etc.toLocaleString('ko-KR') + ' 원']);
+  return rows;
+}
+
+function updateSummary() {
+  const data = getSummaryData();
   els.summaryContent.innerHTML = data.map(([l,v]) =>
     `<div class="summary-item"><span class="summary-label">${l}</span><span class="summary-value">${v}</span></div>`
   ).join('');
+  updateExportCard();
 }
 
 function getState() {
@@ -1021,54 +1119,130 @@ function resetAll() {
   bindRemoveButtons();
   defIndex = 1; colorIndex = 1;
 
+  setPhoto(null);
   updateTargetPrice(); calcPrice(); updateSummary();
   alert('모든 설정이 초기화되었습니다.');
 }
 
-function copyResult() {
-  const title = (document.getElementById('resultTitle').value || '비취 가격 계산 결과').trim();
-  const lines = [];
-  lines.push(`【${title}】`);
-  lines.push('');
-  lines.push(`[산지 : ${getActiveText('originGroup')}]`);
-  lines.push(`[종 : ${getActiveText('stoneTypeGroup')}]`);
-  lines.push(`[메인색 : ${getActiveText('mainColorGroup')}]`);
-  lines.push(`[색농도 : ${getActiveText('colorDepthGroup')}]`);
-  if (els.addColorToggle.value === '1') {
-    const colorItems = document.querySelectorAll('.add-color-item-wrap');
-    colorItems.forEach((item, idx) => {
-      const groups = item.querySelectorAll('.btn-group');
-      const cGroup = groups[0] || null, dGroup = groups[1] || null;
-      const cName = (cGroup ? cGroup.querySelector('.option-btn.active') : null)?.textContent.trim() || '';
-      const areaEl = item.querySelector('input[type="number"]');
-      const cArea = areaEl ? areaEl.value : '0';
-      const cDepth = (dGroup ? dGroup.querySelector('.option-btn.active') : null)?.textContent.trim() || '';
-      lines.push(`[추가색${idx+1} : ${cName} / 면적 ${cArea}% / ${cDepth}]`);
+/* ===== 제품 사진 & 결과 카드 ===== */
+function renderPhoto() {
+  const box = document.getElementById('ecPhoto');
+  if (!box) return;
+  box.innerHTML = photoData
+    ? '<img src="' + photoData + '" alt="제품사진">'
+    : '<div class="ec-photo-ph">제품 사진</div>';
+}
+
+function setPhoto(dataUrl) {
+  photoData = dataUrl || null;
+  renderPhoto();
+}
+
+function fitExportCard() {
+  const wrap = document.getElementById('ecWrap');
+  const card = document.getElementById('exportCard');
+  if (!wrap || !card) return;
+  const hostW = wrap.parentElement.clientWidth || 660;
+  const avail = Math.min(hostW, (window.innerWidth || hostW) - 40, 660);
+  const s = Math.min(1, avail / 660);
+  card.style.transform = 'scale(' + s + ')';
+  wrap.style.width = Math.round(660 * s) + 'px';
+  wrap.style.height = Math.round(card.offsetHeight * s) + 'px';
+}
+
+function updateExportCard() {
+  const titleEl = document.getElementById('ecTitle');
+  if (!titleEl) return;
+  const name = (document.getElementById('resultTitle').value || '').trim();
+  titleEl.textContent = name || '제품명 미입력';
+
+  document.getElementById('ecRows').innerHTML = getSummaryData().map(([l, v]) =>
+    '<div class="ec-row"><span>' + l + '</span><b>' + v + '</b></div>'
+  ).join('');
+
+  document.getElementById('ecR1').textContent = (lastR1 || 0).toLocaleString('ko-KR') + ' 원';
+
+  const r2Box = document.getElementById('ecR2Box');
+  if (lastR2 > 0) {
+    document.getElementById('ecR2').textContent = lastR2.toLocaleString('ko-KR') + ' 원';
+    r2Box.style.display = '';
+  } else {
+    r2Box.style.display = 'none';
+  }
+
+  const dEl = document.getElementById('ecDate');
+  if (dEl) dEl.textContent = new Date().toLocaleDateString('ko-KR');
+
+  fitExportCard();
+}
+
+function initPhotoUpload() {
+  const drop = document.getElementById('photoDrop');
+  const input = document.getElementById('photoInput');
+
+  function loadPhotoFile(file) {
+    if (!file || !file.type || !file.type.startsWith('image/')) return;
+    const fr = new FileReader();
+    fr.onload = ev => { setPhoto(ev.target.result); };
+    fr.readAsDataURL(file);
+  }
+
+  drop.onclick = () => input.click();
+  input.onchange = e => { loadPhotoFile(e.target.files[0]); input.value = ''; };
+  ['dragenter', 'dragover'].forEach(t => drop.addEventListener(t, e => {
+    e.preventDefault(); drop.classList.add('over');
+  }));
+  ['dragleave', 'drop'].forEach(t => drop.addEventListener(t, e => {
+    e.preventDefault(); drop.classList.remove('over');
+  }));
+  drop.addEventListener('drop', e => loadPhotoFile(e.dataTransfer.files[0]));
+
+  document.getElementById('removePhotoBtn').onclick = () => setPhoto(null);
+}
+
+function loadHtml2Canvas() {
+  return new Promise((resolve, reject) => {
+    if (window.html2canvas) return resolve(window.html2canvas);
+    const sc = document.createElement('script');
+    sc.src = 'https://fastly.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+    sc.onload = () => resolve(window.html2canvas);
+    sc.onerror = () => reject(new Error('load fail'));
+    document.head.appendChild(sc);
+  });
+}
+
+function exportResultPng() {
+  const btn = document.getElementById('exportPngBtn');
+  const card = document.getElementById('exportCard');
+  const prevText = btn.textContent;
+  const prevTransform = card.style.transform;
+  btn.disabled = true;
+  btn.textContent = '저장 중...';
+  updateExportCard();
+  card.style.transform = 'none';
+
+  loadHtml2Canvas()
+    .then(h2c => h2c(card, { scale: 2, backgroundColor: '#FFFDF7', useCORS: true, logging: false }))
+    .then(canvas => {
+      canvas.toBlob(blob => {
+        let nm = (document.getElementById('resultTitle').value || '').trim();
+        const bad = [String.fromCharCode(92), '/', ':', '*', '?', '"', '<', '>', '|'];
+        bad.forEach(ch => { nm = nm.split(ch).join(''); });
+        if (!nm) nm = '비취가격';
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = nm + '_' + new Date().toISOString().slice(0, 10) + '.png';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      }, 'image/png');
+    })
+    .catch(() => alert('PNG 저장에 실패했습니다.\n인터넷 연결을 확인하시거나 화면 캡처를 이용해 주세요.'))
+    .finally(() => {
+      card.style.transform = prevTransform;
+      fitExportCard();
+      btn.disabled = false;
+      btn.textContent = prevText;
     });
-  }
-  if (els.bakeToggle.value === '1') {
-    lines.push(`[굽기 : ${getActiveText('bakeLevelGroup')} / ${getActiveText('bakeRangeGroup')}]`);
-  }
-  lines.push(`[제품종류 : ${getActiveText('itemTypeGroup')}]`);
-  lines.push(`[크기 : ${els.w.value} × ${els.h.value} × ${els.t.value} mm]`);
-  lines.push(`[크기프리미엄 : ${getActiveText('sizePremiumGroup')}]`);
-  lines.push(`[원석퀄리티 : ${getActiveText('rawQualityGroup')}]`);
-  lines.push(`[조각퀄리티 : ${getActiveText('cutQualityGroup')}]`);
-  lines.push(`[광택연마 : ${getActiveText('polishGroup')}]`);
-  if (els.defToggle.value === '1') {
-    const defs = Array.from(document.querySelectorAll('.def-item-wrap .def-btn.active')).map(b => b.textContent.trim());
-    lines.push(`[하자 : ${defs.join(', ')}]`);
-  }
-  const etc = Number(els.etcCost.value);
-  if (etc > 0) lines.push(`[부자재 : ${etc.toLocaleString('ko-KR')}원]`);
-  lines.push('');
-  lines.push(`▸ ${els.resultBox.textContent}`);
-  if (els.targetResultBox.style.display !== 'none') {
-    lines.push(`▸ ${els.targetResultBox.textContent}`);
-  }
-  const text = lines.join('\n');
-  navigator.clipboard.writeText(text).then(() => alert('결과가 클립보드에 복사되었습니다.\n\n' + text))
-    .catch(() => prompt('아래 결과를 복사하세요:', text));
 }
 
 function init() {
@@ -1083,7 +1257,12 @@ function init() {
   });
 
   document.getElementById('resetAllBtn').onclick = resetAll;
-  document.getElementById('copyResultBtn').onclick = copyResult;
+  document.getElementById('exportPngBtn').onclick = exportResultPng;
+  document.getElementById('resultTitle').addEventListener('input', updateExportCard);
+  initPhotoUpload();
+  renderPhoto();
+  window.addEventListener('resize', fitExportCard);
+  fitExportCard();
 
   updateTargetPrice(); calcPrice(); updateSummary();
 }
