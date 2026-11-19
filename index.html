@@ -3159,19 +3159,21 @@ renderRingTable();
 
 /* ================= PWA 설치 ================= */
 (function(){
-  var btn  = document.getElementById('installBtn');
+  var btn   = document.getElementById('installBtn');
   var sheet = document.getElementById('jnSheet');
   var steps = document.getElementById('jnSteps');
   var sub   = document.getElementById('jnSheetSub');
   var deferred = null;
-  var standalone = (window.matchMedia('(display-mode: standalone)').matches)
-                || (window.navigator.standalone === true);
 
+  var installed = (window.matchMedia('(display-mode: standalone)').matches)
+                || (window.navigator.standalone === true);
   var ua = navigator.userAgent || '';
   var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-  function showBtn(){ if (!standalone && btn) btn.style.display = 'inline-flex'; }
-  function hideBtn(){ if (btn) btn.style.display = 'none'; }
+  function refreshBtn(){
+    if (!btn) return;
+    btn.style.display = installed ? 'none' : 'inline-flex';
+  }
 
   function openSheet(list, note){
     steps.innerHTML = list.map(function(t){ return '<li>' + t + '</li>'; }).join('');
@@ -3186,14 +3188,20 @@ renderRingTable();
   sheet.addEventListener('click', function(e){ if (e.target.dataset.close === '1') closeSheet(); });
 
   window.addEventListener('beforeinstallprompt', function(e){
-    e.preventDefault(); deferred = e; showBtn();
+    e.preventDefault();
+    deferred = e;
   });
-  window.addEventListener('appinstalled', function(){ hideBtn(); deferred = null; closeSheet(); });
+  window.addEventListener('appinstalled', function(){
+    installed = true; deferred = null; closeSheet(); refreshBtn();
+  });
 
   if (btn) btn.addEventListener('click', function(){
-    if (deferred){
-      deferred.prompt();
-      deferred.userChoice.then(function(){ deferred = null; hideBtn(); });
+    if (deferred && deferred.prompt){
+      var d = deferred; deferred = null;
+      d.prompt();
+      d.userChoice.then(function(res){
+        if (res && res.outcome === 'accepted'){ installed = true; refreshBtn(); }
+      });
       return;
     }
     if (isIOS){
@@ -3201,17 +3209,17 @@ renderRingTable();
         'Safari 하단의 <b>공유</b> 버튼을 누릅니다',
         '메뉴에서 <b>홈 화면에 추가</b>를 선택합니다',
         '오른쪽 위 <b>추가</b>를 누르면 설치됩니다'
-      ], 'iOS는 Safari에서만 설치할 수 있습니다');
+      ], '이미 추가했다면 홈 화면의 JADE NARE 아이콘으로 실행하세요');
     } else {
       openSheet([
         '브라우저 우측 상단 <b>⋮</b> 메뉴를 엽니다',
-        '<b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 선택합니다',
-        '확인을 누르면 앱처럼 실행됩니다'
-      ], 'Chrome 기준 안내입니다');
+        '<b>앱 설치</b>(또는 <b>홈 화면에 추가</b>)를 선택합니다',
+        '설치 후에는 주소창 없는 전체화면으로 열립니다'
+      ], '이미 설치했다면 홈 화면의 JADE NARE 아이콘으로 실행하세요');
     }
   });
 
-  if (isIOS) showBtn();
+  refreshBtn();
 
   if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0){
     window.addEventListener('load', function(){
