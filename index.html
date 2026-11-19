@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f6f1e6">
+<link rel="manifest" href="./manifest.json">
+<meta name="application-name" content="JADE NARE">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="JADE NARE">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+
 <title>옥조각 창작소 종합 계산기 (가격, 비즈팔찌, 반지)</title>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+KR:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap">
 <style>
@@ -148,6 +157,46 @@ body{
   transition:.18s ease;
 }
 .jade-back-wide:hover{background:#f1f6ee;border-color:rgba(63,125,95,.5);}
+
+
+/* ---------- PWA 설치 UI ---------- */
+.install-chip{
+  display:none;align-items:center;gap:7px;margin:16px auto 0;padding:9px 18px;
+  border-radius:999px;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;
+  color:var(--jade-deep);background:#fffdf7;border:1px solid rgba(63,125,95,.34);
+  box-shadow:0 3px 12px rgba(21,43,37,.08);transition:.18s ease;
+}
+.install-chip:hover{background:#f1f6ee;border-color:rgba(63,125,95,.55);}
+.install-chip svg{width:13px;height:13px;opacity:.75;}
+.jn-sheet{position:fixed;inset:0;z-index:60;display:none;}
+.jn-sheet.open{display:block;}
+.jn-sheet-bg{position:absolute;inset:0;background:rgba(21,43,37,.45);backdrop-filter:blur(2px);}
+.jn-sheet-card{
+  position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  width:100%;max-width:430px;background:var(--card);border-radius:20px 20px 0 0;
+  padding:22px 22px calc(22px + env(safe-area-inset-bottom));
+  border-top:3px solid rgba(169,138,82,.55);box-shadow:0 -10px 40px rgba(21,43,37,.18);
+  animation:sheetUp .28s cubic-bezier(.22,.61,.36,1) both;
+}
+@keyframes sheetUp{from{transform:translate(-50%,40px);opacity:.6;}to{transform:translate(-50%,0);opacity:1;}}
+.jn-sheet-title{font-family:var(--serif);font-size:17px;font-weight:800;color:var(--ink);margin:0 0 4px;}
+.jn-sheet-sub{font-size:11.5px;color:var(--ink-soft);margin:0 0 14px;}
+.jn-steps{margin:0 0 18px;padding:0;list-style:none;counter-reset:jn;}
+.jn-steps li{
+  counter-increment:jn;position:relative;padding:9px 0 9px 32px;font-size:12.5px;
+  color:var(--ink);border-bottom:1px dashed rgba(169,138,82,.24);word-break:keep-all;
+}
+.jn-steps li:last-child{border-bottom:0;}
+.jn-steps li::before{
+  content:counter(jn);position:absolute;left:0;top:8px;width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:11px;
+  font-weight:800;color:#f2ead4;background:linear-gradient(150deg,#2f6a51,#1b3a30);
+}
+.jn-sheet-close{
+  width:100%;padding:13px;border-radius:13px;cursor:pointer;font-family:inherit;
+  font-size:13px;font-weight:700;color:#f4ecd6;background:linear-gradient(150deg,#2f6a51,#1b3a30);
+  border:1px solid rgba(21,43,37,.2);letter-spacing:.04em;
+}
 
 /* ---------- width unify ---------- */
 .v-price .content-wrapper,.v-size .wrap{max-width:600px !important;}
@@ -1107,6 +1156,10 @@ body{
         <p class="hero-en">Jade Atelier · All-in-one Calculator</p>
         <div class="rule"><i></i><b></b><i></i></div>
         <div class="hero-note">필요한 계산기를 선택하세요</div>
+        <button class="install-chip" id="installBtn" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+          앱으로 설치
+        </button>
       </div>
 
       <div class="tools">
@@ -1832,6 +1885,17 @@ body{
     </div>
   </div>
 
+
+
+<div class="jn-sheet" id="jnSheet" aria-hidden="true">
+  <div class="jn-sheet-bg" data-close="1"></div>
+  <div class="jn-sheet-card" role="dialog" aria-modal="true" aria-labelledby="jnSheetTitle">
+    <p class="jn-sheet-title" id="jnSheetTitle">홈 화면에 추가</p>
+    <p class="jn-sheet-sub" id="jnSheetSub">앱처럼 설치해서 오프라인에서도 사용하세요</p>
+    <ol class="jn-steps" id="jnSteps"></ol>
+    <button class="jn-sheet-close" data-close="1" type="button">확인</button>
+  </div>
+</div>
 
 </div>
 
@@ -3092,6 +3156,70 @@ renderRingTable();
   });
   show(location.hash.replace('#',''));
 })();
+
+/* ================= PWA 설치 ================= */
+(function(){
+  var btn  = document.getElementById('installBtn');
+  var sheet = document.getElementById('jnSheet');
+  var steps = document.getElementById('jnSteps');
+  var sub   = document.getElementById('jnSheetSub');
+  var deferred = null;
+  var standalone = (window.matchMedia('(display-mode: standalone)').matches)
+                || (window.navigator.standalone === true);
+
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  function showBtn(){ if (!standalone && btn) btn.style.display = 'inline-flex'; }
+  function hideBtn(){ if (btn) btn.style.display = 'none'; }
+
+  function openSheet(list, note){
+    steps.innerHTML = list.map(function(t){ return '<li>' + t + '</li>'; }).join('');
+    if (note) sub.textContent = note;
+    sheet.classList.add('open');
+    sheet.setAttribute('aria-hidden','false');
+  }
+  function closeSheet(){
+    sheet.classList.remove('open');
+    sheet.setAttribute('aria-hidden','true');
+  }
+  sheet.addEventListener('click', function(e){ if (e.target.dataset.close === '1') closeSheet(); });
+
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault(); deferred = e; showBtn();
+  });
+  window.addEventListener('appinstalled', function(){ hideBtn(); deferred = null; closeSheet(); });
+
+  if (btn) btn.addEventListener('click', function(){
+    if (deferred){
+      deferred.prompt();
+      deferred.userChoice.then(function(){ deferred = null; hideBtn(); });
+      return;
+    }
+    if (isIOS){
+      openSheet([
+        'Safari 하단의 <b>공유</b> 버튼을 누릅니다',
+        '메뉴에서 <b>홈 화면에 추가</b>를 선택합니다',
+        '오른쪽 위 <b>추가</b>를 누르면 설치됩니다'
+      ], 'iOS는 Safari에서만 설치할 수 있습니다');
+    } else {
+      openSheet([
+        '브라우저 우측 상단 <b>⋮</b> 메뉴를 엽니다',
+        '<b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 선택합니다',
+        '확인을 누르면 앱처럼 실행됩니다'
+      ], 'Chrome 기준 안내입니다');
+    }
+  });
+
+  if (isIOS) showBtn();
+
+  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0){
+    window.addEventListener('load', function(){
+      navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(function(){});
+    });
+  }
+})();
+
 </script>
 </body>
 </html>
