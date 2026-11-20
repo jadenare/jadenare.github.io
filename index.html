@@ -173,7 +173,7 @@ body{
 .jn-sheet-bg{position:absolute;inset:0;background:rgba(21,43,37,.45);backdrop-filter:blur(2px);}
 .jn-sheet-card{
   position:absolute;left:50%;bottom:0;transform:translateX(-50%);
-  width:100%;max-width:430px;background:var(--card);border-radius:20px 20px 0 0;
+  width:100%;max-width:min(430px,100vw);box-sizing:border-box;background:var(--card);border-radius:20px 20px 0 0;
   padding:22px 22px calc(22px + env(safe-area-inset-bottom));
   border-top:3px solid rgba(169,138,82,.55);box-shadow:0 -10px 40px rgba(21,43,37,.18);
   animation:sheetUp .28s cubic-bezier(.22,.61,.36,1) both;
@@ -197,6 +197,9 @@ body{
   font-size:13px;font-weight:700;color:#f4ecd6;background:linear-gradient(150deg,#2f6a51,#1b3a30);
   border:1px solid rgba(21,43,37,.2);letter-spacing:.04em;
 }
+.qr-box{display:flex;align-items:center;justify-content:center;padding:14px;margin:0 0 10px;background:#fbf8f0;border:1px solid rgba(169,138,82,.32);border-radius:14px;min-height:212px;}
+.qr-box img{width:196px;height:196px;display:block;image-rendering:pixelated;}
+.qr-url{font-size:10.5px;color:var(--ink-soft);text-align:center;word-break:break-all;margin:0 0 16px;letter-spacing:.01em;}
 
 /* ---------- width unify ---------- */
 .v-price .content-wrapper,.v-size .wrap{max-width:600px !important;}
@@ -1382,6 +1385,24 @@ body{
 .v-price .sf-stepper,.v-price .step-btn{display:none !important;}
 
 /* ===== 홈 화면 1스크린 압축 ===== */
+/* ===== 방문자 카운트 ===== */
+.visitors{display:flex;align-items:center;justify-content:center;gap:9px;margin-top:9px;letter-spacing:.1em;}
+.visitors .v-item{display:inline-flex;align-items:baseline;gap:4px;font-size:9.5px;color:var(--ink-soft);}
+.visitors .v-item i{font-style:normal;opacity:.75;}
+.visitors .v-item b{font-family:var(--serif);font-size:12px;font-weight:700;color:var(--jade-deep);letter-spacing:.02em;font-variant-numeric:tabular-nums;}
+.visitors .v-sep{width:1px;height:11px;background:rgba(169,138,82,.42);}
+
+/* ===== 오늘 시세 · 환율 ===== */
+.market{
+  display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;gap:7px;
+  margin-top:auto;padding-top:9px;
+  letter-spacing:.02em;white-space:nowrap;overflow:hidden;
+}
+.market .mk{display:inline-flex;align-items:baseline;gap:3px;font-size:9px;color:var(--ink-soft);}
+.market .mk i{font-style:normal;opacity:.72;font-size:8.5px;}
+.market .mk b{font-family:var(--serif);font-size:10.5px;font-weight:700;color:var(--jade-deep);font-variant-numeric:tabular-nums;letter-spacing:0;}
+.market .mk-sep{width:1px;height:10px;background:rgba(169,138,82,.4);flex:0 0 auto;}
+
 .home{padding:16px 18px 18px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;}
 .wordmark{margin-bottom:7px;padding-bottom:4px;font-size:10.5px;letter-spacing:.44em;text-indent:.44em;}
 .hero h1{font-size:21px;line-height:1.28;}
@@ -1394,7 +1415,7 @@ body{
 .tc-title{font-size:13.5px;}
 .tc-desc{font-size:10.5px;margin-top:1px;}
 .tc-arrow{width:24px;height:24px;font-size:11px;}
-.links{margin-top:auto;padding-top:10px;}
+.links{margin-top:9px;padding-top:10px;}
 .links-title{margin-bottom:6px;}
 .link-chip{padding:5px 11px;font-size:11px;}
 .links-row{align-items:center;}
@@ -1406,8 +1427,62 @@ body{
 .install-chip:hover{background:#f2f6ee;border-color:rgba(63,125,95,.5);}
 .home-foot{margin-top:8px;font-size:9.5px;line-height:1.5;}
 /* ===== 매우 낮은 화면(≤600px) 추가 압축 ===== */
+/* ===== 가격 이력 & 비교 ===== */
+.v-price .hist-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;}
+.v-price .hist-actions .action-btn{margin:0;flex:0 0 auto;}
+.v-price .hist-note{font-size:10.5px;color:var(--ink-soft);}
+.v-price .hist-list{display:flex;flex-direction:column;gap:9px;margin-top:14px;}
+.v-price .hist-empty{
+  font-size:11.5px;color:var(--ink-soft);text-align:center;padding:16px 12px;
+  border:1px dashed rgba(169,138,82,.38);border-radius:12px;background:#fbf8f0;line-height:1.6;
+}
+.v-price .hist-item{border:1px solid rgba(169,138,82,.32);border-radius:13px;padding:11px 13px;background:#fdfbf4;}
+.v-price .hi-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+.v-price .hi-name{font-family:var(--serif);font-size:13px;font-weight:800;color:var(--ink);letter-spacing:.01em;}
+.v-price .hi-price{font-family:var(--serif);font-size:13px;font-weight:800;color:var(--jade-deep);white-space:nowrap;font-variant-numeric:tabular-nums;}
+.v-price .hi-meta{font-size:10.5px;color:var(--ink-soft);margin-top:4px;line-height:1.55;word-break:keep-all;}
+.v-price .hi-btns{display:flex;align-items:center;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.v-price .hi-btn{
+  padding:6px 12px;border-radius:9px;border:1px solid rgba(169,138,82,.42);background:#fffdf7;
+  font-family:inherit;font-size:11px;font-weight:700;color:var(--ink);cursor:pointer;line-height:1.2;
+}
+.v-price .hi-btn:hover{background:#f2f6ee;border-color:rgba(63,125,95,.45);}
+.v-price .hi-btn.del{color:#a04030;border-color:rgba(160,64,48,.3);background:#fbf0ed;}
+.v-price .hi-btn.del:hover{background:#f6e3de;}
+.v-price .hi-cmp{margin-left:auto;display:inline-flex;align-items:center;gap:5px;font-size:11px;color:var(--ink-soft);cursor:pointer;user-select:none;}
+.v-price .hi-cmp input{width:15px;height:15px;accent-color:#2f6149;margin:0;}
+.v-price .hist-compare-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  margin-top:14px;padding-top:12px;border-top:1px dashed rgba(169,138,82,.3);
+}
+.v-price .hc-info{font-size:11px;color:var(--ink-soft);}
+.v-price .hist-compare-bar .action-btn{margin:0;}
+.v-price .hist-compare-bar .action-btn[disabled]{opacity:.45;cursor:not-allowed;}
+
+.cmp-sheet .cmp-scroll{max-width:100%;max-height:58vh;overflow:auto;-webkit-overflow-scrolling:touch;margin:0 0 14px;border:1px solid rgba(169,138,82,.28);border-radius:12px;background:#fbf8f0;-webkit-overflow-scrolling:touch;}
+.cmp-sheet table{width:100%;border-collapse:collapse;font-size:10.5px;table-layout:fixed;}
+.cmp-sheet th,.cmp-sheet td{padding:7px 6px;border-bottom:1px solid rgba(169,138,82,.18);text-align:center;white-space:normal;word-break:keep-all;line-height:1.45;}
+.cmp-sheet td.lbl{width:74px;text-align:left;color:var(--ink-soft);background:#f6f1e6;position:sticky;left:0;font-size:10.5px;font-weight:600;z-index:1;}
+.cmp-sheet th{background:#f1ece0;font-family:var(--serif);font-size:10.5px;font-weight:800;color:var(--ink);}
+.cmp-sheet th.best{color:#a04030;}
+.cmp-sheet td.price{font-family:var(--serif);font-weight:800;color:var(--jade-deep);font-size:11.5px;background:#fff;}
+.cmp-sheet td.price.low{background:#f6f1e6;}
+.cmp-sheet .low-tag{display:block;font-style:normal;font-family:inherit;font-size:8.5px;font-weight:700;color:#a8843c;letter-spacing:.08em;margin-top:1px;}
+.cmp-sheet td.price.low{color:#a04030;}
+.cmp-sheet tr:last-child td{border-bottom:0;}
+
+@media (max-width:360px){
+  .market{gap:4px;}
+  .market .mk{gap:2px;font-size:8px;}
+  .market .mk i{font-size:7.5px;}
+  .market .mk b{font-size:9.5px;}
+}
 @media (max-height:600px){
   .home{padding:8px 16px 10px;}
+  .visitors{margin-top:5px;}
+  .market{margin-top:6px;padding-top:6px;gap:5px;}
+  .market .mk{font-size:8.5px;}
+  .market .mk b{font-size:9.5px;}
   .hero h1{font-size:19px;}
   .hero-en{display:none;}
   .rule{display:none;}
@@ -1417,7 +1492,7 @@ body{
   .tc-no{width:26px;height:26px;font-size:10px;}
   .tc-title{font-size:12.5px;}
   .tc-desc{font-size:10px;}
-  .links{margin-top:7px;padding-top:7px;}
+  .links{margin-top:6px;padding-top:7px;}
   .links-title{margin-bottom:4px;}
   .home-foot{margin-top:6px;font-size:9px;line-height:1.42;}
 }
@@ -1473,24 +1548,41 @@ body{
       </button>
       </div>
 
+      <div class="market" id="market">
+        <span class="mk"><i>금</i><b id="mkGold">–</b><i>원/g</i></span>
+        <span class="mk-sep"></span>
+        <span class="mk"><i>은</i><b id="mkSilver">–</b><i>원/g</i></span>
+        <span class="mk-sep"></span>
+        <span class="mk"><i>1CNY</i><b id="mkCny">–</b><i>원</i></span>
+        <span class="mk-sep"></span>
+        <span class="mk"><i>1,000원</i><b id="mkKrw">–</b><i>CNY</i></span>
+      </div>
+
       <div class="links">
         <p class="links-title">LINKS</p>
         <div class="links-row">
-          
+          <a class="link-chip" href="https://open.kakao.com/me/jadenare" target="_blank" rel="noopener">카카오톡</a>
           <a class="link-chip" href="https://www.youtube.com/@JADENARE" target="_blank" rel="noopener">유튜브</a>
           <a class="link-chip" href="https://cafe.naver.com/jadenare" target="_blank" rel="noopener">네이버카페</a>
           <a class="link-chip" href="https://jadenare.github.io/tracking.html" target="_blank" rel="noopener">택배조회</a>
           <button class="install-chip" id="installBtn" type="button">
+
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-            앱으로 설치
+            앱설치
           </button>
         </div>
+      </div>
+
+      <div class="visitors" id="visitors">
+        <span class="v-item"><i>오늘</i><b id="vToday">–</b></span>
+        <span class="v-sep"></span>
+        <span class="v-item"><i>전체</i><b id="vTotal">–</b></span>
       </div>
 
       <div class="home-foot">
         옥조각 창작소 · 참고용 계산 시뮬레이션<br>
         앱으로 설치 시 오프라인으로도 이용 가능합니다.<br>
-        <b>JADE NARE</b> · ver 2.2
+        <b>JADE NARE</b> · ver 2.4
       </div>
     </div>
   </div>
@@ -1920,9 +2012,34 @@ body{
 
     <div class="action-row">
       <button class="action-btn primary" id="exportPngBtn">PNG로 저장</button>
+      <button class="action-btn secondary" id="qrShareBtn">QR 공유</button>
       <button class="action-btn secondary" id="removePhotoBtn">사진 삭제</button>
     </div>
   </section>
+
+  <!-- ===== 8. 이력 저장 & 비교 ===== -->
+  <section class="box">
+    <div class="card-head">
+      <div class="step-no">8</div>
+      <div>
+        <p class="card-title">이력 저장 &amp; 비교</p>
+        <p class="card-sub">지금 조건과 결과를 저장해 두고, 저장한 견적끼리 나란히 비교합니다</p>
+      </div>
+    </div>
+
+    <div class="hist-actions">
+      <button class="action-btn primary" id="histSaveBtn">현재 조건 저장</button>
+      <span class="hist-note">최대 20건 · 이 기기 브라우저에만 저장</span>
+    </div>
+
+    <div class="hist-list" id="histList"></div>
+
+    <div class="hist-compare-bar" id="histCompareBar">
+      <span class="hc-info" id="hcInfo">비교하려면 항목을 2~3개 선택하세요</span>
+      <button class="action-btn secondary" id="histCompareBtn" disabled>비교하기</button>
+    </div>
+  </section>
+
 
   <div class="action-row">
     <button class="action-btn danger" id="resetAllBtn">전체 초기화</button>
@@ -2334,6 +2451,29 @@ body{
     <p class="jn-sheet-sub" id="jnSheetSub">앱처럼 설치해서 오프라인에서도 사용하세요</p>
     <ol class="jn-steps" id="jnSteps"></ol>
     <button class="jn-sheet-close" data-close="1" type="button">확인</button>
+  </div>
+</div>
+
+  <div class="jn-sheet cmp-sheet" id="cmpSheet" aria-hidden="true">
+    <div class="jn-sheet-bg" data-cclose="1"></div>
+    <div class="jn-sheet-card" role="dialog" aria-modal="true" aria-labelledby="cmpTitle">
+      <p class="jn-sheet-title" id="cmpTitle">견적 비교</p>
+      <p class="jn-sheet-sub" id="cmpSub">저장한 견적을 조건별로 비교합니다</p>
+      <div class="cmp-scroll" id="cmpScroll"></div>
+      <button class="jn-sheet-close" data-cclose="1" type="button">닫기</button>
+    </div>
+  </div>
+
+<div class="jn-sheet" id="qrSheet" aria-hidden="true">
+  <div class="jn-sheet-bg" data-qclose="1"></div>
+  <div class="jn-sheet-card" role="dialog" aria-modal="true" aria-labelledby="qrSheetTitle">
+    <p class="jn-sheet-title" id="qrSheetTitle">QR 공유</p>
+    <p class="jn-sheet-sub" id="qrSheetSub">QR을 스캔하면 이 계산기로 바로 이동합니다</p>
+    <div class="qr-box" id="qrBox">
+      <img id="qrImg" alt="사이트 QR 코드">
+    </div>
+    <p class="qr-url" id="qrUrl">–</p>
+    <button class="jn-sheet-close" data-qclose="1" type="button">닫기</button>
   </div>
 </div>
 
@@ -3225,6 +3365,316 @@ function init() {
   fitExportCard();
 
   updateTargetPrice(); calcPrice(); updateSummary();
+  initHistory();
+}
+
+
+/* ================= 가격 이력 저장 · 비교 ================= */
+var HIST_KEY = 'jn-price-history-v1';
+var HIST_MAX = 20;
+var histItems = [];
+var cmpSet = {};
+
+function histRead(){
+  try{
+    var raw = localStorage.getItem(HIST_KEY);
+    histItems = raw ? (JSON.parse(raw) || []) : [];
+    if (!Array.isArray(histItems)) histItems = [];
+  }catch(e){ histItems = []; }
+}
+function histWrite(){
+  try{ localStorage.setItem(HIST_KEY, JSON.stringify(histItems)); }catch(e){}
+}
+function histStamp(ts){
+  var d = new Date(ts);
+  var mm = ('0' + (d.getMonth() + 1)).slice(-2);
+  var dd = ('0' + d.getDate()).slice(-2);
+  var hh = ('0' + d.getHours()).slice(-2);
+  var mi = ('0' + d.getMinutes()).slice(-2);
+  return mm + '/' + dd + ' ' + hh + ':' + mi;
+}
+function histMoney(n){
+  return (n === null || n === undefined || !isFinite(n)) ? '–' : Number(n).toLocaleString('ko-KR') + ' 원';
+}
+
+function histSnapshot(){
+  var st = getState();
+
+  var addColors = Array.prototype.slice.call(document.querySelectorAll('.add-color-item-wrap')).map(function(it){
+    var cg = it.querySelector('[id^="addColorGroup_"]');
+    var cb = cg ? cg.querySelector('.option-btn.active') : null;
+    var dg = it.querySelector('[id^="colorDepthGroup_"]');
+    var db = dg ? dg.querySelector('.option-btn.active') : null;
+    var area = it.querySelector('input[type="number"]');
+    var ch = it.querySelector('.add-color-hidden');
+    var dh = it.querySelector('.color-depth-hidden');
+    return {
+      color: cb ? cb.textContent.trim() : '',
+      colorVal: ch ? ch.value : '1',
+      depth: db ? db.textContent.trim() : '',
+      depthVal: dh ? dh.value : '0.5',
+      area: area ? area.value : '0'
+    };
+  });
+
+  var defects = Array.prototype.slice.call(document.querySelectorAll('.def-item-wrap')).map(function(it){
+    var b = it.querySelector('.def-btn.active');
+    var h = it.querySelector('.def-hidden');
+    return { text: b ? b.textContent.trim() : '없음', val: h ? h.value : '1' };
+  });
+
+  var title = (document.getElementById('resultTitle').value || '').trim();
+
+  return {
+    id: 'h' + Date.now() + Math.floor(Math.random() * 100),
+    ts: Date.now(),
+    name: title,
+    state: st,
+    addColors: addColors,
+    defects: defects,
+    summary: getSummaryData(),
+    r1: lastR1,
+    r2: lastR2,
+    targetPct: Math.round((Number(els.targetPercent.value) || 0) * 100)
+  };
+}
+
+function histRestoreLists(it){
+  /* 하자 목록 */
+  var defs = (it.defects && it.defects.length) ? it.defects : [{ text: '없음', val: '1' }];
+  els.defListWrap.innerHTML = '';
+  defs.forEach(function(d, i){
+    var w = document.createElement('div');
+    w.className = 'def-item-wrap';
+    w.innerHTML = defItemHtml(i);
+    var h = w.querySelector('.def-hidden');
+    if (h) h.value = d.val;
+    w.querySelectorAll('.def-btn').forEach(function(b){
+      b.classList.toggle('active', b.textContent.trim() === d.text);
+    });
+    els.defListWrap.appendChild(w);
+    bindDefItem(w);
+  });
+
+  /* 추가색상 목록 */
+  var cols = (it.addColors && it.addColors.length)
+    ? it.addColors
+    : [{ color: '', colorVal: '1.5', depth: '무', depthVal: '0.5', area: '0' }];
+  els.addColorListWrap.innerHTML = '';
+  cols.forEach(function(c, i){
+    var w = document.createElement('div');
+    w.className = 'add-color-item-wrap';
+    w.innerHTML = colorItemHtml(i, i === 0);
+
+    var ch = w.querySelector('.add-color-hidden');
+    if (ch) ch.value = c.colorVal;
+    var cg = w.querySelector('[id^="addColorGroup_"]');
+    if (cg) cg.querySelectorAll('.option-btn').forEach(function(b){
+      b.classList.toggle('active', b.textContent.trim() === c.color);
+    });
+
+    var dh = w.querySelector('.color-depth-hidden');
+    if (dh) dh.value = c.depthVal;
+    var dg = w.querySelector('[id^="colorDepthGroup_"]');
+    if (dg) dg.querySelectorAll('.option-btn').forEach(function(b){
+      b.classList.toggle('active', b.textContent.trim() === c.depth);
+    });
+
+    var area = w.querySelector('input[type="number"]');
+    if (area) area.value = c.area;
+
+    els.addColorListWrap.appendChild(w);
+    bindColorItem(w, i);
+  });
+
+  bindRemoveButtons();
+  recalcIndexes();
+}
+
+function histApply(it){
+  if (!it) return;
+  applyState(it.state);
+  histRestoreLists(it);
+  if (typeof syncSizeWheels === 'function') syncSizeWheels();
+  var t = document.getElementById('resultTitle');
+  if (t) t.value = it.name || '';
+  updateTargetPrice();
+  calcPrice();
+  updateSummary();
+}
+
+function histMeta(it){
+  var map = {};
+  (it.summary || []).forEach(function(r){ map[r[0]] = r[1]; });
+  var bits = [map['산지'], map['종(種)'], map['메인색'], map['크기']];
+  if (map['제품종류']) bits.push(map['제품종류']);
+  return bits.filter(Boolean).join(' · ');
+}
+
+function histRender(){
+  var list = document.getElementById('histList');
+  if (!list) return;
+
+  if (!histItems.length){
+    list.innerHTML = '<p class="hist-empty">저장된 이력이 없습니다.<br>조건을 맞춘 뒤 「현재 조건 저장」을 눌러주세요.</p>';
+    histRefreshBar();
+    return;
+  }
+
+  list.innerHTML = histItems.map(function(it){
+    var on = cmpSet[it.id] ? ' checked' : '';
+    return '' +
+      '<div class="hist-item" data-id="' + it.id + '">' +
+        '<div class="hi-head">' +
+          '<span class="hi-name">' + (it.name ? it.name : '저장 ' + histStamp(it.ts)) + '</span>' +
+          '<span class="hi-price">' + histMoney(it.r1) + '</span>' +
+        '</div>' +
+        '<p class="hi-meta">' + histStamp(it.ts) + ' · ' + histMeta(it) + '</p>' +
+        '<div class="hi-btns">' +
+          '<button class="hi-btn" data-act="load" type="button">불러오기</button>' +
+          '<button class="hi-btn del" data-act="del" type="button">삭제</button>' +
+          '<label class="hi-cmp"><input type="checkbox" data-act="cmp"' + on + '>비교</label>' +
+        '</div>' +
+      '</div>';
+  }).join('');
+
+  histRefreshBar();
+}
+
+function histRefreshBar(){
+  var info = document.getElementById('hcInfo');
+  var btn = document.getElementById('histCompareBtn');
+  var n = Object.keys(cmpSet).filter(function(k){ return cmpSet[k]; }).length;
+  if (info) info.textContent = n >= 2 ? (n + '개 선택됨 · 비교하기를 누르세요') : '비교하려면 항목을 2~3개 선택하세요';
+  if (btn) btn.disabled = n < 2;
+}
+
+function histSaveCurrent(){
+  var it = histSnapshot();
+  var top = (document.getElementById('resultTitle').value || '').trim();
+  if (!top){
+    it.name = '';
+  }
+  histItems.unshift(it);
+  if (histItems.length > HIST_MAX) histItems = histItems.slice(0, HIST_MAX);
+  histWrite();
+  histRender();
+
+  var b = document.getElementById('histSaveBtn');
+  if (b){
+    var old = b.textContent;
+    b.textContent = '저장 완료';
+    b.disabled = true;
+    setTimeout(function(){ b.textContent = old; b.disabled = false; }, 1300);
+  }
+}
+
+function histCompare(){
+  var picked = histItems.filter(function(it){ return cmpSet[it.id]; }).slice(0, 3);
+  if (picked.length < 2) return;
+
+  var labels = [];
+  (picked[0].summary || []).forEach(function(r){ labels.push(r[0]); });
+
+  var head = '<tr><th></th>' + picked.map(function(it, i){
+    return '<th>' + (it.name ? it.name : '저장 ' + histStamp(it.ts)) + '</th>';
+  }).join('') + '</tr>';
+
+  var body = labels.map(function(lb){
+    var cells = picked.map(function(it){
+      var map = {};
+      (it.summary || []).forEach(function(r){ map[r[0]] = r[1]; });
+      var v = (map[lb] !== undefined ? map[lb] : '—');
+      if (lb === '크기프리미엄'){                      /* ×1.18 (자동 · 80mm) -> ×1.18 */
+        var m = String(v).match(/^[×xX]([0-9.]+)/);
+        if (m) v = '×' + m[1];
+      }
+      if (lb === '조각퀄리티' && String(v).indexOf('(') > 0){
+        v = String(v).replace(/\s*\(.*\)/, '');
+      }
+      return '<td>' + v + '</td>';
+    }).join('');
+    return '<tr><td class="lbl">' + lb + '</td>' + cells + '</tr>';
+  }).join('');
+
+  var vals = picked.map(function(it){ return Number(it.r1) || 0; });
+  var minR1 = Math.min.apply(null, vals);
+  var uniqLow = vals.filter(function(v){ return v === minR1; }).length === 1;
+  var r1row = '<tr><td class="lbl">중국 평균 단가</td>' + picked.map(function(it){
+    var low = uniqLow && (Number(it.r1) || 0) === minR1;
+    return '<td class="price' + (low ? ' low' : '') + '">' + histMoney(it.r1) + (low ? '<i class="low-tag">최저</i>' : '') + '</td>';
+  }).join('') + '</tr>';
+
+  var r2row = '<tr><td class="lbl">희망 목표 단가' + (picked[0].targetPct ? ' (' + picked[0].targetPct + '%)' : '') + '</td>' + picked.map(function(it){
+    return '<td class="price">' + histMoney(it.r2) + '</td>';
+  }).join('') + '</tr>';
+
+  var scroll = document.getElementById('cmpScroll');
+  if (scroll) scroll.innerHTML = '<table><thead>' + head + '</thead><tbody>' + r1row + r2row + body + '</tbody></table>';
+
+  var sheet = document.getElementById('cmpSheet');
+  if (scroll) scroll.scrollLeft = 0;
+  if (sheet){ sheet.classList.add('open'); sheet.setAttribute('aria-hidden','false'); }
+}
+
+function closeCmp(){
+  var sheet = document.getElementById('cmpSheet');
+  if (sheet){ sheet.classList.remove('open'); sheet.setAttribute('aria-hidden','true'); }
+}
+
+function initHistory(){
+  histRead();
+  histRender();
+
+  var saveBtn = document.getElementById('histSaveBtn');
+  if (saveBtn) saveBtn.onclick = histSaveCurrent;
+
+  var cmpBtn = document.getElementById('histCompareBtn');
+  if (cmpBtn) cmpBtn.onclick = histCompare;
+
+  var list = document.getElementById('histList');
+  if (list) list.addEventListener('click', function(e){
+    var item = e.target.closest('.hist-item');
+    if (!item) return;
+    var id = item.dataset.id;
+    var act = e.target.dataset.act;
+
+    if (act === 'load'){
+      var it = histItems.filter(function(x){ return x.id === id; })[0];
+      if (it) histApply(it);
+    } else if (act === 'del'){
+      histItems = histItems.filter(function(x){ return x.id !== id; });
+      delete cmpSet[id];
+      histWrite();
+      histRender();
+    }
+  });
+
+  if (list) list.addEventListener('change', function(e){
+    if (e.target.dataset.act !== 'cmp') return;
+    var item = e.target.closest('.hist-item');
+    if (!item) return;
+    var id = item.dataset.id;
+    if (e.target.checked){
+      var n = Object.keys(cmpSet).filter(function(k){ return cmpSet[k]; }).length;
+      if (n >= 3){
+        e.target.checked = false;
+        var info = document.getElementById('hcInfo');
+        if (info) info.textContent = '비교는 최대 3개까지 선택할 수 있습니다';
+        return;
+      }
+      cmpSet[id] = true;
+    } else {
+      delete cmpSet[id];
+    }
+    histRefreshBar();
+  });
+
+  var sheet = document.getElementById('cmpSheet');
+  if (sheet) sheet.addEventListener('click', function(e){
+    if (e.target.dataset.cclose === '1') closeCmp();
+  });
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeCmp(); });
 }
 
 document.addEventListener('DOMContentLoaded', init);
@@ -4051,6 +4501,192 @@ renderRingTable();
 
   buildTable();
   render();
+})();
+</script>
+<script>
+/* ================= 방문자 카운트 ================= */
+(function(){
+  var NS  = 'jade-nare';
+  var API = 'https://abacus.jasoncameron.dev';
+  var elToday = document.getElementById('vToday');
+  var elTotal = document.getElementById('vTotal');
+  if (!elToday || !elTotal) return;
+
+  var d = new Date();
+  var key = 'd-' + d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  var SESSION_FLAG = 'jn-visit-' + key;
+
+  function fmt(n){ return (typeof n === 'number' && isFinite(n)) ? n.toLocaleString('ko-KR') : '–'; }
+  function cacheGet(k){ try { return Number(localStorage.getItem('jn-v-' + k)) || null; } catch(e){ return null; } }
+  function cacheSet(k, v){ try { localStorage.setItem('jn-v-' + k, v); } catch(e){} }
+
+  function req(mode, k){
+    return fetch(API + '/' + mode + '/' + NS + '/' + k, { cache: 'no-store' })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){ return j && typeof j.value === 'number' ? j.value : null; })
+      .catch(function(){ return null; });
+  }
+
+  function paint(){
+    var t = cacheGet(key), tot = cacheGet('total');
+    elToday.textContent = fmt(t);
+    elTotal.textContent = fmt(tot);
+  }
+
+  function run(){
+    var counted = false;
+    try { counted = sessionStorage.getItem(SESSION_FLAG) === '1'; } catch(e){}
+
+    var jobs = counted
+      ? [req('get', key), req('get', 'total')]
+      : [req('hit', key), req('hit', 'total')];
+
+    Promise.all(jobs).then(function(res){
+      var t = res[0], tot = res[1];
+      if (t !== null) cacheSet(key, t);
+      if (tot !== null) cacheSet('total', tot);
+      if (!counted){
+        try { sessionStorage.setItem(SESSION_FLAG, '1'); } catch(e){}
+      }
+      paint();
+    }).catch(paint);
+  }
+
+  paint();
+  run();
+})();
+</script>
+
+<script>
+/* ================= 오늘 시세 · 환율 · QR 공유 ================= */
+(function(){
+"use strict";
+
+var OZ = 31.1034768;
+var CKEY = 'jn-market-v1';
+var CEXP = 'jn-market-exp';
+var TTL  = 60*60*1000; // 1시간 캐시
+var retried = false;
+
+function $(id){ return document.getElementById(id); }
+function num(n){
+  if (n === null || n === undefined || isNaN(n)) return null;
+  return Math.round(n).toLocaleString('ko-KR');
+}
+function one(n){
+  if (n === null || n === undefined || isNaN(n)) return null;
+  return n.toFixed(2);
+}
+
+function paint(d){
+  if (!d) return;
+  var g = $('mkGold'), s = $('mkSilver'), c = $('mkCny'), k = $('mkKrw');
+  if (g) g.textContent = num(d.gold);
+  if (s) s.textContent = num(d.silver);
+  if (c) c.textContent = one(d.cny);
+  if (k) k.textContent = one(d.cny ? 1000/d.cny : null);
+}
+
+function cached(){
+  try{
+    var raw = localStorage.getItem(CKEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  }catch(e){ return null; }
+}
+
+function fresh(){
+  try{
+    var t = Number(localStorage.getItem(CEXP) || 0);
+    return Date.now() - t < TTL;
+  }catch(e){ return false; }
+}
+
+function get(url, tries){
+  tries = tries || 2;
+  return fetch(url, {cache:'no-store'})
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .catch(function(){ return null; })
+    .then(function(j){
+      if (j || tries <= 1) return j;
+      return new Promise(function(res){ setTimeout(res, 1200); })
+        .then(function(){ return get(url, tries - 1); });
+    });
+}
+
+function load(){
+  var fxp = get('https://open.er-api.com/v6/latest/KRW');
+  var aup = get('https://api.gold-api.com/price/XAU');
+  var agp = get('https://api.gold-api.com/price/XAG');
+
+  Promise.all([fxp, aup, agp]).then(function(res){
+    var f = res[0], a = res[1], b = res[2];
+    var prev = cached() || {};
+
+    var krwPerUsd = (f && f.rates && f.rates.USD) ? 1 / f.rates.USD : (prev.kRW || null);
+    var cnyPerKrw = (f && f.rates && f.rates.CNY) ? f.rates.CNY : null;
+
+    var d = {};
+
+    d.kRW = krwPerUsd;
+    d.cny = cnyPerKrw ? 1 / cnyPerKrw : (prev.cny || null);
+    d.gold = (a && a.price && krwPerUsd) ? a.price / OZ * krwPerUsd : (prev.gold || null);
+    d.silver = (b && b.price && krwPerUsd) ? b.price / OZ * krwPerUsd : (prev.silver || null);
+
+    paint(d);
+
+    if (d.gold !== null && d.silver !== null && d.cny !== null){
+      try{
+        localStorage.setItem(CKEY, JSON.stringify(d));
+        localStorage.setItem(CEXP, String(Date.now()));
+      }catch(e){}
+    } else if (!retried){
+      retried = true;
+      setTimeout(load, 2000);   // 일시 실패 시 1회만 재시도
+    }
+  });
+}
+
+paint(cached());
+if (!fresh()) load();
+
+/* ---------- QR 공유 ---------- */
+var sheet = $('qrSheet'), img = $('qrImg'), urlEl = $('qrUrl'), sub = $('qrSheetSub');
+var qrBtn = $('qrShareBtn');
+
+function siteUrl(){
+  try{
+    var u = location.origin + location.pathname;
+    if (location.protocol === 'file:') return '';
+    return u.replace(/index\.html$/, '');
+  }catch(e){ return ''; }
+}
+
+function openQr(){
+  if (!sheet) return;
+  var u = siteUrl();
+  if (!u){
+    if (sub) sub.textContent = '웹에 배포된 주소에서만 QR을 만들 수 있습니다 (file:// 로는 동작하지 않음)';
+    if (img){ img.removeAttribute('src'); }
+    if (urlEl) urlEl.textContent = '–';
+  } else {
+    if (sub) sub.textContent = 'QR을 스캔하면 이 계산기로 바로 이동합니다';
+    if (img) img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=10&data=' + encodeURIComponent(u);
+    if (urlEl) urlEl.textContent = u;
+  }
+  sheet.classList.add('open');
+  sheet.setAttribute('aria-hidden','false');
+}
+function closeQr(){
+  if (!sheet) return;
+  sheet.classList.remove('open');
+  sheet.setAttribute('aria-hidden','true');
+}
+
+if (qrBtn) qrBtn.addEventListener('click', openQr);
+if (sheet) sheet.addEventListener('click', function(e){ if (e.target.dataset.qclose === '1') closeQr(); });
+document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeQr(); });
+
 })();
 </script>
 </body>
