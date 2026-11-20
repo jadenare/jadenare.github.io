@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
 
-<title>옥조각 창작소 종합 계산기 (가격, 비즈팔찌, 반지)</title>
+<title>옥조각 창작소</title>
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+KR:wght@400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+SC:wght@600;700&display=swap">
 <style>
 :root{
@@ -554,9 +554,8 @@ body{
 
   .v-price .summary-box h3{font-family:var(--serif);color:var(--ink);font-size:17px;margin-bottom:12px;}
 
-  .v-price .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+  .v-price .summary-grid{display:grid;grid-template-columns:1fr 1fr !important;gap:7px;}
 
-  @media(max-width:520px){.v-price .summary-grid{grid-template-columns:1fr;}}
 
   .v-price .summary-item{
     background:#faf7ee;border:1px solid rgba(21,43,37,.07);border-radius:10px;
@@ -1142,6 +1141,288 @@ body{
 
 
 </style>
+<style>
+/* ===== 뷰 2 : 비중 · 밀도 ===== */
+
+.v-density *{box-sizing:border-box;margin:0;padding:0;}
+.v-density .wrap{max-width:720px;margin:0 auto;}
+
+.v-density /* ---------- header ---------- */
+.brand{
+  text-align:center;font-family:"Noto Serif KR",Georgia,serif;
+  font-size:12px;letter-spacing:.42em;color:var(--gold);font-weight:600;
+  margin-bottom:16px;
+}
+.v-density h1{
+  font-family:"Noto Serif KR",Georgia,serif;
+  font-size:30px;line-height:1.32;font-weight:900;text-align:center;
+  color:var(--jade-deep);letter-spacing:-.01em;
+}
+.v-density .sub{
+  text-align:center;font-size:11px;letter-spacing:.22em;color:var(--ink-soft);
+  margin-top:10px;text-transform:uppercase;
+}
+.v-density .hero-note{
+  margin:18px auto 0;max-width:520px;text-align:center;
+  font-size:12.5px;line-height:1.75;color:var(--ink-soft);
+  padding:0 6px;
+}
+.v-density .divider{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin:22px 0 8px;color:var(--gold);font-size:12px;
+}
+.v-density .divider span{width:34px;height:1px;background:var(--line);display:block;}
+
+.v-density /* ---------- card ---------- */
+.card{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px 18px;
+  margin-top:14px;
+  box-shadow:0 1px 0 #fff inset, 0 10px 26px -22px rgba(20,84,62,.5);
+}
+.v-density .step-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.v-density .badge{
+  flex:none;width:26px;height:26px;border-radius:50%;
+  background:var(--jade);color:#f2ecdc;
+  font-family:"Noto Serif KR",serif;font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+  margin-top:2px;
+}
+.v-density .step-title{font-size:14px;font-weight:700;letter-spacing:.02em;color:var(--jade-deep);}
+.v-density .step-desc{font-size:11.5px;color:var(--ink-soft);margin-top:3px;line-height:1.5;}
+
+.v-density label.field{display:block;font-size:11.5px;color:var(--ink-soft);margin-bottom:6px;letter-spacing:.04em;}
+.v-density .input-row{display:flex;align-items:baseline;gap:8px;border-bottom:1.5px solid var(--gold-soft);padding-bottom:6px;}
+.v-density .input-row input{
+  flex:1;min-width:0;border:0;background:transparent;outline:none;
+  font-family:"Noto Serif KR",serif;font-size:30px;font-weight:700;color:var(--jade-deep);
+  text-align:right;letter-spacing:-.02em;
+}
+.v-density .input-row input::placeholder{color:#cbbfa6;font-weight:400;font-size:22px;}
+.v-density .unit{font-size:13px;color:var(--ink-soft);font-family:"Noto Serif KR",serif;}
+
+.v-density .tabs{display:flex;gap:6px;margin-bottom:16px;background:#efe8d8;border-radius:999px;padding:4px;}
+.v-density .tab{
+  flex:1;border:0;background:transparent;border-radius:999px;padding:9px 6px;
+  font-size:12px;font-family:inherit;color:var(--ink-soft);cursor:pointer;
+  transition:.18s;font-weight:500;
+}
+.v-density .tab.on{background:#fff;color:var(--jade-deep);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.07);}
+
+.v-density .hintbox{
+  margin-top:12px;background:#f2ecdc;border-left:3px solid var(--gold-soft);
+  border-radius:8px;padding:10px 12px;font-size:11.5px;color:#5f584b;line-height:1.65;
+}
+.v-density .hintbox b{color:var(--jade);}
+
+.v-density .formula{
+  margin-top:14px;text-align:center;font-family:"Noto Serif KR",serif;
+  font-size:12.5px;color:var(--ink-soft);letter-spacing:.02em;
+}
+.v-density .formula b{color:var(--jade-deep);}
+
+.v-density /* ---------- result ---------- */
+.result{
+  margin-top:20px;border-radius:18px;overflow:hidden;
+  background:linear-gradient(150deg,#123f30 0%,#0b2a20 100%);
+  color:#f4eeda;padding:26px 22px 20px;
+  position:relative;
+  box-shadow:0 18px 40px -28px rgba(11,42,32,.9);
+}
+.v-density .result::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(80% 45% at 50% 0%, rgba(217,201,162,.13), transparent 70%);
+}
+.v-density .result-label{font-size:10.5px;letter-spacing:.26em;color:#a9bdb2;text-transform:uppercase;text-align:center;}
+.v-density .sg{
+  text-align:center;font-family:"Noto Serif KR",serif;font-weight:900;
+  font-size:54px;line-height:1.15;letter-spacing:-.03em;color:#fff;margin-top:6px;
+}
+.v-density .sg small{font-size:15px;font-weight:400;color:#b9c9bf;margin-left:4px;letter-spacing:0;}
+.v-density .verdict{
+  text-align:center;font-size:13px;margin-top:8px;color:#e7dcc0;line-height:1.5;
+}
+.v-density .altline{font-size:11px;color:#b9c9bf;margin-top:6px;letter-spacing:.01em;}
+.v-density .chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px;}
+.v-density .chip{
+  font-size:11px;padding:5px 11px;border-radius:999px;
+  border:1px solid rgba(217,201,162,.35);color:#e3d8bd;letter-spacing:.01em;
+}
+.v-density .stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:20px;
+  background:rgba(217,201,162,.22);border-radius:12px;overflow:hidden;
+}
+.v-density .stat{background:rgba(255,255,255,.04);padding:11px 6px;text-align:center;}
+.v-density .stat .k{font-size:10px;color:#a9bdb2;letter-spacing:.06em;}
+.v-density .stat .v{font-family:"Noto Serif KR",serif;font-size:15px;font-weight:700;color:#f6efdc;margin-top:3px;}
+
+.v-density /* ---------- candidates ---------- */
+.sec-title{
+  font-family:"Noto Serif KR",serif;font-size:16px;font-weight:700;color:var(--jade-deep);
+  margin:28px 0 4px;display:flex;align-items:center;gap:8px;
+}
+.v-density .sec-title .bar{width:3px;height:16px;background:var(--gold);border-radius:2px;}
+.v-density .sec-desc{font-size:11.5px;color:var(--ink-soft);margin-bottom:10px;}
+
+.v-density .hfilter{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:6px 0 12px;}
+.v-density .hfilter .hl{font-size:10.5px;letter-spacing:.08em;color:#8d857a;margin-right:2px;}
+.v-density .hbtn{
+  font:inherit;font-size:10.5px;padding:5px 9px;border-radius:999px;cursor:pointer;
+  border:1px solid var(--line);background:#fff;color:var(--ink-soft);
+}
+.v-density .hbtn.on{background:var(--jade);border-color:var(--jade);color:#f2ecdc;}
+.v-density .cand{
+  display:flex;align-items:center;gap:12px;
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:13px 14px;margin-bottom:8px;
+}
+.v-density .cand .fit{
+  flex:none;width:44px;height:44px;border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  font-size:9px;letter-spacing:.02em;line-height:1.2;
+}
+.v-density .cand .fit b{font-family:"Noto Serif KR",serif;font-size:15px;font-weight:700;}
+.v-density .fit.hit{background:#e3efe7;color:var(--jade);}
+.v-density .fit.near{background:#f6eedd;color:#8a7332;}
+.v-density .fit.far{background:#f1ece2;color:#8d857a;}
+.v-density .cand .body{flex:1;min-width:0;}
+.v-density .cand .name{font-size:13.5px;font-weight:700;color:var(--jade-deep);letter-spacing:-.01em;}
+.v-density .cand .name-sub{font-size:10.5px;color:#7d7466;margin-top:2px;letter-spacing:.02em;line-height:1.45;}
+.v-density .cand .rng{font-size:11px;color:var(--ink-soft);margin-top:2px;font-variant-numeric:tabular-nums;}
+.v-density .cand .note{font-size:11px;color:#7d7466;margin-top:4px;line-height:1.5;}
+.v-density .cand .tag{
+  flex:none;font-size:10px;padding:3px 8px;border-radius:999px;
+  border:1px solid var(--line);color:var(--ink-soft);
+}
+.v-density .cand .tag.hit{border-color:#a8cbb8;color:var(--jade);background:#eff7f1;}
+.v-density .empty{
+  text-align:center;color:var(--ink-soft);font-size:12px;padding:22px 10px;
+  background:var(--paper);border:1px dashed var(--line);border-radius:12px;
+}
+
+.v-density .advice{margin-top:16px;background:#f2ecdc;border-radius:12px;padding:14px 16px;font-size:11.5px;line-height:1.75;color:#5f584b;}
+.v-density .advice b{color:var(--jade);}
+
+.v-density /* ---------- table ---------- */
+.table-card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px 14px;}
+.v-density .filter{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.v-density .fbtn{
+  border:1px solid var(--line);background:#f3ecdd;color:var(--ink-soft);
+  font-size:11px;padding:6px 11px;border-radius:999px;cursor:pointer;font-family:inherit;
+}
+.v-density .fbtn.on{background:var(--jade);border-color:var(--jade);color:#f2ecdc;}
+.v-density .search{
+  width:100%;border:1px solid var(--line);background:#fff;border-radius:10px;
+  padding:9px 12px;font-size:12.5px;font-family:inherit;color:var(--ink);
+  outline:none;margin-bottom:10px;
+}
+.v-density .search:focus{border-color:var(--gold);}
+.v-density .tbl-wrap{max-height:520px;overflow:auto;-webkit-overflow-scrolling:touch;border-radius:10px;}
+.v-density table{width:100%;border-collapse:collapse;font-size:11.5px;}
+.v-density thead th{
+  white-space:nowrap;
+  position:sticky;top:0;background:#eadfc7;color:var(--jade-deep);
+  font-weight:700;text-align:left;padding:9px 8px;font-size:11px;letter-spacing:.03em;
+  border-bottom:1px solid var(--line);z-index:2;
+}
+.v-density thead th.num{text-align:right;}
+.v-density tbody td{padding:8px 8px;border-bottom:1px solid #ece3d0;vertical-align:top;}
+.v-density tbody td.num{text-align:right;font-variant-numeric:tabular-nums;font-family:"Noto Serif KR",serif;}
+.v-density tbody td.hd{text-align:right;white-space:nowrap;color:#7d7466;font-size:10.5px;letter-spacing:.02em;}
+.v-density tbody td.nm{font-weight:500;color:var(--jade-deep);}
+.v-density tbody td.nm .ko{font-size:12px;font-weight:700;letter-spacing:-.01em;}
+.v-density tbody td.nm .meta{font-size:10px;color:#8d857a;font-weight:400;margin-top:2px;letter-spacing:.02em;line-height:1.4;}
+.v-density tbody tr.hit{background:#eff7f1;}
+.v-density tbody tr.hit td.nm .ko::after{content:" ✓";color:var(--jade);font-weight:700;}
+.v-density tbody tr.near{background:#fbf6e8;}
+.v-density tbody tr.catrow td{
+  background:#f2ecdc;font-weight:700;color:var(--jade);font-size:10.5px;letter-spacing:.14em;
+  padding:6px 8px;
+}
+.v-density .muted{color:#8d857a;}
+.v-density .tbl-note{font-size:10.5px;color:#7d7466;line-height:1.75;margin-top:10px;padding:0 2px;letter-spacing:.01em;}
+.v-density .tbl-note b{color:var(--jade);}
+
+@media (max-width:520px){
+  .v-density .tbl-wrap{max-height:none;overflow:visible;}
+  .v-density thead th, .v-density tbody td{padding:7px 5px;}
+  .v-density table{font-size:11px;}
+  .v-density thead th{font-size:10.5px;}
+  .v-density tbody td.hd{font-size:10px;}
+  .v-density tbody td.num{white-space:nowrap;font-size:11px;}
+  .v-density .cand{gap:9px;padding:12px 11px;}
+  .v-density .cand .name-sub{font-size:10px;}
+}
+
+.v-density .foot{
+  margin-top:26px;text-align:center;font-size:10.5px;color:#8d857a;line-height:1.8;
+}
+.v-density .foot .wm{font-family:"Noto Serif KR",serif;letter-spacing:.4em;color:var(--gold);font-size:11px;}
+
+.v-density{padding:16px 18px 34px;}
+.v-density .wrap{max-width:720px;margin:0 auto;padding:0;}
+.v-density .hero-note{margin:18px auto 0;max-width:520px;text-align:center;font-size:12.5px;line-height:1.75;color:var(--ink-soft);padding:0 6px;background:none;border:0;border-radius:0;box-shadow:none;display:block;letter-spacing:0;}
+
+
+
+/* ---- 치수 직접 입력 ---- */
+.v-price .sf-manual{display:flex;align-items:baseline;gap:3px;}
+.v-price .sf-input{
+  width:56px !important;text-align:right;border:0 !important;
+  border-bottom:1.5px solid rgba(169,138,82,.55) !important;
+  border-radius:0 !important;background:transparent !important;
+  padding:0 2px 2px !important;outline:none;box-shadow:none !important;
+  font-family:var(--serif);font-weight:800;font-size:18px;color:var(--jade-deep);
+  -webkit-appearance:none;-moz-appearance:textfield;
+}
+.v-price .sf-input:focus{border-color:var(--jade);background:transparent;box-shadow:none;}
+.v-price .sf-input::-webkit-outer-spin-button,.v-price .sf-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.v-price .sf-stepper,.v-price .step-btn{display:none !important;}
+
+/* ===== 홈 화면 1스크린 압축 ===== */
+.home{padding:16px 18px 18px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;}
+.wordmark{margin-bottom:7px;padding-bottom:4px;font-size:10.5px;letter-spacing:.44em;text-indent:.44em;}
+.hero h1{font-size:21px;line-height:1.28;}
+.hero-sub{margin-top:4px;font-size:10.5px;letter-spacing:.09em;}
+.hero-en{margin-top:2px;font-size:8.5px;letter-spacing:.2em;}
+.rule{margin-top:6px;}
+.tools{gap:8px;margin-top:auto;}
+.tool-card{padding:10px 13px;border-radius:14px;gap:11px;}
+.tc-no{width:29px;height:29px;font-size:11px;}
+.tc-title{font-size:13.5px;}
+.tc-desc{font-size:10.5px;margin-top:1px;}
+.tc-arrow{width:24px;height:24px;font-size:11px;}
+.links{margin-top:auto;padding-top:10px;}
+.links-title{margin-bottom:6px;}
+.link-chip{padding:5px 11px;font-size:11px;}
+.links-row{align-items:center;}
+.install-chip{
+  margin:0 0 0 auto;padding:5px 11px;font-size:11px;font-weight:500;gap:5px;
+  box-shadow:none;background:#fbf8f0;border:1px solid rgba(169,138,82,.42);
+}
+.install-chip svg{width:11px;height:11px;}
+.install-chip:hover{background:#f2f6ee;border-color:rgba(63,125,95,.5);}
+.home-foot{margin-top:8px;font-size:9.5px;line-height:1.5;}
+/* ===== 매우 낮은 화면(≤600px) 추가 압축 ===== */
+@media (max-height:600px){
+  .home{padding:8px 16px 10px;}
+  .hero h1{font-size:19px;}
+  .hero-en{display:none;}
+  .rule{display:none;}
+  .hero-sub{margin-top:3px;}
+  .tools{gap:6px;margin-top:8px;}
+  .tool-card{padding:8px 12px;}
+  .tc-no{width:26px;height:26px;font-size:10px;}
+  .tc-title{font-size:12.5px;}
+  .tc-desc{font-size:10px;}
+  .links{margin-top:7px;padding-top:7px;}
+  .links-title{margin-bottom:4px;}
+  .home-foot{margin-top:6px;font-size:9px;line-height:1.42;}
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -1152,14 +1433,9 @@ body{
       <div class="hero">
         <div class="wordmark">JADE NARE</div>
         <h1>옥조각 창작소<br><span class="accent">종합 계산기</span></h1>
-        <p class="hero-sub">가격 · 비즈팔찌 · 반지치수</p>
+        <p class="hero-sub">가격 · 비중 · 비즈팔찌 · 반지</p>
         <p class="hero-en">Jade Atelier · All-in-one Calculator</p>
         <div class="rule"><i></i><b></b><i></i></div>
-        <div class="hero-note">필요한 계산기를 선택하세요</div>
-        <button class="install-chip" id="installBtn" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
-          앱으로 설치
-        </button>
       </div>
 
       <div class="tools">
@@ -1171,8 +1447,16 @@ body{
         </div>
         <span class="tc-arrow" aria-hidden="true">→</span>
       </button>
-      <button class="tool-card" data-go="bead">
+      <button class="tool-card" data-go="density">
         <div class="tc-no">02</div>
+        <div class="tc-body">
+          <p class="tc-title">비중 밀도 계산기</p>
+          <p class="tc-desc">비중 측정으로 재질 판별</p>
+        </div>
+        <span class="tc-arrow" aria-hidden="true">→</span>
+      </button>
+      <button class="tool-card" data-go="bead">
+        <div class="tc-no">03</div>
         <div class="tc-body">
           <p class="tc-title">비즈 팔찌 계산기</p>
           <p class="tc-desc">성별 · 비즈 지름으로 갯수 계산</p>
@@ -1180,7 +1464,7 @@ body{
         <span class="tc-arrow" aria-hidden="true">→</span>
       </button>
       <button class="tool-card" data-go="ring">
-        <div class="tc-no">03</div>
+        <div class="tc-no">04</div>
         <div class="tc-body">
           <p class="tc-title">반지 치수 계산기</p>
           <p class="tc-desc">직경 · 한국호수 · 중국호수 환산</p>
@@ -1192,16 +1476,21 @@ body{
       <div class="links">
         <p class="links-title">LINKS</p>
         <div class="links-row">
-          <a class="link-chip" href="./tracking.html">택배조회</a>
+          
           <a class="link-chip" href="https://www.youtube.com/@JADENARE" target="_blank" rel="noopener">유튜브</a>
           <a class="link-chip" href="https://cafe.naver.com/jadenare" target="_blank" rel="noopener">네이버카페</a>
+          <a class="link-chip" href="https://jadenare.github.io/tracking.html" target="_blank" rel="noopener">택배조회</a>
+          <button class="install-chip" id="installBtn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+            앱으로 설치
+          </button>
         </div>
       </div>
 
       <div class="home-foot">
-        <b>JADE NARE</b><br>
         옥조각 창작소 · 참고용 계산 시뮬레이션<br>
-        모든 계산은 브라우저에서 처리됩니다 · ver 2.0
+        앱으로 설치 시 오프라인으로도 이용 가능합니다.<br>
+        <b>JADE NARE</b> · ver 2.2
       </div>
     </div>
   </div>
@@ -1421,10 +1710,9 @@ body{
     <div class="size-field">
       <div class="sf-head">
         <span class="sf-label">가로</span>
-        <span class="sf-stepper">
-          <button type="button" class="step-btn" data-dim="w" data-dir="-1">−</button>
-          <span class="sf-val" id="wVal">40</span><span class="sf-unit">mm</span>
-          <button type="button" class="step-btn" data-dim="w" data-dir="1">+</button>
+        <span class="sf-manual">
+          <input type="number" class="sf-input" id="wIn" value="40" min="1" max="300" step="1" inputmode="numeric" aria-label="가로 (mm)">
+          <span class="sf-unit">mm</span>
         </span>
       </div>
       <div class="hw-shell">
@@ -1432,7 +1720,7 @@ body{
         <div class="hw-band"></div>
         <div class="hw-mask"></div><div class="hw-mask r"></div>
       </div>
-      <div class="hw-hint"><span>1 mm</span><span>좌우로 스크롤</span><span>300 mm</span></div>
+      <div class="hw-hint"><span>1 mm</span><span>좌우 스크롤 · 직접 입력</span><span>300 mm</span></div>
       <input type="hidden" id="w" value="40">
     </div>
 
@@ -1440,10 +1728,9 @@ body{
     <div class="size-field">
       <div class="sf-head">
         <span class="sf-label">세로</span>
-        <span class="sf-stepper">
-          <button type="button" class="step-btn" data-dim="h" data-dir="-1">−</button>
-          <span class="sf-val" id="hVal">70</span><span class="sf-unit">mm</span>
-          <button type="button" class="step-btn" data-dim="h" data-dir="1">+</button>
+        <span class="sf-manual">
+          <input type="number" class="sf-input" id="hIn" value="70" min="1" max="300" step="1" inputmode="numeric" aria-label="세로 (mm)">
+          <span class="sf-unit">mm</span>
         </span>
       </div>
       <div class="hw-shell">
@@ -1451,7 +1738,7 @@ body{
         <div class="hw-band"></div>
         <div class="hw-mask"></div><div class="hw-mask r"></div>
       </div>
-      <div class="hw-hint"><span>1 mm</span><span>좌우로 스크롤</span><span>300 mm</span></div>
+      <div class="hw-hint"><span>1 mm</span><span>좌우 스크롤 · 직접 입력</span><span>300 mm</span></div>
       <input type="hidden" id="h" value="70">
     </div>
 
@@ -1459,10 +1746,9 @@ body{
     <div class="size-field">
       <div class="sf-head">
         <span class="sf-label">두께 / 높이</span>
-        <span class="sf-stepper">
-          <button type="button" class="step-btn" data-dim="t" data-dir="-1">−</button>
-          <span class="sf-val" id="tVal">10</span><span class="sf-unit">mm</span>
-          <button type="button" class="step-btn" data-dim="t" data-dir="1">+</button>
+        <span class="sf-manual">
+          <input type="number" class="sf-input" id="tIn" value="10" min="1" max="300" step="1" inputmode="numeric" aria-label="두께 / 높이 (mm)">
+          <span class="sf-unit">mm</span>
         </span>
       </div>
       <div class="hw-shell">
@@ -1470,7 +1756,7 @@ body{
         <div class="hw-band"></div>
         <div class="hw-mask"></div><div class="hw-mask r"></div>
       </div>
-      <div class="hw-hint"><span>1 mm</span><span>좌우로 스크롤</span><span>300 mm</span></div>
+      <div class="hw-hint"><span>1 mm</span><span>좌우 스크롤 · 직접 입력</span><span>300 mm</span></div>
       <input type="hidden" id="t" value="10">
     </div>
 
@@ -1886,6 +2172,160 @@ body{
   </div>
 
 
+
+  <!-- ================= 뷰 2 : 비중 · 밀도 ================= -->
+  <div class="view" id="view-density">
+    <div class="jade-bar">
+      <div class="jade-bar-in">
+        <button class="jade-back" data-go="home"><span>←</span> 처음 화면</button>
+        <span class="jade-now">JADE NARE · 비중·밀도</span>
+      </div>
+    </div>
+    <div class="v-density">
+
+<div class="wrap">
+
+  <div class="brand">JADE NARE</div>
+  <h1>비중 밀도 계산기</h1>
+  <div class="sub">Specific Gravity &middot; Mohs Hardness</div>
+  <p class="hero-note">
+    물속에서 잰 무게로 <b>비중</b>을 계산하고, 그 값과 <b>경도</b>에 맞는 <b>재질 후보</b>를 판별합니다.
+    옥·석재부터 보석·광물, 유리·수지·금속까지 참고표를 함께 제공합니다.
+  </p>
+  
+  <!-- STEP 01 -->
+  <div class="card">
+    <div class="step-head">
+      <div class="badge">01</div>
+      <div>
+        <div class="step-title">건조 무게</div>
+        <div class="step-desc">물 밖에서 완전히 건조한 상태로 잰 무게</div>
+      </div>
+    </div>
+    <label class="field" for="dry">공기 중 무게 (A)</label>
+    <div class="input-row">
+      <input id="dry" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off">
+      <span class="unit">g</span>
+    </div>
+  </div>
+
+  <!-- STEP 02 -->
+  <div class="card">
+    <div class="step-head">
+      <div class="badge">02</div>
+      <div>
+        <div class="step-title">물속 측정값</div>
+        <div class="step-desc">측정 방법에 맞는 값을 하나만 입력하세요</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab on" data-mode="suspended">매단 무게 (표준)</button>
+      <button class="tab" data-mode="overflow">넘친 물 무게</button>
+    </div>
+
+    <div id="pane-suspended">
+      <label class="field" for="wet">물속에서 매단 무게 (B)</label>
+      <div class="input-row">
+        <input id="wet" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off">
+        <span class="unit">g</span>
+      </div>
+      <div class="hintbox">
+        실이나 가는 끈으로 시료를 매달아 <b>완전히 잠기게</b> 하고, 용기 벽·바닥에 닿지 않게 하세요.
+        물컵은 저울 위에 올려 <b>영점(0 g)</b>을 먼저 맞춥니다.
+      </div>
+      <div class="formula">비중 = A ÷ (A − B) = <b id="fml">−</b></div>
+    </div>
+
+    <div id="pane-overflow" style="display:none">
+      <label class="field" for="spill">넘쳐 흘러나온 물의 무게 (C)</label>
+      <div class="input-row">
+        <input id="spill" type="text" inputmode="decimal" placeholder="0.00" autocomplete="off">
+        <span class="unit">g</span>
+      </div>
+      <div class="hintbox">
+        컵을 <b>가득 채운 뒤</b> 받침 접시와 함께 영점을 맞추고, 시료를 넣어 흘러나온 물만 저울로 재세요.
+        실이 없어도 되는 방법입니다.
+      </div>
+      <div class="formula">비중 = A ÷ C = <b id="fml2">−</b></div>
+    </div>
+
+    <div class="hintbox" style="border-left-color:#d8c7a4">
+      <b>참고:</b> 시료를 물속 <b>바닥에 가라앉힌 채로</b> 재면 부력이 물과 용기 안에서 서로 상쇄되어
+      사실상 건조 무게(A)와 같은 값이 나옵니다. 비중 계산에는 <b>매단 무게</b> 또는 <b>넘친 물 무게</b>를 쓰세요.
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result" id="result">
+    <div class="result-label">Specific Gravity</div>
+    <div class="sg" id="sgVal">−<small>g/cm³</small></div>
+    <div class="verdict" id="verdict">값을 입력하면 비중과 재질 후보가 표시됩니다</div>
+    <div class="chips" id="chips"></div>
+    <div class="stats">
+      <div class="stat"><div class="k">부피</div><div class="v" id="vol">−</div></div>
+      <div class="stat"><div class="k">부력 (물속 감량)</div><div class="v" id="buoy">−</div></div>
+      <div class="stat"><div class="k">물 무게 환산</div><div class="v" id="waterEq">−</div></div>
+    </div>
+  </div>
+
+  <!-- CANDIDATES -->
+  <div class="sec-title"><span class="bar"></span>재질 후보</div>
+  <div class="sec-desc" id="candDesc">비중 값에 가장 가까운 재질부터 표시됩니다 (오차 ±0.05 이내 근접)</div>
+  <div class="hfilter" id="hfilter">
+    <span class="hl">경도 단서</span>
+    <button class="hbtn on" data-h="any">모름</button>
+    <button class="hbtn" data-h="hard">칼에 흠 없음 6.5↑</button>
+    <button class="hbtn" data-h="soft">칼에 긁힘 6.5↓</button>
+  </div>
+  <div id="cands">
+    <div class="empty">①, ② 값을 입력하면 후보가 나타납니다</div>
+  </div>
+
+  <div class="advice">
+    <b>감별 요령</b><br>
+    비중은 <b>재질을 좁히는 1차 필터</b>입니다. 같은 비중대에 여러 재질이 겹치므로
+    최종 판정은 <b>굴절률·확대 관찰(구조·기포·색띠)·자외선 형광</b>을 함께 봐야 합니다.
+    특히 <b>비취 3.24~3.43</b> 구간에는 <b>부산석(3.32~3.47)·녹렴석(3.25~3.50)·페리도트(3.30~3.40)</b>가 근접합니다.
+    <b>동룡옥(아프리카비취)·금사옥·동릉옥·옥수</b>는 2.6~2.8대 석영질옥이라, 육안이 비슷해도 <b>손무게에서 먼저 갈립니다</b>.
+    비중이 겹치면 <b>경도</b>를 보세요 — 비취 6.5~7은 칼에 흠이 안 나고, 수옥(2.5~5.5)·방해석질 옥(3~4)은 긁힙니다.
+  </div>
+
+  <!-- TABLE -->
+  <div class="sec-title"><span class="bar"></span>재질별 비중·경도 참고표</div>
+  <div class="sec-desc">한국 통용명 우선 · <b>中文 · English</b> 병기 · 비중 20℃ · 경도 모스(Mohs)</div>
+  <div class="table-card">
+    <input class="search" id="q" type="text" placeholder="이름 검색 (예: 아벤츄린, 천산옥, 獨龍玉)">
+    <div class="filter" id="filters">
+      <button class="fbtn on" data-cat="all">전체</button>
+      <button class="fbtn" data-cat="jade">옥·석재</button>
+      <button class="fbtn" data-cat="gem">보석·광물</button>
+      <button class="fbtn" data-cat="fake">모조·유리·수지</button>
+      <button class="fbtn" data-cat="metal">금속·기타</button>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>재질 (한글·中文·English)</th><th class="num">비중</th><th class="num">통상</th><th class="num">경도</th></tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="tbl-note">
+      <b>벽옥</b>이 두 가지입니다 — 벽옥(벽석, 碧石)은 석영질 Jasper, 벽옥(화전옥, 碧玉)은 연옥 계열 녹옥.<br>
+      <b>경도 활용:</b> 모스 6.5 이상은 칼·유리에 흠이 남지 않습니다. 수옥(2.5~5.5)·방해석질(3~4)은 칼로 긁힙니다.
+    </div>
+  </div>
+
+  <div class="foot">
+    측정값 오차 ±0.01 g 이내를 권장합니다 · 물 온도 차이에 따른 오차는 약 ±0.3%<br>
+    본 계산기는 참고용이며 감정서를 대체하지 않습니다<br>
+    <span class="wm">JADE NARE</span>
+  </div>
+</div>
+      <div class="v-bottom"><button class="jade-back-wide" data-go="home">← 처음 화면으로 돌아가기</button></div>
+    </div>
+  </div>
 
 <div class="jn-sheet" id="jnSheet" aria-hidden="true">
   <div class="jn-sheet-bg" data-close="1"></div>
@@ -2700,7 +3140,7 @@ function buildSizeWheel(key, hiddenId, valId, wheelId, listId){
     for (let i = 0; i < items.length; i++) items[i].classList.toggle('center', i === idx);
     const v = vals[idx];
     hidden.value = v;
-    if (valEl) valEl.textContent = v;
+    if (valEl){ if (valEl.tagName === 'INPUT') valEl.value = v; else valEl.textContent = v; }
     updateAutoPremium();
     if (doCalc) { calcPrice(); updateSummary(); }
   }
@@ -2750,14 +3190,25 @@ function init() {
   initToggleGroups();
   initDynamicLists();
   initTargetWheel();
-  buildSizeWheel('w', 'w', 'wVal', 'hwW', 'hwWList');
-  buildSizeWheel('h', 'h', 'hVal', 'hwH', 'hwHList');
-  buildSizeWheel('t', 't', 'tVal', 'hwT', 'hwTList');
+  buildSizeWheel('w', 'w', 'wIn', 'hwW', 'hwWList');
+  buildSizeWheel('h', 'h', 'hIn', 'hwH', 'hwHList');
+  buildSizeWheel('t', 't', 'tIn', 'hwT', 'hwTList');
   sizeWheels.w.set(Number(els.w.value) || 40, false);
   sizeWheels.h.set(Number(els.h.value) || 70, false);
   sizeWheels.t.set(Number(els.t.value) || 10, false);
-  document.querySelectorAll('.step-btn').forEach(b => {
-    b.onclick = () => { sizeWheels[b.dataset.dim].nudge(Number(b.dataset.dir)); };
+  [['wIn','w'],['hIn','h'],['tIn','t']].forEach(function(pair){
+    const inp = document.getElementById(pair[0]);
+    if (!inp) return;
+    const apply = function(clampOnly){
+      let v = Math.round(Number(inp.value));
+      if (!isFinite(v)){ if (clampOnly) { v = 1; } else return; }
+      v = Math.max(1, Math.min(300, v));
+      if (clampOnly) inp.value = v;
+      sizeWheels[pair[1]].set(v, true);
+    };
+    inp.addEventListener('input', function(){ apply(false); });
+    inp.addEventListener('change', function(){ apply(true); });
+    inp.addEventListener('blur', function(){ apply(true); });
   });
   updateExchangeRateAndPrice();
 
@@ -3134,7 +3585,7 @@ renderRingTable();
 <script>
 /* ================= 뷰 전환 ================= */
 (function(){
-  var VIEWS = ['home','price','bead','ring'];
+  var VIEWS = ['home','price','bead','ring','density'];
   function show(id){
     if (VIEWS.indexOf(id) === -1) id = 'home';
     VIEWS.forEach(function(v){
@@ -3228,6 +3679,379 @@ renderRingTable();
   }
 })();
 
+</script>
+<script>
+(function(){
+  /* ================= 데이터 ================= */
+  var CATS = {
+    jade:  '옥 · 석재',
+    gem:   '보석 · 광물',
+    fake:  '모조 · 유리 · 수지',
+    metal: '금속 · 기타'
+  };
+
+  /* n: 한국 통용명 / zh: 中文 / en: English / rep: 통상값(생략 시 범위 중앙)
+     기준: 한국 시장에서 쓰는 이름을 앞에 두고, 광물·암석명은 괄호 또는 중문에 병기 */
+  /* ================= 참질 데이터 (비중 g/cm³ · 경도 Mohs) ================= */
+  var M = [
+    /* ---------- 옥 · 석재 ---------- */
+    {n:'비취(경옥)', zh:'翡翠(硬玉)', en:'Jadeite', c:'jade', lo:3.24, hi:3.43, rep:3.33, h1:6.5, h2:7.0, note:'경옥(비취휘석). 대부분 3.33. 3.20 이하라면 충전(B货) 의심.', a:'비취옥,제다이트,경옥,jadeite,jade'},
+    {n:'연옥(화전옥)', zh:'軟玉(和田玉)', en:'Nephrite', c:'jade', lo:2.90, hi:3.02, rep:2.96, h1:6.0, h2:6.5, note:'섬유상 구조. 유분질 유성광택확인.', a:'연옥,화전옥,연옥석,넙파이트,nephrite,hetian'},
+    {n:'수옥(수암옥/사문석옥)', zh:'岫玉(蛇紋石玉)', en:'Xiuyan Jade (Serpentine)', c:'jade', lo:2.50, hi:2.80, rep:2.65, h1:2.5, h2:5.5, note:'사문석질. 경도가 낮아 칼로 긁힙니다.', a:'수옥,수암옥,사문석옥,셔우옥,xiuyan,serpentine'},
+    {n:'독산옥(남양옥)', zh:'獨山玉', en:'Dushan Jade', c:'jade', lo:2.70, hi:3.00, rep:2.90, h1:5.5, h2:6.5, note:'장석·녹렴석 혼합암. 색이 얼룩덜룩.', a:'독산옥,남양옥,두산옥,dushan'},
+    {n:'수말자(수말옥)', zh:'水沫子(鈉長石玉)', en:'Albite Jade', c:'jade', lo:2.55, hi:2.65, rep:2.60, h1:6.0, h2:6.5, note:'알바이트. 비취보다 가볍고 내부가 뿌옇습니다.', a:'수말자,수말옥,수말즈,알바이트,albite'},
+    {n:'옥수(석영질옥)', zh:'玉髓(石英質玉)', en:'Chalcedony (Quartz Jade)', c:'jade', lo:2.58, hi:2.65, rep:2.62, h1:6.5, h2:7.0, note:'미결정 석영. 비취 3.2대와 확실히 갈립니다.', a:'옥수,석영질옥,칼세도니,chalcedony,quartz jade'},
+    {n:'동룡옥(아프리카비취)', zh:'獨龍玉(非洲翠)', en:'Dulong Jade (African Green Jade)', c:'jade', lo:2.60, hi:2.80, rep:2.70, h1:6.5, h2:7.0, note:'석영 90% 이상. 육안은 비취와 비슷하나 황철석이 주로 내포됨', a:'동룡옥,독룡옥,아프리카비취,아프리카옥,둘롱옥,dulong,african jade,african green jade'},
+    {n:'금사옥', zh:'金絲玉', en:'Golden Silk Jade', c:'jade', lo:2.60, hi:2.71, rep:2.65, h1:6.5, h2:7.0, note:'신장 산 석영질옥. 황·적색조가 많음.', a:'금사옥,금사석,골든실크,golden silk'},
+    {n:'동릉옥(사금석)', zh:'東陵玉(砂金石)', en:'Aventurine Quartz', c:'jade', lo:2.63, hi:2.69, rep:2.66, h1:7.0, h2:7.0, note:'아벤츄린. 반짝이는 운모 입자가 특징.', a:'동릉옥,동령옥,아벤츄린,사금석,어벤츄린,aventurine'},
+    {n:'마노(아게이트)', zh:'瑪瑙', en:'Agate', c:'jade', lo:2.58, hi:2.65, rep:2.62, h1:6.5, h2:7.0, note:'줄무늬 층상 구조. 염색·가열 처리 흔함.', a:'마노,아게이트,마노석,agate'},
+    {n:'황룡옥', zh:'黃龍玉', en:'Huanglong Jade', c:'jade', lo:2.60, hi:2.70, rep:2.65, h1:6.5, h2:7.0, note:'칼세도니질. 황·적색. 2010년대 유행.', a:'황룡옥,황룡위,황룡석,huanglong'},
+    {n:'아프가니스탄옥(한백옥)', zh:'阿富汗玉(漢白玉)', en:'Afghan Jade (White Marble)', c:'jade', lo:2.60, hi:2.80, rep:2.70, h1:3.0, h2:4.0, note:'방해석질 대리석. 칼로 쉽게 긁히고 산에 반응.', a:'아프가니스탄옥,아프간옥,한백옥,방해석옥,대리석,afghan jade,white marble'},
+    {n:'남전옥', zh:'藍田玉', en:'Lantian Jade', c:'jade', lo:2.60, hi:2.90, rep:2.66, h1:4.0, h2:5.5, note:'사문석·규회석 계열. 산지 명칭.', a:'남전옥,란톈옥,lantian'},
+    {n:'주천옥', zh:'酒泉玉', en:'Jiuquan Jade (Serpentine)', c:'jade', lo:2.50, hi:2.80, rep:2.65, h1:4.0, h2:5.5, note:'감숙성 사문석옥. 반투명 녹색.', a:'주천옥,주천석,jiuquan'},
+    {n:'청금석', zh:'青金石', en:'Lapis Lazuli', c:'jade', lo:2.70, hi:2.90, rep:2.80, h1:5.0, h2:6.0, note:'라피스. 금빛 황철광 반점이 포인트.', a:'청금석,라피스,라피스라줄리,lapis,lasurite'},
+    {n:'터키석', zh:'綠松石', en:'Turquoise', c:'jade', lo:2.40, hi:2.90, rep:2.65, h1:5.0, h2:6.0, note:'구멍이 많아 비중 편차 큼. 왁스 처리 주의.', a:'터키석,터코이즈,turquoise'},
+    {n:'공작석', zh:'孔雀石', en:'Malachite', c:'jade', lo:3.90, hi:4.10, rep:3.95, h1:3.5, h2:4.0, note:'탄산동. 줄무늬·거품 구조. 산에 반응.', a:'공작석,말라카이트,malachite'},
+    {n:'남동광', zh:'藍銅礦', en:'Azurite', c:'jade', lo:3.70, hi:3.90, rep:3.77, h1:3.5, h2:4.0, note:'아주라이트. 공작석과 함께 산출.', a:'남동광,아주라이트,azurite'},
+    {n:'호안석', zh:'虎眼石', en:'Tiger\'s Eye', c:'jade', lo:2.64, hi:2.70, rep:2.67, h1:6.5, h2:7.0, note:'섬유상 규화목. 고양이눈 효과.', a:'호안석,타이거아이,tiger eye,tigereye'},
+    {n:'산호', zh:'珊瑚', en:'Coral', c:'jade', lo:2.60, hi:2.70, rep:2.65, h1:3.0, h2:4.0, note:'유기질. 백색·적색. 염색품 유통 많음.', a:'산호,코럴,coral'},
+    {n:'벽옥(벽석)', zh:'碧玉(碧石)', en:'Jasper (Red Jasper)', c:'jade', lo:2.58, hi:2.91, rep:2.65, h1:6.5, h2:7.0, note:'불투명 석영. 적색은 레드 재스퍼(Red Jasper)로 유통.', a:'벽옥,벽석,벽옥석,재스퍼,자스퍼,레드재스퍼,jasper,red jasper'},
+    {n:'벽옥(화전옥)', zh:'碧玉(和田玉)', en:'Green Nephrite (Biyu)', c:'jade', lo:2.95, hi:3.00, rep:2.97, h1:6.0, h2:6.5, note:'화전옥 계열의 녹색 연옥. 석영질 벽옥(碧石)과 다른 광물.', a:'벽옥,화전옥,벽옥화전옥,biyu,green nephrite'},
+    {n:'도화옥(장미휘석)', zh:'桃花玉(薔薇輝石)', en:'Rhodonite', c:'jade', lo:3.40, hi:3.76, rep:3.50, h1:5.5, h2:6.5, note:'장미휘석. 분홍 바탕에 검은 망상 흑맥.', a:'도화옥,장미휘석,로도나이트,rhodonite'},
+    {n:'매화옥', zh:'梅花玉', en:'Plum Blossom Jade', c:'jade', lo:2.60, hi:2.85, rep:2.74, h1:6.0, h2:7.0, note:'안산암질. 매화 무늬.', a:'매화옥,매화석,plum blossom jade'},
+    {n:'금향옥', zh:'金香玉', en:'Fragrant Calcite Jade', c:'jade', lo:2.56, hi:2.70, rep:2.69, h1:2.5, h2:4.0, note:'향이 나는 방해석질. 무르고 가벼움.', a:'금향옥,향옥,fragrant calcite'},
+    {n:'미황옥', zh:'米黃玉', en:'Beige Calcite (Mihuang Jade)', c:'jade', lo:2.65, hi:2.75, rep:2.70, h1:3.0, h2:4.0, note:'방해석질 대리석. 한백옥과 같은 계열.', a:'미황옥,미황석,베이지대리석,mihuang'},
+    {n:'춘천옥(화전옥)', zh:'春川玉', en:'Chuncheon Nephrite', c:'jade', lo:2.93, hi:2.97, rep:2.95, h1:6.0, h2:6.5, note:'한국산 연옥. 춘천 지역 산출.', a:'춘천옥,춘천경옥,chuncheon'},
+    {n:'청해옥(화전옥)', zh:'青海玉(青海料)', en:'Qinghai Nephrite', c:'jade', lo:2.95, hi:2.98, rep:2.97, h1:6.0, h2:6.5, note:'화전옥 산지 표기(청해료). 반투명.', a:'청해옥,청해료,칭하이,qinghai'},
+    {n:'부산석', zh:'符山石', en:'Vesuvianite (Idocrase)', c:'jade', lo:3.32, hi:3.47, rep:3.40, h1:6.5, h2:7.0, note:'베수비아나이트. 비취 대체석으로 유통.', a:'부산석,베수비아나이트,이도크레이스,vesuvianite,idocrase'},
+    {n:'녹렴석', zh:'綠簾石', en:'Epidote', c:'jade', lo:3.25, hi:3.50, rep:3.38, h1:6.0, h2:7.0, note:'에피도트. 황록·갈색. 다색성 강함.', a:'녹렴석,에피도트,epidote'},
+
+    /* ---------- 보석 · 광물 ---------- */
+    {n:'수정', zh:'水晶(石英)', en:'Rock Crystal (Quartz)', c:'gem', lo:2.63, hi:2.66, rep:2.65, h1:7.0, h2:7.0, note:'투명 석영. 유리는 경도로 구분.', a:'수정,크리스탈,석영,rock crystal,quartz'},
+    {n:'자수정', zh:'紫水晶', en:'Amethyst', c:'gem', lo:2.63, hi:2.66, rep:2.65, h1:7.0, h2:7.0, note:'보라색 석영. 가열하면 변색.', a:'자수정,아메시스트,amethyst'},
+    {n:'오팔', zh:'蛋白石(歐泊)', en:'Opal', c:'gem', lo:1.90, hi:2.30, rep:2.10, h1:5.5, h2:6.5, note:'함수광물. 건조하면 균열.', a:'오팔,오파르,단백석,opal'},
+    {n:'월장석', zh:'月光石(長石)', en:'Moonstone', c:'gem', lo:2.56, hi:2.62, rep:2.59, h1:6.0, h2:6.5, note:'장석. 청백색 유동광.', a:'월장석,문스톤,moonstone'},
+    {n:'래브라도라이트', zh:'拉長石', en:'Labradorite', c:'gem', lo:2.68, hi:2.72, rep:2.70, h1:6.0, h2:6.5, note:'회색 바탕에 청록 채색광.', a:'래브라도라이트,라브라도라이트,labradorite'},
+    {n:'토르말린', zh:'碧璽(電氣石)', en:'Tourmaline', c:'gem', lo:3.00, hi:3.20, rep:3.10, h1:7.0, h2:7.5, note:'전기석. 결정에 세로 줄무늬.', a:'토르말린,전기석,투어말린,tourmaline'},
+    {n:'석류석', zh:'石榴石', en:'Garnet', c:'gem', lo:3.50, hi:4.30, rep:4.05, h1:6.5, h2:7.5, note:'알만딘 4.05~4.32 · 파이로프 3.58~3.78.', a:'석류석,가닛,가넷,garnet'},
+    {n:'첨정석', zh:'尖晶石', en:'Spinel', c:'gem', lo:3.54, hi:3.98, rep:3.70, h1:7.5, h2:8.0, note:'스피넬. 루비로 오인되던 보석.', a:'첨정석,스피넬,spinel'},
+    {n:'토파즈', zh:'黃玉(托帕石)', en:'Topaz', c:'gem', lo:3.50, hi:3.60, rep:3.55, h1:8.0, h2:8.0, note:'황옥. 쪼개짐 방향 주의.', a:'토파즈,황옥,topaz'},
+    {n:'루비·사파이어', zh:'剛玉(紅寶石·藍寶石)', en:'Corundum (Ruby & Sapphire)', c:'gem', lo:3.95, hi:4.10, rep:4.00, h1:9.0, h2:9.0, note:'코런덤. 다이아몬드 다음 경도.', a:'루비,사파이어,강옥,코런덤,ruby,sapphire,corundum'},
+    {n:'에메랄드', zh:'祖母綠(綠柱石)', en:'Emerald (Beryl)', c:'gem', lo:2.67, hi:2.78, rep:2.72, h1:7.5, h2:8.0, note:'베릴. 내포물 많아 깨지기 쉬움.', a:'에메랄드,녹주석,베릴,emerald,beryl'},
+    {n:'아콰마린', zh:'海藍寶石', en:'Aquamarine', c:'gem', lo:2.66, hi:2.80, rep:2.73, h1:7.5, h2:8.0, note:'베릴. 담청색.', a:'아콰마린,아쿠아마린,aquamarine'},
+    {n:'탄자나이트', zh:'坦桑石(黝簾石)', en:'Tanzanite (Zoisite)', c:'gem', lo:3.30, hi:3.38, rep:3.35, h1:6.0, h2:7.0, note:'조이사이트. 청·자·녹 다색성.', a:'탄자나이트,탄자니아,tanzanite'},
+    {n:'페리도트(감람석)', zh:'橄欖石', en:'Peridot (Olivine)', c:'gem', lo:3.30, hi:3.40, rep:3.34, h1:6.5, h2:7.0, note:'비취와 비중이 거의 겹침. 색·내포물로 구분.', a:'페리도트,올리브,감람석,peridot,olivine'},
+    {n:'지르콘(고형)', zh:'鋯石(高型)', en:'Zircon (High)', c:'gem', lo:4.60, hi:4.80, rep:4.65, h1:7.5, h2:7.5, note:'고형 지르콘. 복굴절 강함.', a:'지르콘,고형지르콘,zircon'},
+    {n:'지르콘(저형)', zh:'鋯石(低型)', en:'Zircon (Metamict)', c:'gem', lo:3.90, hi:4.10, rep:4.00, h1:7.0, h2:7.0, note:'방사손상된 저형. 비중 4.0 부근.', a:'지르콘,저형지르콘,zircon'},
+    {n:'다이아몬드', zh:'鑽石', en:'Diamond', c:'gem', lo:3.51, hi:3.53, rep:3.52, h1:10.0, h2:10.0, note:'천연 3.52 · 큐빅(CZ) 8.75와 구분.', a:'다이아몬드,다이아,diamond'},
+    {n:'형석', zh:'螢石', en:'Fluorite', c:'gem', lo:3.10, hi:3.25, rep:3.18, h1:4.0, h2:4.0, note:'플루오라이트. 무르고 4방 쪼개짐.', a:'형석,플루오라이트,fluorite'},
+    {n:'아마조나이트', zh:'天河石', en:'Amazonite', c:'gem', lo:2.55, hi:2.65, rep:2.60, h1:6.0, h2:6.5, note:'미사장석. 청록색, 비취 대용 주의.', a:'아마조나이트,아마존스톤,amazonite'},
+    {n:'크리소프레이즈', zh:'綠玉髓', en:'Chrysoprase', c:'gem', lo:2.58, hi:2.64, rep:2.61, h1:6.5, h2:7.0, note:'니켈 발색 옥수. 비취와 혼동.', a:'크리소프레이즈,크리소프라즈,녹옥수,chrysoprase'},
+    {n:'프레나이트', zh:'葡萄石', en:'Prehnite', c:'gem', lo:2.80, hi:2.95, rep:2.90, h1:6.0, h2:6.5, note:'포도석. 연두색 반투명, 비취 유사.', a:'프레나이트,포도석,prehnite'},
+    {n:'헤마타이트', zh:'赤鐵礦', en:'Hematite', c:'gem', lo:5.10, hi:5.30, rep:5.25, h1:5.0, h2:6.0, note:'적철석. 금속광택, 무겁습니다.', a:'헤마타이트,적철석,hematite'},
+    {n:'파이리트', zh:'黃鐵礦', en:'Pyrite', c:'gem', lo:4.90, hi:5.20, rep:5.00, h1:6.0, h2:6.5, note:'황철광. 황금색 금속광택.', a:'파이리트,황철광,파이라이트,pyrite'},
+
+    /* ---------- 모조 · 유리 · 수지 ---------- */
+    {n:'일반유리', zh:'普通玻璃', en:'Common Glass', c:'fake', lo:2.20, hi:2.50, rep:2.35, h1:5.5, h2:5.5, note:'기포·흐름선. 경도 5.5로 비취보다 무릅니다.', a:'일반유리,유리,글라스,glass'},
+    {n:'크리스털(연유리)', zh:'鉛玻璃(水晶玻璃)', en:'Lead Glass (Crystal)', c:'fake', lo:2.80, hi:3.15, rep:2.95, h1:5.0, h2:5.5, note:'연유리. 2.9~3.1은 비취 저비중대와 겹침.', a:'크리스털,크리스탈,연유리,lead glass'},
+    {n:'미결정유리', zh:'微晶玻璃', en:'Glass-ceramic', c:'fake', lo:2.50, hi:2.70, rep:2.60, h1:5.5, h2:6.5, note:'유리세라믹. 결정화로 비중이 높음.', a:'미결정유리,유리세라믹,glass ceramic'},
+    {n:'에폭시 수지', zh:'環氧樹脂', en:'Epoxy Resin', c:'fake', lo:1.10, hi:1.30, rep:1.20, h1:2.0, h2:3.0, note:'수지. 손온에 데워짐.', a:'에폭시,에폭시수지,epoxy,resin'},
+    {n:'플라스틱(ABS·PS·PMMA)', zh:'塑料(ABS·PS·PMMA)', en:'Plastics (ABS·PS·PMMA)', c:'fake', lo:1.04, hi:1.20, rep:1.08, h1:2.0, h2:3.0, note:'ABS 1.05 · PS 1.05 · PMMA 1.19.', a:'플라스틱,아크릴,abs,ps,pmma,plastic'},
+    {n:'호박', zh:'琥珀', en:'Amber', c:'fake', lo:1.05, hi:1.10, rep:1.08, h1:2.0, h2:2.5, note:'유기질 수지. 정전기·냄새로 구분.', a:'호박,앰버,amber'},
+    {n:'상아·뼈', zh:'象牙·骨', en:'Ivory · Bone', c:'fake', lo:1.70, hi:1.98, rep:1.80, h1:2.5, h2:3.0, note:'상아 1.70~1.98, 뼈 1.70~1.90.', a:'상아,뼈,아이보리,ivory,bone'},
+    {n:'합성수지 모조옥', zh:'合成樹脂仿玉', en:'Synthetic Resin Imitation', c:'fake', lo:1.10, hi:1.50, rep:1.30, h1:2.0, h2:3.0, note:'가볍고 열에 약함. 손온에 데워짐.', a:'합성수지,모조옥,레진,imitation'},
+    {n:'큐빅(CZ)', zh:'立方氧化鋯', en:'Cubic Zirconia', c:'fake', lo:8.60, hi:8.90, rep:8.75, h1:8.0, h2:8.5, note:'다이아몬드 모조. 8.7로 확실히 무거움.', a:'큐빅,큐빅지르코니아,cz,cubic zirconia'},
+
+    /* ---------- 금속 · 기타 ---------- */
+    {n:'알루미늄', zh:'鋁', en:'Aluminium', c:'metal', lo:2.68, hi:2.72, rep:2.70, h1:2.5, h2:3.0, note:'금속광택. 비중 2.7.', a:'알루미늄,알미늄,aluminium,aluminum'},
+    {n:'스테인리스', zh:'不鏽鋼', en:'Stainless Steel', c:'metal', lo:7.75, hi:8.00, rep:7.93, h1:5.5, h2:6.0, note:'304 7.93 / 316 7.98~8.00 / 2205 7.80.', a:'스테인리스,스텐,stainless'},
+    {n:'철', zh:'鐵', en:'Iron', c:'metal', lo:7.80, hi:7.90, rep:7.85, h1:4.0, h2:5.0, note:'자석에 붙음. 녹 발생.', a:'철,아이언,iron'},
+    {n:'구리', zh:'銅', en:'Copper', c:'metal', lo:8.80, hi:9.00, rep:8.90, h1:3.0, h2:3.0, note:'적색 광택. 산화 시 녹청.', a:'구리,동,copper'},
+    {n:'은', zh:'銀', en:'Silver', c:'metal', lo:10.30, hi:10.60, rep:10.45, h1:2.5, h2:3.0, note:'백색 광택. 변색 빠름.', a:'은,실버,silver'},
+    {n:'금', zh:'金', en:'Gold', c:'metal', lo:19.20, hi:19.40, rep:19.30, h1:2.5, h2:3.0, note:'18K는 15.5~15.8로 낮아짐.', a:'금,골드,gold'}
+  ];
+
+  /* ================= 유틸 ================= */
+  var root = document.getElementById('view-density');
+  var $ = function(id){ return root ? root.querySelector('#' + id) : null; };
+  var dryEl = $('dry'), wetEl = $('wet'), spillEl = $('spill');
+  var mode = 'suspended';
+  var curSG = null;
+
+  function num(el){
+    var v = (el.value || '').replace(/[^0-9.\-]/g, '');
+    v = v.replace(/-/g,'');
+    var parts = v.split('.');
+    if (parts.length > 2) v = parts[0] + '.' + parts.slice(1).join('');
+    var f = parseFloat(v);
+    return isFinite(f) ? f : NaN;
+  }
+
+  function fmt(n, d){
+    if (!isFinite(n)) return '−';
+    var s = n.toFixed(d === undefined ? 2 : d);
+    return s;
+  }
+
+  /* ================= 계산 ================= */
+  function computeSG(){
+    var A = num(dryEl);
+    if (!isFinite(A) || A <= 0) return null;
+    if (mode === 'suspended'){
+      var B = num(wetEl);
+      if (!isFinite(B) || B <= 0) return null;
+      if (B >= A) return {err:'물속 무게(B)는 공기 중 무게(A)보다 작아야 합니다'};
+      return {A:A, sg: A / (A - B), buoy: A - B};
+    }
+    var C = num(spillEl);
+    if (!isFinite(C) || C <= 0) return null;
+    return {A:A, sg: A / C, buoy: C};
+  }
+
+  function matches(sg){
+    var out = [];
+    M.forEach(function(m){
+      var d = 0;
+      if (sg < m.lo) d = m.lo - sg;
+      else if (sg > m.hi) d = sg - m.hi;
+      if (d <= 0.16){
+        out.push({m:m, d:d});
+      }
+    });
+    var RANK = {jade:0, gem:1, fake:2, metal:3};
+    out.sort(function(a,b){
+      if (a.d !== b.d) return a.d - b.d;
+      return RANK[a.m.c] - RANK[b.m.c];
+    });
+    return out;
+  }
+
+  function level(d){
+    if (d <= 0.0001) return {cls:'hit', txt:'일치', label:'범위 내'};
+    if (d <= 0.05) return {cls:'near', txt:'근접', label:'근접'};
+    return {cls:'far', txt:'낮음', label:'가능성 낮음'};
+  }
+
+  function zoneTip(sg){
+    if (sg < 1.05) return '물보다 가벼움 · 수지/호박 의심';
+    if (sg < 1.60) return '수지·플라스틱 구간';
+    if (sg < 2.10) return '상아·뼈 또는 경량 재질';
+    if (sg < 2.45) return '저비중 유리·단백석 구간';
+    if (sg < 2.60) return '일반유리 구간';
+    if (sg < 2.72) return '석영·옥수 계열 (비취 아님)';
+    if (sg < 2.85) return '수옥·마노 계열';
+    if (sg < 2.90) return '연옥보다 가벼움';
+    if (sg <= 3.02) return '연옥(和田玉) 표준 구간';
+    if (sg < 3.15) return '연옥 상한 초과 · 혼입 의심';
+    if (sg < 3.24) return '비취 하한 미달 · 충전(B货) 의심';
+    if (sg <= 3.43) return '비취(경옥) 표준 구간';
+    if (sg <= 3.50) return '유사광물 경계 (수칼슘알루미늄석·부산석·녹렴석)';
+    if (sg <= 4.10) return '보석급 광물 구간';
+    return '금속·고비중 재질 구간';
+  }
+
+  /* ================= 렌더 ================= */
+  function render(){
+    var r = computeSG();
+    var sgVal = $('sgVal'), verdict = $('verdict'), chips = $('chips');
+    var volEl = $('vol'), buoyEl = $('buoy'), waterEl = $('waterEq');
+    var cands = $('cands'), candDesc = $('candDesc');
+
+    if (mode === 'suspended'){
+      var A0 = num(dryEl), B0 = num(wetEl);
+      $('fml').textContent = (isFinite(A0) && isFinite(B0) && A0>0 && A0>B0)
+        ? fmt(A0/(A0-B0), 2) : '−';
+    } else {
+      var A1 = num(dryEl), C1 = num(spillEl);
+      $('fml2').textContent = (isFinite(A1) && isFinite(C1) && C1>0)
+        ? fmt(A1/C1, 2) : '−';
+    }
+
+    if (r && r.err){
+      sgVal.innerHTML = '−<small>g/cm³</small>';
+      verdict.textContent = r.err;
+      chips.innerHTML = '';
+      volEl.textContent = buoyEl.textContent = waterEl.textContent = '−';
+      cands.innerHTML = '<div class="empty">' + r.err + '</div>';
+      curSG = null; markTable(null); return;
+    }
+    if (!r){
+      sgVal.innerHTML = '−<small>g/cm³</small>';
+      verdict.textContent = '값을 입력하면 비중과 재질 후보가 표시됩니다';
+      chips.innerHTML = '';
+      volEl.textContent = buoyEl.textContent = waterEl.textContent = '−';
+      cands.innerHTML = '<div class="empty">①, ② 값을 입력하면 후보가 나타납니다</div>';
+      curSG = null; markTable(null); return;
+    }
+
+    curSG = r.sg;
+    sgVal.innerHTML = fmt(r.sg, 2) + '<small>g/cm³</small>';
+
+    var list = matches(r.sg);
+    if (hFilter !== 'any'){
+      list = list.filter(function(x){
+        return (hFilter === 'hard') ? (x.m.h1 >= 6.5) : (x.m.h2 < 6.5);
+      });
+    }
+    var hits = list.filter(function(x){ return x.d <= 0.0001; });
+    var nears = list.filter(function(x){ return x.d > 0.0001 && x.d <= 0.05; });
+
+    if (hits.length){
+      var best = hits.slice().sort(function(a,b){
+        return Math.abs(r.sg - (a.m.lo+a.m.hi)/2) - Math.abs(r.sg - (b.m.lo+b.m.hi)/2);
+      });
+      var main = best[0].m;
+      var others = best.slice(1,4).map(function(x){ return x.m.n; });
+      verdict.innerHTML = '<b>' + main.n + '</b> <span class="altline" style="display:inline">'
+        + main.zh + ' · ' + main.en + '</span> 계열로 판정됩니다'
+        + (others.length ? '<div class="altline">같은 비중 구간 후보: ' + others.join(' · ') + '</div>' : '');
+    } else if (nears.length){
+      verdict.innerHTML = '<b>' + nears[0].m.n + '</b> 등과 근접 — 경계값입니다';
+    } else {
+      verdict.textContent = '일치하는 재질이 없습니다 · 측정값을 다시 확인하세요';
+    }
+
+    chips.innerHTML = '';
+    if (r.sg < 1.0 || r.sg > 20){
+      chips.innerHTML = '<span class="chip">측정 오류 가능성</span>';
+    } else {
+      chips.innerHTML = '<span class="chip">' + zoneTip(r.sg) + '</span>'
+        + '<span class="chip">부력 ' + fmt(r.buoy,2) + ' g</span>'
+        + (hits.length ? '<span class="chip">일치 ' + hits.length + '종</span>' : '')
+        + (nears.length ? '<span class="chip">근접 ' + nears.length + '종</span>' : '');
+    }
+
+    volEl.textContent = fmt(r.A / (r.sg * 1.0), 2) + ' cm³';
+    buoyEl.textContent = fmt(r.buoy, 2) + ' g';
+    waterEl.textContent = fmt(r.A / r.sg, 2) + ' g';
+
+    if (!list.length){
+      cands.innerHTML = (hFilter !== 'any')
+        ? '<div class="empty">비중 ±0.16 + 경도 조건을 모두 만족하는 재질이 없습니다<br>경도 단서를 “모름”으로 두고 다시 보세요</div>'
+        : '<div class="empty">±0.16 이내에 해당하는 재질이 없습니다<br>무게를 다시 확인하거나 측정 방법을 점검하세요</div>';
+      candDesc.textContent = '일치 후보 없음';
+    } else {
+      cands.innerHTML = list.slice(0,7).map(function(x){
+        var lv = level(x.d);
+        return '<div class="cand">'
+          + '<div class="fit ' + lv.cls + '"><b>' + lv.txt + '</b>' + (x.d>0? ('Δ' + x.d.toFixed(2)) : '') + '</div>'
+          + '<div class="body">'
+          +   '<div class="name">' + x.m.n + '</div>'
+          +   '<div class="name-sub">' + x.m.zh + ' · ' + x.m.en + '</div>'
+          +   '<div class="rng">' + x.m.lo.toFixed(2) + ' – ' + x.m.hi.toFixed(2) + ' g/cm³ · 경도 ' + hStr(x.m) + '</div>'
+          +   '<div class="note">' + x.m.note + '</div>'
+          + '</div>'
+          + '<div class="tag ' + lv.cls + '">' + CATS[x.m.c] + '</div>'
+        + '</div>';
+      }).join('');
+      candDesc.textContent = '비중 ' + fmt(r.sg,2) + ' 기준 · 일치 ' + hits.length + '종 / 근접 ' + nears.length + '종';
+    }
+
+    markTable(r.sg);
+  }
+
+  /* ================= 참고표 ================= */
+  var filterCat = 'all';
+  var query = '';
+  var hFilter = 'any';
+
+  function repOf(m){ return (m.rep !== undefined) ? m.rep : (m.lo + m.hi) / 2; }
+  function hStr(m){
+    var a = m.h1, b = m.h2;
+    var f = function(v){ return (v % 1 === 0) ? String(v) : v.toFixed(1); };
+    return (a === b) ? f(a) : f(a) + '–' + f(b);
+  }
+
+  function buildTable(){
+    var tb = $('tbody');
+    var rows = M.filter(function(m){
+      if (filterCat !== 'all' && m.c !== filterCat) return false;
+      if (query){
+        var hay = (m.n + ' ' + m.zh + ' ' + m.en + ' ' + (m.a || '')).toLowerCase();
+        if (hay.indexOf(query.toLowerCase()) < 0) return false;
+      }
+      return true;
+    });
+
+    var html = '';
+    ['jade','gem','fake','metal'].forEach(function(cat){
+      var grp = rows.filter(function(m){ return m.c === cat; });
+      if (!grp.length) return;
+      html += '<tr class="catrow"><td colspan="4">' + CATS[cat] + '</td></tr>';
+      grp.forEach(function(m){
+        html += '<tr data-lo="' + m.lo + '" data-hi="' + m.hi + '">'
+          + '<td class="nm"><div class="ko">' + m.n + '</div>'
+          + '<div class="meta">' + m.zh + ' · ' + m.en + '</div></td>'
+          + '<td class="num">' + m.lo.toFixed(2) + '–' + m.hi.toFixed(2) + '</td>'
+          + '<td class="num">' + repOf(m).toFixed(2) + '</td>'
+          + '<td class="num hd">' + hStr(m) + '</td>'
+          + '</tr>';
+      });
+    });
+    if (!html) html = '<tr><td colspan="4" class="muted" style="padding:22px;text-align:center">검색 결과가 없습니다</td></tr>';
+    tb.innerHTML = html;
+    markTable(curSG);
+  }
+
+  function markTable(sg){
+    var trs = $('tbody').querySelectorAll('tr[data-lo]');
+    Array.prototype.forEach.call(trs, function(tr){
+      tr.classList.remove('hit','near');
+      if (sg === null || !isFinite(sg)) return;
+      var lo = parseFloat(tr.getAttribute('data-lo')), hi = parseFloat(tr.getAttribute('data-hi'));
+      var d = sg < lo ? lo - sg : (sg > hi ? sg - hi : 0);
+      if (d <= 0.0001) tr.classList.add('hit');
+      else if (d <= 0.05) tr.classList.add('near');
+    });
+  }
+
+  /* ================= 이벤트 ================= */
+  [dryEl, wetEl, spillEl].forEach(function(el){
+    el.addEventListener('input', function(){
+      var v = el.value.replace(/[^0-9.]/g,'');
+      var p = v.split('.');
+      if (p.length > 2) v = p[0] + '.' + p.slice(1).join('');
+      if (v !== el.value) el.value = v;
+      render();
+    });
+  });
+
+  Array.prototype.forEach.call(root.querySelectorAll('.tab'), function(t){
+    t.addEventListener('click', function(){
+      Array.prototype.forEach.call(root.querySelectorAll('.tab'), function(x){ x.classList.remove('on'); });
+      t.classList.add('on');
+      mode = t.getAttribute('data-mode');
+      $('pane-suspended').style.display = mode === 'suspended' ? 'block' : 'none';
+      $('pane-overflow').style.display = mode === 'overflow' ? 'block' : 'none';
+      render();
+    });
+  });
+
+  Array.prototype.forEach.call(root.querySelectorAll('.hbtn'), function(b){
+    b.addEventListener('click', function(){
+      Array.prototype.forEach.call(root.querySelectorAll('.hbtn'), function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      hFilter = b.getAttribute('data-h');
+      render();
+    });
+  });
+
+  Array.prototype.forEach.call(root.querySelectorAll('.fbtn'), function(b){
+    b.addEventListener('click', function(){
+      Array.prototype.forEach.call(root.querySelectorAll('.fbtn'), function(x){ x.classList.remove('on'); });
+      b.classList.add('on');
+      filterCat = b.getAttribute('data-cat');
+      buildTable();
+    });
+  });
+
+  $('q').addEventListener('input', function(){ query = this.value; buildTable(); });
+
+  document.addEventListener('jade:view', function(e){ if (e.detail === 'density'){ render(); } });
+
+  buildTable();
+  render();
+})();
 </script>
 </body>
 </html>
