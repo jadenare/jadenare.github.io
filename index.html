@@ -980,6 +980,13 @@ body{
     color:#8a7a5c;cursor:pointer;line-height:1.2;
   }
   .v-size .spare-seg button.on{background:#2f6149;color:#f4ecd6;}
+  .v-size .pat-seg{display:inline-flex;border:1px solid rgba(169,138,82,.4);border-radius:10px;overflow:hidden;background:#fbf8f0;margin-top:9px;}
+  .v-size .pat-seg button{
+    padding:7px 14px;border:0;background:transparent;font-family:inherit;font-size:11.5px;font-weight:700;
+    color:#8a7a5c;cursor:pointer;line-height:1.2;white-space:nowrap;
+  }
+  .v-size .pat-seg button.on{background:#2f6149;color:#f4ecd6;}
+  .v-size .pat-seg-hint{margin:7px 0 0;font-size:11px;line-height:1.5;color:#8a7a5c;letter-spacing:.01em;}
   .v-size .spare-input{display:inline-flex;align-items:baseline;gap:4px;padding:7px 12px;border-radius:10px;background:#fbf8f0;border:1px solid rgba(169,138,82,.4);}
   .v-size .spare-input.off{display:none;}
   .v-size .spare-input input{
@@ -2269,6 +2276,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, .tool-card:focus-vis
         </div>
       </div>
     </div>
+
+    <div class="field-label"><span>배열 기준</span><span class="val" id="patModeLabel">치수 우선</span></div>
+    <div class="pat-seg" id="patModeSeg" role="group" aria-label="배열 기준 선택">
+      <button type="button" data-p="fit" class="on">치수 우선</button>
+      <button type="button" data-p="ratio">비율 고정</button>
+    </div>
+    <p class="pat-seg-hint" id="patModeHint">손목 치수에 가장 잘 맞는 배열을 자동으로 찾습니다.</p>
 
     <div class="field-label"><span>배열 패턴</span><span class="val" id="patLabel">메인 1 · 사이드 2</span></div>
     <div class="pat-row">
@@ -3966,11 +3980,12 @@ const state = {
   patM: 1,
   patS: 2,
   spareMode: 'auto',
-  spare: 2
+  spare: 2,
+  patMode: 'fit'
 };
 
 /* 배열 목록 구성: 메인 patM개 + 사이드 patS개가 한 묶음 */
-function buildPattern(targetMM, dM, dS, patM, patS){
+function buildPattern(targetMM, dM, dS, patM, patS, mode){
   const hasSide = dS > 0 && patS > 0;
 
   if (!hasSide){
@@ -3981,32 +3996,47 @@ function buildPattern(targetMM, dM, dS, patM, patS){
              counts: { M: n0, S: 0 }, mean: dM, unitLen: dM };
   }
 
-  /* 반복 횟수와 메인 채움 개수를 함께 탐색해 목표 내경에 가장 가까운 배열을 찾음 */
+  /* 패턴을 온전히 반복하는 배열(f=0)을 먼저 찾고, 메인을 덧붙이는 배열은
+     1mm 이상 확실히 잘 맞을 때만 채택 → 비율이 깨지지 않도록 함 */
   const unitLen = patM * dM + patS * dS;
-  let best = null;
+  const evalCombo = (r, f) => {
+    const n = r * (patM + patS) + f;
+    const used = r * unitLen + f * dM;
+    const mean = used / n;
+    const inner = innerCirc(n, mean);
+    return { r: r, f: f, n: n, used: used, mean: mean, inner: inner, err: Math.abs(inner - targetMM) };
+  };
+  let bestPure = null;
+  for (let r = 1; r <= 80; r++){
+    const c = evalCombo(r, 0);
+    if (!bestPure || c.err < bestPure.err) bestPure = c;
+  }
+  let bestFill = null;
   for (let r = 1; r <= 80; r++){
     for (let f = 0; f <= 6; f++){
-      const n = r * (patM + patS) + f;
-      const used = r * unitLen + f * dM;
-      const mean = used / n;
-      const inner = innerCirc(n, mean);
-      const err = Math.abs(inner - targetMM);
-      /* 오차가 같으면 채움 비즈가 적은 쪽(=패턴을 더 온전히 반복하는 쪽)을 우선 */
-      if (!best || err < best.err - 1e-6 ||
-          (Math.abs(err - best.err) <= 1e-6 && f < best.f) ||
-          (Math.abs(err - best.err) <= 1e-6 && f === best.f && r > best.r)) {
-        best = { r: r, f: f, n: n, used: used, mean: mean, inner: inner, err: err };
+      const c = evalCombo(r, f);
+      /* 오차가 같으면 채움 비즈가 적은 쪽을 우선 */
+      if (!bestFill || c.err < bestFill.err - 1e-6 ||
+          (Math.abs(c.err - bestFill.err) <= 1e-6 && (c.f < bestFill.f || (c.f === bestFill.f && c.r > bestFill.r)))) {
+        bestFill = c;
       }
     }
   }
+  const best = (mode === 'ratio' || bestFill.err > bestPure.err - 2.5) ? bestPure : bestFill;
 
   const reps = best.r;
+  /* 남는 메인 비즈는 끝에 몰지 않고 반복 사이사이에 고르게 끼워 넣음 */
+  const addAt = new Array(reps).fill(0);
+  for (let k = 0; k < best.f; k++){
+    const idx = Math.min(reps - 1, Math.floor((k + 0.5) * reps / best.f));
+    addAt[idx]++;
+  }
   const list = [];
   for (let i = 0; i < reps; i++){
     for (let a = 0; a < patM; a++) list.push('M');
     for (let b = 0; b < patS; b++) list.push('S');
+    for (let k = 0; k < addAt[i]; k++) list.push('M');
   }
-  for (let k = 0; k < best.f; k++) list.push('M');
   const used = best.used;
 
   let cM = 0, cS = 0;
@@ -4035,6 +4065,8 @@ try{
   if (suRaw !== null){ const su = Number(suRaw); if (isFinite(su) && su >= 0) state.sideUnit = su; }
   const pmRaw = localStorage.getItem('jn-bead-pat-m');
   if (pmRaw !== null){ const pm = Number(pmRaw); if (isFinite(pm) && pm >= 1) state.patM = Math.min(6, pm); }
+  const pmode = localStorage.getItem('jn-pat-mode');
+  if (pmode === 'ratio' || pmode === 'fit') state.patMode = pmode;
   const psRaw = localStorage.getItem('jn-bead-pat-s');
   if (psRaw !== null){ const ps = Number(psRaw); if (isFinite(ps) && ps >= 1) state.patS = Math.min(6, ps); }
 }catch(e){}
@@ -4219,6 +4251,33 @@ function paintPattern(){
       ? ('메인 ' + state.patM + '개 + 사이드 ' + state.patS + '개가 한 묶음으로 반복됩니다.')
       : '사이드 비즈를 선택하면 패턴 배치가 적용됩니다. 지금은 메인 비즈만 배치됩니다.';
   }
+  paintPatMode();
+}
+
+/* 배열 기준: 치수 우선 / 비율 고정 */
+function paintPatMode(){
+  const seg = document.getElementById('patModeSeg');
+  const lab = document.getElementById('patModeLabel');
+  const hint = document.getElementById('patModeHint');
+  if (seg) seg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.p === state.patMode));
+  if (lab) lab.textContent = state.patMode === 'ratio' ? '비율 고정' : '치수 우선';
+  if (hint){
+    hint.textContent = state.patMode === 'ratio'
+      ? '선택한 비율을 100% 유지합니다. 남는 길이는 조정하지 않아 내경이 손목과 몇 mm 차이날 수 있습니다.'
+      : '손목 치수에 가장 잘 맞는 배열을 자동으로 찾습니다. 남는 비즈는 반복 사이에 고르게 배치됩니다.';
+  }
+}
+
+const patModeSeg = document.getElementById('patModeSeg');
+if (patModeSeg){
+  patModeSeg.addEventListener('click', e=>{
+    const b = e.target.closest('button');
+    if (!b) return;
+    state.patMode = b.dataset.p === 'ratio' ? 'ratio' : 'fit';
+    try{ localStorage.setItem('jn-pat-mode', state.patMode); }catch(err){}
+    paintPatMode();
+    renderBracelet();
+  });
 }
 
 const patRow = patSideCtl ? patSideCtl.parentElement : null;
@@ -4336,7 +4395,7 @@ function renderBracelet(){
   const wristMM = state.wrist[state.gender] * 10;
   const target = wristMM + EASE_MM;
   const dS = state.sideD || 0;
-  const built = buildPattern(target, d, dS, state.patM, state.patS);
+  const built = buildPattern(target, d, dS, state.patM, state.patS, state.patMode);
   const n = built.n;
   const inner = innerCirc(n, built.mean);
   const outer = inner + 2 * built.mean;
@@ -4370,13 +4429,17 @@ function renderBracelet(){
   }
 
   const diffCM = fmt1((inner - wristMM) / 10);
-  const feel = (inner - wristMM) < 0 ? '조금 타이트' : ((inner - wristMM) < 6 ? '딱 맞음' : '여유 있음');
+  const feel = (inner - wristMM) < 0 ? '조금 타이트합니다' : ((inner - wristMM) < 6 ? '딱 맞습니다' : '여유가 있습니다');
   const fillN = built.counts.S ? (built.n - built.reps * (state.patM + state.patS)) : 0;
   const patTxt = built.counts.S
-    ? ('메인 ' + state.patM + ' + 사이드 ' + state.patS + ' · ' + built.reps + '회 반복' + (fillN > 0 ? ' + 메인 ' + fillN + '개 채움' : ''))
+    ? ('메인 ' + state.patM + ' + 사이드 ' + state.patS + ' · ' + built.reps + '회 반복' + (fillN > 0 ? ' (메인 ' + fillN + '개는 반복 사이에 고르게 배치)' : ''))
     : '균일 배열';
+  const gapMM = Math.abs(inner - wristMM);
+  const ratioWarn = (state.patMode === 'ratio' && built.counts.S && gapMM >= 3)
+    ? ' 비율을 그대로 유지한 결과라 손목과 ' + Math.round(gapMM) + 'mm 차이가 납니다. 치수 우선으로 바꾸면 더 잘 맞습니다.'
+    : '';
   document.getElementById('outNote').textContent =
-    `${patTxt} 기준 완성 내경 ${fmt1(inner/10)}cm로 손목보다 ${diffCM}cm ${feel}입니다. 실제로는 ±1개 차이가 날 수 있어 여유분 ${spare}개를 함께 준비하세요.`;
+    `${patTxt} 기준 완성 내경 ${fmt1(inner/10)}cm로 손목보다 ${diffCM}cm ${feel}. 실제로는 ±1개 차이가 날 수 있어 여유분 ${spare}개를 함께 준비하세요.` + ratioWarn;
   document.getElementById('outGenderTag').textContent =
     (state.gender === 'male' ? 'MALE' : 'FEMALE') + ' · ' + fmt1(state.wrist[state.gender]) + ' CM';
 
