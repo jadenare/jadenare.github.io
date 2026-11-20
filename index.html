@@ -3991,7 +3991,12 @@ function buildPattern(targetMM, dM, dS, patM, patS){
       const mean = used / n;
       const inner = innerCirc(n, mean);
       const err = Math.abs(inner - targetMM);
-      if (!best || err < best.err) best = { r: r, f: f, n: n, used: used, mean: mean, inner: inner, err: err };
+      /* 오차가 같으면 채움 비즈가 적은 쪽(=패턴을 더 온전히 반복하는 쪽)을 우선 */
+      if (!best || err < best.err - 1e-6 ||
+          (Math.abs(err - best.err) <= 1e-6 && f < best.f) ||
+          (Math.abs(err - best.err) <= 1e-6 && f === best.f && r > best.r)) {
+        best = { r: r, f: f, n: n, used: used, mean: mean, inner: inner, err: err };
+      }
     }
   }
 
