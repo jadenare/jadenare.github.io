@@ -973,6 +973,22 @@ body{
   .v-size .bead-unit-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
   .v-size .bead-unit-wrap .u{font-size:11px;color:#7c6a4a;font-weight:700;}
 
+  .v-size .spare-row{display:flex;align-items:center;gap:8px;margin-top:9px;flex-wrap:wrap;}
+  .v-size .spare-seg{display:inline-flex;border:1px solid rgba(169,138,82,.4);border-radius:10px;overflow:hidden;background:#fbf8f0;}
+  .v-size .spare-seg button{
+    padding:7px 13px;border:0;background:transparent;font-family:inherit;font-size:11.5px;font-weight:700;
+    color:#8a7a5c;cursor:pointer;line-height:1.2;
+  }
+  .v-size .spare-seg button.on{background:#2f6149;color:#f4ecd6;}
+  .v-size .spare-input{display:inline-flex;align-items:baseline;gap:4px;padding:7px 12px;border-radius:10px;background:#fbf8f0;border:1px solid rgba(169,138,82,.4);}
+  .v-size .spare-input.off{display:none;}
+  .v-size .spare-input input{
+    width:46px;text-align:right;border:0;background:transparent;outline:none;
+    font-family:var(--serif);font-weight:800;font-size:16px;color:#1b3a30;
+    -webkit-appearance:none;appearance:textfield;
+  }
+  .v-size .spare-input span{font-size:11px;color:#7c6a4a;font-weight:700;}
+
   .v-size .res-cost{
     margin-top:12px;padding:11px 13px;border-radius:12px;position:relative;z-index:1;
     background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);
@@ -1430,14 +1446,17 @@ body{
 
 /* ===== 오늘 시세 · 환율 ===== */
 .market{
-  display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;gap:7px;
+  display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;gap:6px;
   margin-top:auto;padding-top:9px;
   letter-spacing:.02em;white-space:nowrap;overflow:hidden;
 }
-.market .mk{display:inline-flex;align-items:baseline;gap:3px;font-size:9px;color:var(--ink-soft);}
+.market .mk{display:inline-flex;align-items:baseline;gap:2px;font-size:9px;color:var(--ink-soft);}
 .market .mk i{font-style:normal;opacity:.72;font-size:8.5px;}
 .market .mk b{font-family:var(--serif);font-size:10.5px;font-weight:700;color:var(--jade-deep);font-variant-numeric:tabular-nums;letter-spacing:0;}
 .market .mk-sep{width:1px;height:10px;background:rgba(169,138,82,.4);flex:0 0 auto;}
+.market .mk-time{margin-left:auto;font-size:7.5px;letter-spacing:0;color:var(--ink-soft);opacity:.62;letter-spacing:0;white-space:nowrap;flex:0 0 auto;}
+.market{cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.market.loading{opacity:.55;}
 
 .home{padding:16px 18px 18px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;justify-content:center;}
 .wordmark{margin-bottom:7px;padding-bottom:4px;font-size:10.5px;letter-spacing:.44em;text-indent:.44em;}
@@ -1463,6 +1482,9 @@ body{
 .install-chip:hover{background:#f2f6ee;border-color:rgba(63,125,95,.5);}
 .home-foot{margin-top:8px;font-size:9.5px;line-height:1.5;}
 /* ===== 매우 낮은 화면(≤600px) 추가 압축 ===== */
+:focus-visible{outline:2px solid rgba(47,97,73,.55);outline-offset:2px;}
+button:focus-visible, a:focus-visible, input:focus-visible, .tool-card:focus-visible{border-radius:10px;}
+
 /* ===== 가격 이력 & 비교 ===== */
 .v-price .hist-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px;}
 .v-price .hist-actions .action-btn{margin:0;flex:0 0 auto;}
@@ -1584,7 +1606,7 @@ body{
       </button>
       </div>
 
-      <div class="market" id="market">
+      <div class="market" id="market" role="button" tabindex="0" aria-label="오늘 시세 새로고침">
         <span class="mk"><i>금</i><b id="mkGold">–</b><i>원/g</i></span>
         <span class="mk-sep"></span>
         <span class="mk"><i>은</i><b id="mkSilver">–</b><i>원/g</i></span>
@@ -1592,6 +1614,7 @@ body{
         <span class="mk"><i>1CNY</i><b id="mkCny">–</b><i>원</i></span>
         <span class="mk-sep"></span>
         <span class="mk"><i>1,000원</i><b id="mkKrw">–</b><i>CNY</i></span>
+        <span class="mk-time" id="mkTime">–</span>
       </div>
 
       <div class="links">
@@ -1617,7 +1640,7 @@ body{
       <div class="home-foot">
         옥조각 창작소 · 참고용 계산 시뮬레이션<br>
         앱으로 설치 시 오프라인으로도 이용 가능합니다.<br>
-        <b>JADE NARE</b> · ver 2.6
+        <b>JADE NARE</b> · ver 2.7
       </div>
     </div>
   </div>
@@ -1838,7 +1861,7 @@ body{
       <div class="sf-head">
         <span class="sf-label">가로</span>
         <span class="sf-manual">
-          <input type="number" class="sf-input" id="wIn" value="40" min="1" max="300" step="1" inputmode="numeric" aria-label="가로 (mm)">
+          <input type="number" class="sf-input" id="wIn" value="40" min="1" max="300" step="1" inputmode="numeric" enterkeyhint="done" aria-label="가로 (mm)">
           <span class="sf-unit">mm</span>
         </span>
       </div>
@@ -1856,7 +1879,7 @@ body{
       <div class="sf-head">
         <span class="sf-label">세로</span>
         <span class="sf-manual">
-          <input type="number" class="sf-input" id="hIn" value="70" min="1" max="300" step="1" inputmode="numeric" aria-label="세로 (mm)">
+          <input type="number" class="sf-input" id="hIn" value="70" min="1" max="300" step="1" inputmode="numeric" enterkeyhint="done" aria-label="세로 (mm)">
           <span class="sf-unit">mm</span>
         </span>
       </div>
@@ -1874,7 +1897,7 @@ body{
       <div class="sf-head">
         <span class="sf-label">두께 / 높이</span>
         <span class="sf-manual">
-          <input type="number" class="sf-input" id="tIn" value="10" min="1" max="300" step="1" inputmode="numeric" aria-label="두께 / 높이 (mm)">
+          <input type="number" class="sf-input" id="tIn" value="10" min="1" max="300" step="1" inputmode="numeric" enterkeyhint="done" aria-label="두께 / 높이 (mm)">
           <span class="sf-unit">mm</span>
         </span>
       </div>
@@ -1898,7 +1921,7 @@ body{
 
     <div style="margin-top:16px;">
       <label>기타 부자재 비용 (원)</label>
-      <input type="number" id="etcCost" value="0">
+      <input type="text" id="etcCost" value="0" inputmode="numeric" enterkeyhint="done" autocomplete="off" aria-label="부자재 비용 (원)">
       <small>부자재의 가격을 입력하세요.</small>
     </div>
   </section>
@@ -2138,14 +2161,26 @@ body{
 
     <div class="field-label"><span>손목 둘레</span><span class="val" id="wristLabel">15.5 cm</span></div>
     <div class="slider-row">
-      <input type="range" id="wristRange" min="13" max="21" step="0.5" value="15.5">
+      <input type="range" id="wristRange" min="13" max="21" step="0.5" value="15.5" aria-label="손목 둘레">
     </div>
     <div class="slider-hint"><span>13 cm · 가는 손목</span><span>21 cm · 굵은 손목</span></div>
 
     <div class="field-label"><span>비즈 개당 단가 (원)</span></div>
     <div class="bead-unit-wrap">
-      <input type="number" id="beadUnit" value="0" min="0" max="1000000" step="100" inputmode="numeric" aria-label="비즈 개당 단가">
+      <input type="text" id="beadUnit" value="0" inputmode="numeric" enterkeyhint="done" autocomplete="off" aria-label="비즈 개당 단가 (원)">
       <span class="u">원</span>
+    </div>
+
+    <div class="field-label"><span>여유분 (예비 비즈)</span><span class="val" id="spareLabel">자동 · 2개</span></div>
+    <div class="spare-row">
+      <div class="spare-seg" id="spareSeg" role="group" aria-label="여유분 설정 방식">
+        <button type="button" data-s="auto" class="on">자동</button>
+        <button type="button" data-s="manual">직접 입력</button>
+      </div>
+      <div class="spare-input off" id="spareInputWrap">
+        <input type="text" id="spareInput" value="2" inputmode="numeric" enterkeyhint="done" autocomplete="off" aria-label="여유분 개수">
+        <span>개</span>
+      </div>
     </div>
 
     <div class="viz">
@@ -2535,6 +2570,8 @@ const EXCHANGE_API_URL = 'https://api.exchangerate-api.com/v4/latest/CNY';
 const DEFAULT_EXCHANGE_RATE = 192;
 const DEFAULT_RMB_PRICE = 1.15;
 const WHITE_BASE = 0.2; // 흰색 바탕 기준 배율 (참고용)
+
+function numClean(v){ return Number(String(v == null ? '' : v).replace(/[^0-9.-]/g, '')) || 0; }
 
 const els = {
   basePrice: document.getElementById('basePrice'),
@@ -2975,7 +3012,7 @@ function calculatePrice(pricePerUnit) {
   /* 크기 프리미엄 자동 계산 (최장변 기준 연속 스케일) */
   const sizeP = autoSizePremium(Math.max(w, h, t));
   els.sizePremium.value = sizeP;
-  const etc = Number(els.etcCost.value)||0;
+  const etc = numClean(els.etcCost.value);
   const rawQ = Number(els.rawQuality.value)||1;
   const cutQ = Number(els.cutQuality.value)||1;
 
@@ -3052,7 +3089,7 @@ function getSummaryData() {
     ['광택연마', getActiveText('polishGroup')],
     ['하자', getDefectText()],
   ];
-  const etc = Number(els.etcCost.value) || 0;
+  const etc = numClean(els.etcCost.value);
   rows.push(['부자재', etc > 0 ? etc.toLocaleString('ko-KR') + ' 원' : '—']);
   return rows;
 }
@@ -3402,6 +3439,12 @@ function init() {
   document.querySelectorAll('input[type="number"]').forEach(f => {
     f.addEventListener('input', () => { updateTargetPrice(); calcPrice(); updateSummary(); });
   });
+
+  /* 부자재 비용(원화 · 콤마 입력) */
+  if (els.etcCost){
+    els.etcCost.addEventListener('input', () => { updateTargetPrice(); calcPrice(); updateSummary(); });
+    els.etcCost.addEventListener('change', () => { updateTargetPrice(); calcPrice(); updateSummary(); });
+  }
 
   document.getElementById('resetAllBtn').onclick = resetAll;
   document.getElementById('exportPngBtn').onclick = exportResultPng;
@@ -3776,7 +3819,9 @@ const state = {
   gender: 'female',
   bead: 8,
   wrist: { male: 17.5, female: 15.5 },
-  unit: 0
+  unit: 0,
+  spareMode: 'auto',
+  spare: 2
 };
 
 /* 비즈 단가 저장/복원 */
@@ -3784,6 +3829,10 @@ const UNIT_KEY = 'jn-bead-unit';
 try{
   const savedUnit = Number(localStorage.getItem(UNIT_KEY));
   if (isFinite(savedUnit) && savedUnit >= 0) state.unit = savedUnit;
+  const sm = localStorage.getItem('jn-spare-mode');
+  if (sm === 'manual' || sm === 'auto') state.spareMode = sm;
+  const sv = Number(localStorage.getItem('jn-spare-value'));
+  if (isFinite(sv) && sv >= 0) state.spare = sv;
 }catch(e){}
 
 const wheel    = document.getElementById('beadWheel');
@@ -3856,12 +3905,12 @@ wristRange.addEventListener('input', ()=>{
 /* 비즈 개당 단가 입력 */
 const beadUnitInput = document.getElementById('beadUnit');
 if (beadUnitInput){
-  beadUnitInput.value = state.unit || 0;
+  beadUnitInput.value = state.unit ? Number(state.unit).toLocaleString('ko-KR') : '0';
   const applyUnit = (clamp)=>{
-    let v = Math.round(Number(beadUnitInput.value));
+    let v = Math.round(Number(String(beadUnitInput.value).replace(/[^0-9]/g, '')));
     if (!isFinite(v)){ if (clamp) v = 0; else return; }
     v = Math.max(0, Math.min(1000000, v));
-    if (clamp) beadUnitInput.value = v;
+    if (clamp) beadUnitInput.value = Number(v).toLocaleString('ko-KR');
     state.unit = v;
     try{ localStorage.setItem(UNIT_KEY, String(v)); }catch(e){}
     renderBracelet();
@@ -3870,6 +3919,53 @@ if (beadUnitInput){
   beadUnitInput.addEventListener('change', ()=>applyUnit(true));
   beadUnitInput.addEventListener('blur', ()=>applyUnit(true));
 }
+
+/* 여유분 자동 / 직접 */
+const spareSeg   = document.getElementById('spareSeg');
+const spareWrap  = document.getElementById('spareInputWrap');
+const spareInput = document.getElementById('spareInput');
+const spareLabel = document.getElementById('spareLabel');
+
+function paintSpare(){
+  if (spareSeg) spareSeg.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.s === state.spareMode));
+  if (spareWrap) spareWrap.classList.toggle('off', state.spareMode !== 'manual');
+  if (spareInput) spareInput.value = String(state.spare);
+  if (spareLabel){
+    const n = Number(document.getElementById('outCount').textContent) || 0;
+    const d = state.bead;
+    const sp = (state.spareMode === 'manual')
+      ? Math.max(0, Math.min(20, Number(state.spare) || 0))
+      : spareBeads(n, d);
+    spareLabel.textContent = (state.spareMode === 'manual' ? '직접' : '자동') + ' · ' + sp + '개';
+  }
+}
+
+if (spareSeg){
+  spareSeg.addEventListener('click', (e)=>{
+    const b = e.target.closest('button');
+    if (!b) return;
+    state.spareMode = b.dataset.s;
+    try{ localStorage.setItem('jn-spare-mode', state.spareMode); }catch(err){}
+    paintSpare();
+    renderBracelet();
+  });
+}
+if (spareInput){
+  const applySpare = (clamp)=>{
+    let v = Math.round(Number(String(spareInput.value).replace(/[^0-9]/g, '')));
+    if (!isFinite(v)){ if (clamp) v = 0; else return; }
+    v = Math.max(0, Math.min(20, v));
+    if (clamp) spareInput.value = String(v);
+    state.spare = v;
+    try{ localStorage.setItem('jn-spare-value', String(v)); }catch(err){}
+    paintSpare();
+    renderBracelet();
+  };
+  spareInput.addEventListener('input', ()=>applySpare(false));
+  spareInput.addEventListener('change', ()=>applySpare(true));
+  spareInput.addEventListener('blur', ()=>applySpare(true));
+}
+paintSpare();
 
 
 /* 비즈 링 시각화 */
@@ -3912,7 +4008,9 @@ function renderBracelet(){
   document.getElementById('outInner').textContent = fmt1(inner / 10) + ' cm';
   document.getElementById('outOuter').textContent = fmt1(outer / 10) + ' cm';
   document.getElementById('outLength').textContent = fmt1(n * d / 10) + ' cm';
-  const spare = spareBeads(n, d);
+  const spare = (state.spareMode === 'manual')
+    ? Math.max(0, Math.min(20, Number(state.spare) || 0))
+    : spareBeads(n, d);
   document.getElementById('outPrep').textContent = (n + spare) + ' 개';
 
   const diffCM = fmt1((inner - wristMM) / 10);
@@ -3925,6 +4023,10 @@ function renderBracelet(){
   drawRing(n, d);
   renderTable();
   renderBeadCost(n, spare, d);
+  if (typeof paintSpare === 'function' && document.getElementById('spareLabel')){
+    document.getElementById('spareLabel').textContent =
+      (state.spareMode === 'manual' ? '직접' : '자동') + ' · ' + spare + '개';
+  }
 }
 
 /* ===== 여유분(예비 비즈) 자동 산정 ===== */
@@ -4699,6 +4801,19 @@ function one(n){
   return n.toFixed(2);
 }
 
+function timeText(){
+  try{
+    var t = Number(localStorage.getItem(CEXP) || 0);
+    if (!t) return '–';
+    var d = new Date(t);
+    return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) + ' 갱신';
+  }catch(e){ return '–'; }
+}
+function paintTime(){
+  var el = $('mkTime');
+  if (el) el.textContent = timeText();
+}
+
 function paint(d){
   if (!d) return;
   var g = $('mkGold'), s = $('mkSilver'), c = $('mkCny'), k = $('mkKrw');
@@ -4761,6 +4876,7 @@ function load(){
         localStorage.setItem(CKEY, JSON.stringify(d));
         localStorage.setItem(CEXP, String(Date.now()));
       }catch(e){}
+      paintTime();
     } else if (!retried){
       retried = true;
       setTimeout(load, 2000);   // 일시 실패 시 1회만 재시도
@@ -4769,7 +4885,27 @@ function load(){
 }
 
 paint(cached());
+paintTime();
 if (!fresh()) load();
+
+var mk = $('market');
+if (mk){
+  var refreshing = false;
+  var doRefresh = function(){
+    if (refreshing) return;
+    refreshing = true;
+    retried = false;
+    mk.classList.add('loading');
+    var t = $('mkTime');
+    if (t) t.textContent = '갱신 중…';
+    load();
+    setTimeout(function(){ mk.classList.remove('loading'); refreshing = false; }, 1200);
+  };
+  mk.addEventListener('click', doRefresh);
+  mk.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); doRefresh(); }
+  });
+}
 
 /* ---------- QR 공유 ---------- */
 var sheet = $('qrSheet'), img = $('qrImg'), urlEl = $('qrUrl'), sub = $('qrSheetSub');
@@ -4809,6 +4945,35 @@ if (sheet) sheet.addEventListener('click', function(e){ if (e.target.dataset.qcl
 document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeQr(); });
 
 })();
+</script>
+
+<script>
+/* 모바일 키보드 '완료' → 입력 확정 후 키보드 닫기 */
+document.addEventListener('keydown', function(e){
+  if (e.key !== 'Enter') return;
+  var el = e.target;
+  if (!el || (el.tagName !== 'INPUT')) return;
+  if (el.type === 'range' || el.type === 'checkbox' || el.type === 'radio') return;
+  e.preventDefault();
+  el.blur();
+}, true);
+
+/* 부자재 비용 등 원화 입력 천단위 콤마 */
+document.addEventListener('DOMContentLoaded', function(){
+  function money(el, max){
+    if (!el) return;
+    var fmt = function(){ 
+      var v = Math.round(Number(String(el.value).replace(/[^0-9]/g, '')));
+      if (!isFinite(v)) v = 0;
+      v = Math.max(0, Math.min(max || 100000000, v));
+      el.value = Number(v).toLocaleString('ko-KR');
+    };
+    el.value = Number(String(el.value).replace(/[^0-9]/g,'') || 0).toLocaleString('ko-KR');
+    el.addEventListener('blur', fmt);
+    el.addEventListener('change', fmt);
+  }
+  money(document.getElementById('etcCost'), 100000000);
+});
 </script>
 </body>
 </html>
