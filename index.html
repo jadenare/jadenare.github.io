@@ -1003,8 +1003,8 @@ body{
   .v-size .res-cost-guide.off{display:none;}
 
   .v-size .res-gender-tag{
-    position:absolute;right:14px;bottom:12px;font-size:10px;letter-spacing:.12em;
-    opacity:.45;z-index:1;
+    position:static;display:block;text-align:right;margin-top:8px;
+    font-size:10px;letter-spacing:.12em;opacity:.45;z-index:1;
   }
 
 
@@ -1028,6 +1028,65 @@ body{
   .v-size .viz-label b{display:block;font-size:17px;font-weight:800;}
 
   .v-size .viz-label small{display:block;font-size:10px;letter-spacing:.1em;opacity:.6;margin-top:2px;}
+
+
+
+  .v-size /* ---------- measurement helper ---------- */
+  .gsteps{margin:12px 0 0;padding:0;list-style:none;counter-reset:g;}
+  .v-size .gsteps li{counter-increment:g;position:relative;padding:7px 0 7px 25px;font-size:12.5px;line-height:1.65;color:var(--ink-soft);border-bottom:1px dashed rgba(169,138,82,.25);}
+  .v-size .gsteps li:last-child{border-bottom:0;}
+  .v-size .gsteps li::before{content:counter(g);position:absolute;left:0;top:8px;width:17px;height:17px;border-radius:50%;background:rgba(63,125,95,.14);color:var(--jade-deep);font-family:var(--serif);font-size:9.5px;display:flex;align-items:center;justify-content:center;}
+  .v-size .gapply{display:flex;align-items:center;gap:6px;margin-top:12px;border:1px solid var(--line);border-radius:12px;background:#fbf8f0;padding:8px 10px;}
+  .v-size .gapply input{flex:1;border:0;background:transparent;outline:none;font-family:var(--serif);font-size:17px;font-weight:700;color:var(--jade-deep);text-align:right;min-width:0;-webkit-appearance:none;appearance:textfield;}
+  .v-size .gapply input::-webkit-outer-spin-button,.v-size .gapply input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .v-size .gapply .u{font-size:11px;color:var(--ink-soft);}
+  .v-size .gapply button{flex:none;appearance:none;border:0;border-radius:9px;padding:8px 14px;background:linear-gradient(160deg,#2f6149,#24503c);color:#f8f4e8;font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;}
+  .v-size .gnote{margin:9px 0 0;font-size:11px;line-height:1.6;color:var(--ink-soft);opacity:.82;}
+  .v-size .seg4{grid-template-columns:repeat(4,1fr);}
+  .v-size .seg4 button{font-size:13px;padding:9px 2px;}
+  .v-size .seg4 button span{font-size:9px;letter-spacing:.04em;}
+  .v-size .side-chips{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+  .v-size .side-chips button{appearance:none;border:1px solid var(--line);background:#f7f3e8;border-radius:10px;padding:9px 2px;font-family:inherit;font-size:13px;color:var(--ink-soft);cursor:pointer;transition:.2s;}
+  .v-size .side-chips button.on{background:#fff;border-color:rgba(63,125,95,.5);color:var(--jade-deep);font-weight:700;}
+  .v-size .side-wrap.off{display:none;}
+  .v-size .res-split{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:10px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.10);position:relative;z-index:1;}
+  .v-size .res-split>div{background:rgba(21,43,37,.38);padding:7px 10px;}
+  .v-size .res-split .k{display:block;font-size:9.5px;letter-spacing:.06em;opacity:.62;}
+  .v-size .res-split .v{font-size:12.5px;font-weight:600;color:#e8dfc2;}
+  .v-size .bead.side{background:radial-gradient(circle at 34% 26%,#f6e9c9 0%,#ddc091 30%,#b9975f 62%,#8b6f42 100%);}
+
+  .v-size /* ---------- dual bead picker ---------- */
+  .gender-hint{margin:9px 0 0;font-size:11px;line-height:1.6;color:var(--ink-soft);opacity:.85;}
+  .bd-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .bd-col{border:1px solid var(--line);border-radius:14px;background:#fffdf8;padding:9px 7px 11px;display:flex;flex-direction:column;}
+  .bd-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 7px;font-family:var(--serif);font-size:12px;font-weight:700;color:var(--jade-deep);}
+  .bd-tag{font-family:var(--sans);font-size:8.5px;letter-spacing:.12em;color:var(--ink-soft);opacity:.65;}
+  .bd-val{margin-top:7px;text-align:center;font-family:var(--serif);font-weight:800;font-size:15px;color:var(--jade-deep);line-height:1.1;}
+  .bd-val small{font-size:9.5px;font-weight:600;opacity:.6;margin-left:2px;}
+  .bd-price{margin-top:8px;border-top:1px dashed rgba(169,138,82,.35);padding-top:7px;}
+  .bd-price>span{display:block;font-size:9px;letter-spacing:.1em;color:var(--ink-soft);opacity:.75;margin-bottom:4px;}
+  .mini-wheel{border-radius:11px;}
+  .mini-wheel .wheel{height:126px;}
+  .mini-wheel .wheel-spacer{height:42px;}
+  .mini-wheel .wheel-item{height:42px;font-size:13px;gap:2px;}
+  .mini-wheel .wheel-item .wi-unit{font-size:9px;}
+  .mini-wheel .wheel-item.center{font-size:16px;}
+  .mini-wheel .wheel-mask{height:42px;}
+  .mini-wheel .wheel-mask.b{height:42px;}
+  .mini-wheel .wheel-band{top:42px;height:42px;}
+  .v-size .bead-unit-wrap.mini{margin-top:0;padding:5px 8px;border-radius:9px;gap:3px;justify-content:flex-end;}
+  .v-size .bead-unit-wrap.mini input{max-width:none;font-size:13.5px;}
+  .v-size .bead-unit-wrap.mini .u{font-size:9.5px;}
+  .bd-col.dim{opacity:.7;}
+  .pat-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+  .pat-ctl{display:flex;align-items:center;justify-content:space-between;gap:4px;border:1px solid var(--line);border-radius:12px;background:#fbf8f0;padding:6px 7px;}
+  .pat-ctl>span{font-size:9.5px;letter-spacing:.02em;color:var(--ink-soft);white-space:nowrap;}
+  .pat-ctl>b{font-family:var(--serif);font-size:16px;color:var(--jade-deep);min-width:14px;text-align:center;}
+  .pat-ctl button{appearance:none;flex:none;width:26px;height:26px;border-radius:8px;border:1px solid rgba(63,125,95,.32);background:#fff;color:var(--jade-deep);font-size:14px;line-height:1;cursor:pointer;padding:0;}
+  .pat-ctl button:active{background:#eef4ee;}
+  .pat-ctl.off{opacity:.45;}
+  .pat-ctl.off button{pointer-events:none;}
+  .pat-note{margin:8px 0 0;font-size:11px;line-height:1.6;color:var(--ink-soft);opacity:.85;}
 
 
   .v-size /* ---------- description ---------- */
@@ -1591,7 +1650,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, .tool-card:focus-vis
         <div class="tc-no">03</div>
         <div class="tc-body">
           <p class="tc-title">비즈 팔찌 계산기</p>
-          <p class="tc-desc">성별 · 비즈 지름으로 갯수 계산</p>
+          <p class="tc-desc">갯수 · 배열 패턴 · 원가 계산</p>
         </div>
         <span class="tc-arrow" aria-hidden="true">→</span>
       </button>
@@ -1599,7 +1658,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, .tool-card:focus-vis
         <div class="tc-no">04</div>
         <div class="tc-body">
           <p class="tc-title">반지 치수 계산기</p>
-          <p class="tc-desc">직경 · 한국호수 · 중국호수 환산</p>
+          <p class="tc-desc">측정 도우미 + 호수 환산</p>
         </div>
         <span class="tc-arrow" aria-hidden="true">→</span>
       </button>
@@ -1639,7 +1698,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, .tool-card:focus-vis
       <div class="home-foot">
         옥조각 창작소 · 참고용 계산 시뮬레이션<br>
         앱으로 설치 시 오프라인으로도 이용 가능합니다.<br>
-        <b>JADE NARE</b> · ver 2.7
+        <b>JADE NARE</b> · ver 2.9
       </div>
     </div>
   </div>
@@ -2124,39 +2183,39 @@ button:focus-visible, a:focus-visible, input:focus-visible, .tool-card:focus-vis
 
   
 
+  <!-- ================= 0. 손목 측정 도우미 ================= -->
+  <section class="card">
+    <div class="card-head">
+      <div class="step-no">0</div>
+      <div>
+        <p class="card-title">손목 둘레 측정 도우미</p>
+        <p class="card-sub">줄자가 없어도 종이 한 장으로 잽니다</p>
+      </div>
+    </div>
+    <ol class="gsteps">
+      <li>종이를 폭 1cm 정도로 잘라 손목에 한 바퀴 감습니다</li>
+      <li>겹치는 지점에 볼펜으로 표시하고 펴서 길이를 잽니다</li>
+      <li>신용카드(가로 8.6cm)로 감각 확인 · 카드 2장 ≈ 17.1cm</li>
+    </ol>
+    <p class="gnote">손목 뼈 위에 살짝 붙여 재세요. 너무 조이면 실제보다 작게 나옵니다.</p>
+  </section>
+
   <!-- ================= 1. 비즈 팔찌 ================= -->
   <section class="card">
     <div class="card-head">
       <div class="step-no">1</div>
       <div>
-        <p class="card-title">비즈 팔찌 · 비즈 갯수 계산</p>
-        <p class="card-sub">성별과 비즈 지름만 고르면 필요한 갯수가 나옵니다</p>
+        <p class="card-title">비즈 팔찌 · 갯수 &amp; 배열 계산</p>
+        <p class="card-sub">성별과 비즈 지름, 배열 비율로 갯수·구성이 나옵니다</p>
       </div>
     </div>
 
     <div class="field-label"><span>성별 선택</span></div>
     <div class="seg" id="genderSeg">
-      <button data-g="male">남자<span>MALE</span></button>
-      <button data-g="female" class="on">여자<span>FEMALE</span></button>
+      <button type="button" data-g="male">남자<span>MALE 17.5cm</span></button>
+      <button type="button" data-g="female" class="on">여자<span>FEMALE 15.5cm</span></button>
     </div>
-
-    <div class="field-label"><span>비즈 지름 · 스크롤 선택</span><span class="val" id="beadValLabel">8 mm</span></div>
-    <div class="wheel-box">
-      <div class="wheel-shell">
-        <div class="wheel" id="beadWheel">
-          <div class="wheel-spacer"></div>
-          <div id="beadList"></div>
-          <div class="wheel-spacer"></div>
-        </div>
-        <div class="wheel-mask"></div>
-        <div class="wheel-band"></div>
-        <div class="wheel-mask b"></div>
-      </div>
-      <div class="wheel-side">
-        <div class="big"><span id="beadBig">8</span><small>mm</small></div>
-        <div class="cap">BEAD</div>
-      </div>
-    </div>
+    <p class="gender-hint" id="genderHint">여자 평균 손목 15.5cm로 설정되었습니다 · 슬라이더로 직접 조정할 수 있습니다</p>
 
     <div class="field-label"><span>손목 둘레</span><span class="val" id="wristLabel">15.5 cm</span></div>
     <div class="slider-row">
@@ -2164,11 +2223,69 @@ button:focus-visible, a:focus-visible, input:focus-visible, .tool-card:focus-vis
     </div>
     <div class="slider-hint"><span>13 cm · 가는 손목</span><span>21 cm · 굵은 손목</span></div>
 
-    <div class="field-label"><span>비즈 개당 단가 (원)</span></div>
-    <div class="bead-unit-wrap">
-      <input type="text" id="beadUnit" value="0" inputmode="numeric" enterkeyhint="done" autocomplete="off" aria-label="비즈 개당 단가 (원)">
-      <span class="u">원</span>
+    <div class="field-label"><span>비즈 선택</span><span class="val" id="beadValLabel">메인 8mm · 사이드 없음</span></div>
+    <div class="bd-grid">
+      <div class="bd-col">
+        <p class="bd-head"><span>메인 비즈</span><span class="bd-tag">MAIN</span></p>
+        <div class="wheel-shell mini-wheel">
+          <div class="wheel" id="beadWheel">
+            <div class="wheel-spacer"></div>
+            <div id="beadList"></div>
+            <div class="wheel-spacer"></div>
+          </div>
+          <div class="wheel-mask"></div>
+          <div class="wheel-band"></div>
+          <div class="wheel-mask b"></div>
+        </div>
+        <div class="bd-val"><span id="beadBig">8</span><small>mm</small></div>
+        <div class="bd-price">
+          <span>개당 단가</span>
+          <div class="bead-unit-wrap mini">
+            <input type="text" id="beadUnit" value="0" inputmode="numeric" enterkeyhint="done" autocomplete="off" aria-label="메인 비즈 개당 단가">
+            <span class="u">원</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bd-col" id="sideCol">
+        <p class="bd-head"><span>사이드 비즈</span><span class="bd-tag">SIDE</span></p>
+        <div class="wheel-shell mini-wheel">
+          <div class="wheel" id="sideWheel">
+            <div class="wheel-spacer"></div>
+            <div id="sideList"></div>
+            <div class="wheel-spacer"></div>
+          </div>
+          <div class="wheel-mask"></div>
+          <div class="wheel-band"></div>
+          <div class="wheel-mask b"></div>
+        </div>
+        <div class="bd-val"><span id="sideBig">없음</span></div>
+        <div class="bd-price">
+          <span>개당 단가</span>
+          <div class="bead-unit-wrap mini">
+            <input type="text" id="sideUnit" value="0" inputmode="numeric" enterkeyhint="done" autocomplete="off" aria-label="사이드 비즈 개당 단가">
+            <span class="u">원</span>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <div class="field-label"><span>배열 패턴</span><span class="val" id="patLabel">메인 1 · 사이드 2</span></div>
+    <div class="pat-row">
+      <div class="pat-ctl">
+        <span>메인</span>
+        <button type="button" data-k="M" data-d="-1" aria-label="메인 비즈 수량 줄이기">−</button>
+        <b id="patMVal">1</b>
+        <button type="button" data-k="M" data-d="1" aria-label="메인 비즈 수량 늘리기">＋</button>
+      </div>
+      <div class="pat-ctl" id="patSideCtl">
+        <span>사이드</span>
+        <button type="button" data-k="S" data-d="-1" aria-label="사이드 비즈 수량 줄이기">−</button>
+        <b id="patSVal">2</b>
+        <button type="button" data-k="S" data-d="1" aria-label="사이드 비즈 수량 늘리기">＋</button>
+      </div>
+    </div>
+    <p class="pat-note" id="patNote">메인 1개 + 사이드 2개가 한 묶음으로 반복됩니다.</p>
 
     <div class="field-label"><span>여유분 (예비 비즈)</span><span class="val" id="spareLabel">자동 · 2개</span></div>
     <div class="spare-row">
@@ -2202,13 +2319,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, .tool-card:focus-vis
         <div><span class="k">비즈 총 길이</span><span class="v" id="outLength">17.6 cm</span></div>
         <div><span class="k">여유 포함 준비</span><span class="v" id="outPrep">24 개</span></div>
       </div>
+      <div class="res-split">
+        <div><span class="k">메인 비즈</span><span class="v" id="outMainN">22 개</span></div>
+        <div><span class="k">사이드 비즈</span><span class="v" id="outSideN">0 개</span></div>
+        <div><span class="k">패턴 반복</span><span class="v" id="outReps">균일</span></div>
+        <div><span class="k">메인 길이 비중</span><span class="v" id="outShare">100 %</span></div>
+      </div>
       <div class="res-cost off" id="outCost">
         <div class="rc-main"><span>비즈 원가</span><b id="outCostTotal">0 원</b></div>
         <div class="rc-row"><em id="outCostExpr">사용 22개 × 0원</em></div>
         <div class="rc-row"><em id="outCostPrepLabel">여유 2개 포함 (24개)</em><span id="outCostPrep">0 원</span></div>
       </div>
       <div class="res-cost-guide" id="outCostGuide">비즈 개당 단가를 입력하면 예상 원가가 표시됩니다.</div>
-      <div class="res-note" id="outNote">둘레에 맞춰 22개가 계산되었습니다. 실제로는 ±1개 차이가 날 수 있어 여유분 2개를 함께 준비하세요.</div>
+      <div class="res-note" id="outNote">둘레에 맞춰 22개가 계산되었습니다.</div>
       <div class="res-gender-tag" id="outGenderTag">FEMALE · 15.5 CM</div>
     </div>
 
@@ -2259,6 +2382,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, .tool-card:focus-vis
 <div class="wrap">
 
   
+
+  <!-- ================= 0. 손가락 측정 도우미 ================= -->
+  <section class="card">
+    <div class="card-head">
+      <div class="step-no">0</div>
+      <div>
+        <p class="card-title">손가락 둘레 측정 도우미</p>
+        <p class="card-sub">종이 띠 또는 기존 반지로 잽니다</p>
+      </div>
+    </div>
+    <ol class="gsteps">
+      <li>종이를 폭 5mm로 잘라 손가락에 한 바퀴 감습니다 (관절 지나지 않게)</li>
+      <li>겹친 지점을 표시하고 펴서 mm 단위로 잽니다 (1cm = 10mm)</li>
+      <li>기존 반지가 있다면 반지 안쪽 지름을 재서 둘레 = 지름 × 3.14</li>
+    </ol>
+    <p class="gnote">늦은 시간(손가락이 가장 굵을 때)에 재면 여유 있는 호수가 나옵니다.</p>
+  </section>
 
   <!-- ================= 2. 반지 치수 ================= -->
   <section class="card">
@@ -3811,19 +3951,71 @@ function beadCount(targetMM, d){
 /* ================= 1. 팔찌 ================= */
 const BEADS = [];
 for (let i = 2; i <= 16; i++) BEADS.push(i);
-const ITEM_H = 56;
-const EASE_MM = 3;              // 기본 여유 3mm
+const SIDE_VALS = [0].concat(BEADS);       /* 0 = 없음 */
+const ITEM_H = 42;
+const EASE_MM = 3;                          /* 기본 여유 3mm */
+const GENDER_AVG = { male: 17.5, female: 15.5 };
 
 const state = {
   gender: 'female',
   bead: 8,
+  sideD: 0,
   wrist: { male: 17.5, female: 15.5 },
   unit: 0,
+  sideUnit: 0,
+  patM: 1,
+  patS: 2,
   spareMode: 'auto',
   spare: 2
 };
 
-/* 비즈 단가 저장/복원 */
+/* 배열 목록 구성: 메인 patM개 + 사이드 patS개가 한 묶음 */
+function buildPattern(targetMM, dM, dS, patM, patS){
+  const hasSide = dS > 0 && patS > 0;
+
+  if (!hasSide){
+    const n0 = beadCount(targetMM, dM);
+    const list0 = [];
+    for (let i = 0; i < n0; i++) list0.push('M');
+    return { list: list0, n: n0, used: n0 * dM, reps: n0,
+             counts: { M: n0, S: 0 }, mean: dM, unitLen: dM };
+  }
+
+  /* 반복 횟수와 메인 채움 개수를 함께 탐색해 목표 내경에 가장 가까운 배열을 찾음 */
+  const unitLen = patM * dM + patS * dS;
+  let best = null;
+  for (let r = 1; r <= 80; r++){
+    for (let f = 0; f <= 6; f++){
+      const n = r * (patM + patS) + f;
+      const used = r * unitLen + f * dM;
+      const mean = used / n;
+      const inner = innerCirc(n, mean);
+      const err = Math.abs(inner - targetMM);
+      if (!best || err < best.err) best = { r: r, f: f, n: n, used: used, mean: mean, inner: inner, err: err };
+    }
+  }
+
+  const reps = best.r;
+  const list = [];
+  for (let i = 0; i < reps; i++){
+    for (let a = 0; a < patM; a++) list.push('M');
+    for (let b = 0; b < patS; b++) list.push('S');
+  }
+  for (let k = 0; k < best.f; k++) list.push('M');
+  const used = best.used;
+
+  let cM = 0, cS = 0;
+  list.forEach(t => { if (t === 'S') cS++; else cM++; });
+  const n = list.length;
+  return {
+    list: list, n: n, used: used, reps: reps,
+    counts: { M: cM, S: cS },
+    mean: n ? used / n : dM,
+    unitLen: unitLen
+  };
+}
+
+/* 저장/복원 */
 const UNIT_KEY = 'jn-bead-unit';
 try{
   const savedUnit = Number(localStorage.getItem(UNIT_KEY));
@@ -3832,60 +4024,123 @@ try{
   if (sm === 'manual' || sm === 'auto') state.spareMode = sm;
   const sv = Number(localStorage.getItem('jn-spare-value'));
   if (isFinite(sv) && sv >= 0) state.spare = sv;
+  const sdRaw = localStorage.getItem('jn-bead-side-size');
+  if (sdRaw !== null){ const sd = Number(sdRaw); if (isFinite(sd)) state.sideD = (sd >= 2 && sd <= 16) ? sd : 0; }
+  const suRaw = localStorage.getItem('jn-bead-side-unit');
+  if (suRaw !== null){ const su = Number(suRaw); if (isFinite(su) && su >= 0) state.sideUnit = su; }
+  const pmRaw = localStorage.getItem('jn-bead-pat-m');
+  if (pmRaw !== null){ const pm = Number(pmRaw); if (isFinite(pm) && pm >= 1) state.patM = Math.min(6, pm); }
+  const psRaw = localStorage.getItem('jn-bead-pat-s');
+  if (psRaw !== null){ const ps = Number(psRaw); if (isFinite(ps) && ps >= 1) state.patS = Math.min(6, ps); }
 }catch(e){}
 
+/* ---- 메인 휠 ---- */
 const wheel    = document.getElementById('beadWheel');
 const beadList = document.getElementById('beadList');
-let suppress = false;
+const sideWheel = document.getElementById('sideWheel');
+const sideListEl = document.getElementById('sideList');
+let suppressMain = false, suppressSide = false;
 
-BEADS.forEach(v=>{
+BEADS.forEach(v => {
   const el = document.createElement('div');
   el.className = 'wheel-item';
   el.innerHTML = `<span class="wi-num">${v}</span><span class="wi-unit">mm</span>`;
-  el.addEventListener('click', ()=>{
+  el.addEventListener('click', () => {
     const i = BEADS.indexOf(v);
-    suppress = true;
+    suppressMain = true;
     wheel.scrollTo({top: i * ITEM_H, behavior:'smooth'});
     setBead(v);
-    setTimeout(()=>{ suppress = false; }, 420);
+    setTimeout(() => { suppressMain = false; }, 420);
   });
   beadList.appendChild(el);
 });
 
+SIDE_VALS.forEach(v => {
+  const el = document.createElement('div');
+  el.className = 'wheel-item';
+  el.innerHTML = v === 0
+    ? '<span class="wi-num">없음</span>'
+    : `<span class="wi-num">${v}</span><span class="wi-unit">mm</span>`;
+  el.addEventListener('click', () => {
+    const i = SIDE_VALS.indexOf(v);
+    suppressSide = true;
+    sideWheel.scrollTo({top: i * ITEM_H, behavior:'smooth'});
+    setSide(v);
+    setTimeout(() => { suppressSide = false; }, 420);
+  });
+  sideListEl.appendChild(el);
+});
+
 function highlightWheel(){
   const items = beadList.children;
-  for (let i = 0; i < items.length; i++){
-    items[i].classList.toggle('center', BEADS[i] === state.bead);
-  }
+  for (let i = 0; i < items.length; i++) items[i].classList.toggle('center', BEADS[i] === state.bead);
+  const sitems = sideListEl.children;
+  for (let i = 0; i < sitems.length; i++) sitems[i].classList.toggle('center', SIDE_VALS[i] === state.sideD);
 }
 
-let ticking = false;
-wheel.addEventListener('scroll', ()=>{
-  if (suppress) return;
-  if (ticking) return;
-  ticking = true;
-  requestAnimationFrame(()=>{
-    ticking = false;
+let tickingMain = false;
+wheel.addEventListener('scroll', () => {
+  if (suppressMain || tickingMain) return;
+  tickingMain = true;
+  requestAnimationFrame(() => {
+    tickingMain = false;
     const i = clamp(Math.round(wheel.scrollTop / ITEM_H), 0, BEADS.length - 1);
     if (BEADS[i] !== state.bead) setBead(BEADS[i]);
   });
 }, {passive:true});
 
+let tickingSide = false;
+sideWheel.addEventListener('scroll', () => {
+  if (suppressSide || tickingSide) return;
+  tickingSide = true;
+  requestAnimationFrame(() => {
+    tickingSide = false;
+    const i = clamp(Math.round(sideWheel.scrollTop / ITEM_H), 0, SIDE_VALS.length - 1);
+    if (SIDE_VALS[i] !== state.sideD) setSide(SIDE_VALS[i]);
+  });
+}, {passive:true});
+
+function paintBeadLabels(){
+  const sideTxt = state.sideD ? (state.sideD + ' mm') : '없음';
+  document.getElementById('beadValLabel').textContent = '메인 ' + state.bead + 'mm · 사이드 ' + (state.sideD ? state.sideD + 'mm' : '없음');
+  document.getElementById('beadBig').textContent = state.bead;
+  const big = document.getElementById('sideBig');
+  if (big) big.innerHTML = state.sideD ? (state.sideD + '<small>mm</small>') : '없음';
+  const sideCol = document.getElementById('sideCol');
+  if (sideCol) sideCol.classList.toggle('dim', !state.sideD);
+}
+
 function setBead(v){
   state.bead = v;
-  document.getElementById('beadValLabel').textContent = v + ' mm';
-  document.getElementById('beadBig').textContent = v;
+  paintBeadLabels();
   highlightWheel();
   renderAll();
 }
 
-/* 성별 */
+function setSide(v){
+  state.sideD = v || 0;
+  try{ localStorage.setItem('jn-bead-side-size', String(state.sideD)); }catch(e){}
+  paintBeadLabels();
+  paintPattern();
+  highlightWheel();
+  renderAll();
+}
+
+/* 성별 선택 → 평균 손목으로 설정 */
 document.getElementById('genderSeg').addEventListener('click', e=>{
   const btn = e.target.closest('button');
   if (!btn) return;
   [...e.currentTarget.children].forEach(b=>b.classList.toggle('on', b === btn));
   state.gender = btn.dataset.g;
-  document.getElementById('wristRange').value = state.wrist[state.gender];
+  state.wrist[state.gender] = GENDER_AVG[state.gender];
+  const avg = GENDER_AVG[state.gender];
+  const hint = document.getElementById('genderHint');
+  if (hint){
+    hint.textContent = (state.gender === 'male' ? '남자' : '여자') +
+      ' 평균 손목 ' + fmt1(avg) + 'cm로 설정되었습니다 · 슬라이더로 직접 조정할 수 있습니다';
+  }
+  wristRange.value = avg;
+  paintRange(wristRange);
   renderAll();
 });
 
@@ -3901,7 +4156,7 @@ wristRange.addEventListener('input', ()=>{
   renderAll();
 });
 
-/* 비즈 개당 단가 입력 */
+/* 메인 비즈 개당 단가 */
 const beadUnitInput = document.getElementById('beadUnit');
 if (beadUnitInput){
   beadUnitInput.value = state.unit ? Number(state.unit).toLocaleString('ko-KR') : '0';
@@ -3919,7 +4174,70 @@ if (beadUnitInput){
   beadUnitInput.addEventListener('blur', ()=>applyUnit(true));
 }
 
-/* 여유분 자동 / 직접 */
+/* 사이드 비즈 개당 단가 */
+const sideUnitInput = document.getElementById('sideUnit');
+if (sideUnitInput){
+  sideUnitInput.value = state.sideUnit ? Number(state.sideUnit).toLocaleString('ko-KR') : '0';
+  const applySide = (clamp)=>{
+    let v = Math.round(Number(String(sideUnitInput.value).replace(/[^0-9]/g, '')));
+    if (!isFinite(v)){ if (clamp) v = 0; else return; }
+    v = Math.max(0, Math.min(1000000, v));
+    if (clamp) sideUnitInput.value = Number(v).toLocaleString('ko-KR');
+    state.sideUnit = v;
+    try{ localStorage.setItem('jn-bead-side-unit', String(v)); }catch(err){}
+    renderBracelet();
+  };
+  sideUnitInput.addEventListener('input', ()=>applySide(false));
+  sideUnitInput.addEventListener('change', ()=>applySide(true));
+  sideUnitInput.addEventListener('blur', ()=>applySide(true));
+}
+
+/* 배열 패턴: 메인 / 사이드 수량 +/- */
+const patMValEl = document.getElementById('patMVal');
+const patSValEl = document.getElementById('patSVal');
+const patLabelEl = document.getElementById('patLabel');
+const patNoteEl  = document.getElementById('patNote');
+const patSideCtl = document.getElementById('patSideCtl');
+
+function paintPattern(){
+  if (patMValEl) patMValEl.textContent = state.patM;
+  if (patSValEl) patSValEl.textContent = state.sideD ? state.patS : 0;
+  if (patSideCtl) patSideCtl.classList.toggle('off', !state.sideD);
+
+  if (patLabelEl){
+    patLabelEl.textContent = state.sideD
+      ? ('메인 ' + state.patM + ' · 사이드 ' + state.patS)
+      : '메인 ' + state.patM + ' · 사이드 없음';
+  }
+  if (patNoteEl){
+    patNoteEl.textContent = state.sideD
+      ? ('메인 ' + state.patM + '개 + 사이드 ' + state.patS + '개가 한 묶음으로 반복됩니다.')
+      : '사이드 비즈를 선택하면 패턴 배치가 적용됩니다. 지금은 메인 비즈만 배치됩니다.';
+  }
+}
+
+const patRow = patSideCtl ? patSideCtl.parentElement : null;
+if (patRow){
+  patRow.addEventListener('click', e=>{
+    const b = e.target.closest('button');
+    if (!b) return;
+    const k = b.dataset.k;
+    const d = Number(b.dataset.d) || 0;
+
+    if (k === 'M'){
+      state.patM = clamp(state.patM + d, 1, 6);
+      try{ localStorage.setItem('jn-bead-pat-m', String(state.patM)); }catch(err){}
+    } else {
+      if (!state.sideD) return;                 /* 사이드 없음 → 조절 비활성 */
+      state.patS = clamp(state.patS + d, 1, 6);
+      try{ localStorage.setItem('jn-bead-pat-s', String(state.patS)); }catch(err){}
+    }
+    paintPattern();
+    renderBracelet();
+  });
+}
+
+/* 여유분 자동 / 직접 *//* 여유분 자동 / 직접 */
 const spareSeg   = document.getElementById('spareSeg');
 const spareWrap  = document.getElementById('spareInputWrap');
 const spareInput = document.getElementById('spareInput');
@@ -3969,19 +4287,34 @@ paintSpare();
 
 /* 비즈 링 시각화 */
 const ringEl = document.getElementById('beadRing');
-function drawRing(n, d){
-  [...ringEl.querySelectorAll('.bead')].forEach(b=>b.remove());
-  const N = Math.min(n, 120);
-  const dEff = d;
-  const rMM = dEff / (2 * Math.sin(Math.PI / n));
+function drawRing(list, dM, dS){
+  [...ringEl.querySelectorAll('.bead')].forEach(b => b.remove());
+  const n = list.length;
+  if (!n) return;
+
+  let sum = 0, maxD = 0;
+  for (const t of list){
+    const d = (t === 'S' ? dS : dM);
+    sum += d;
+    if (d > maxD) maxD = d;
+  }
+
+  /* 비즈 중심이 만드는 원의 둘레 = 지름 합 (서로 맞닿는 조건) */
+  const rMM = sum / (2 * Math.PI);
   const box = 190, pad = 8;
-  const scale = (box - pad * 2) / (2 * (rMM + dEff / 2));
+  const scale = (box - pad * 2) / (2 * (rMM + maxD / 2));
   const R = rMM * scale;
-  const bd = Math.max(3.2, Math.min(26, dEff * scale * 1.02));
-  for (let i = 0; i < N; i++){
-    const a = (i / n) * Math.PI * 2 - Math.PI / 2;
+
+  let acc = 0;
+  for (let i = 0; i < n; i++){
+    const t = list[i];
+    const d = (t === 'S' ? dS : dM);
+    /* 각 비즈의 호 중앙에 배치 → 크기가 달라도 겹치지 않음 */
+    const a = ((acc + d / 2) / sum) * Math.PI * 2 - Math.PI / 2;
+    acc += d;
+    const bd = Math.max(3, Math.min(26, d * scale));
     const el = document.createElement('div');
-    el.className = 'bead';
+    el.className = 'bead' + (t === 'S' ? ' side' : '');
     el.style.width = bd + 'px';
     el.style.height = bd + 'px';
     el.style.left = (50 + (R * Math.cos(a)) / box * 100) + '%';
@@ -3997,31 +4330,54 @@ function renderBracelet(){
   const d = state.bead;
   const wristMM = state.wrist[state.gender] * 10;
   const target = wristMM + EASE_MM;
-  let n = beadCount(target, d);
-  const inner = innerCirc(n, d);
-  const outer = inner + 2 * d;
+  const dS = state.sideD || 0;
+  const built = buildPattern(target, d, dS, state.patM, state.patS);
+  const n = built.n;
+  const inner = innerCirc(n, built.mean);
+  const outer = inner + 2 * built.mean;
 
   document.getElementById('wristLabel').textContent = fmt1(state.wrist[state.gender]) + ' cm';
   document.getElementById('outCount').textContent = n;
   document.getElementById('vizCount').textContent = n;
   document.getElementById('outInner').textContent = fmt1(inner / 10) + ' cm';
   document.getElementById('outOuter').textContent = fmt1(outer / 10) + ' cm';
-  document.getElementById('outLength').textContent = fmt1(n * d / 10) + ' cm';
+  document.getElementById('outLength').textContent = fmt1(n * built.mean / 10) + ' cm';
+
   const spare = (state.spareMode === 'manual')
     ? Math.max(0, Math.min(20, Number(state.spare) || 0))
-    : spareBeads(n, d);
+    : spareBeads(n, built.mean);
   document.getElementById('outPrep').textContent = (n + spare) + ' 개';
+
+  /* 패턴 분해 */
+  const mainN = document.getElementById('outMainN');
+  const sideN = document.getElementById('outSideN');
+  const repsL = document.getElementById('outReps');
+  const shareL = document.getElementById('outShare');
+  if (mainN) mainN.textContent = built.counts.M + ' 개';
+  if (sideN) sideN.textContent = built.counts.S + ' 개';
+  if (repsL){
+    const fill = built.counts.S ? (built.n - built.reps * (state.patM + state.patS)) : 0;
+    repsL.textContent = built.counts.S ? (built.reps + ' 회' + (fill > 0 ? ' +' + fill : '')) : '균일';
+  }
+  if (shareL){
+    const mainLen = built.counts.M * d;
+    shareL.textContent = Math.round(mainLen / built.used * 100) + ' %';
+  }
 
   const diffCM = fmt1((inner - wristMM) / 10);
   const feel = (inner - wristMM) < 0 ? '조금 타이트' : ((inner - wristMM) < 6 ? '딱 맞음' : '여유 있음');
+  const fillN = built.counts.S ? (built.n - built.reps * (state.patM + state.patS)) : 0;
+  const patTxt = built.counts.S
+    ? ('메인 ' + state.patM + ' + 사이드 ' + state.patS + ' · ' + built.reps + '회 반복' + (fillN > 0 ? ' + 메인 ' + fillN + '개 채움' : ''))
+    : '균일 배열';
   document.getElementById('outNote').textContent =
-    `완성 내경 ${fmt1(inner/10)}cm로 손목보다 ${diffCM}cm ${feel} 기준입니다. 실제로는 ±1개 차이가 날 수 있어 여유분 ${spare}개를 함께 준비하세요.`;
+    `${patTxt} 기준 완성 내경 ${fmt1(inner/10)}cm로 손목보다 ${diffCM}cm ${feel}입니다. 실제로는 ±1개 차이가 날 수 있어 여유분 ${spare}개를 함께 준비하세요.`;
   document.getElementById('outGenderTag').textContent =
     (state.gender === 'male' ? 'MALE' : 'FEMALE') + ' · ' + fmt1(state.wrist[state.gender]) + ' CM';
 
-  drawRing(n, d);
+  drawRing(built.list, d, dS);
   renderTable();
-  renderBeadCost(n, spare, d);
+  renderBeadCost(built, spare);
   if (typeof paintSpare === 'function' && document.getElementById('spareLabel')){
     document.getElementById('spareLabel').textContent =
       (state.spareMode === 'manual' ? '직접' : '자동') + ' · ' + spare + '개';
@@ -4039,27 +4395,33 @@ function spareBeads(n, d){
 function beadMoney(v){
   return Math.round(v || 0).toLocaleString('ko-KR') + ' 원';
 }
-function renderBeadCost(n, spare, d){
-  const unit = Number(state.unit) || 0;
-  const box  = document.getElementById('outCost');
-  const guide= document.getElementById('outCostGuide');
+function renderBeadCost(built, spare){
+  const unit   = Number(state.unit) || 0;
+  const sideU  = state.sideD ? (Number(state.sideUnit) || 0) : 0;
+  const box    = document.getElementById('outCost');
+  const guide  = document.getElementById('outCostGuide');
 
   if (!box || !guide) return;
 
-  if (unit <= 0){
+  const total = built.counts.M * unit + built.counts.S * sideU;
+  if (unit <= 0 && sideU <= 0){
     box.classList.add('off');
     guide.classList.remove('off');
+    guide.textContent = '비즈 개당 단가를 입력하면 예상 원가가 표시됩니다.';
     return;
   }
   box.classList.remove('off');
   guide.classList.add('off');
 
-  const total = n * unit;
-  const prep  = (n + spare) * unit;
+  const avg  = built.n ? total / built.n : 0;
+  const prep = Math.round((built.n + spare) * avg);
+
+  let expr = '메인 ' + built.counts.M + '개 × ' + beadMoney(unit);
+  if (built.counts.S > 0) expr += ' · 사이드 ' + built.counts.S + '개 × ' + beadMoney(sideU);
 
   document.getElementById('outCostTotal').textContent = beadMoney(total);
-  document.getElementById('outCostExpr').textContent  = '사용 ' + n + '개 × ' + beadMoney(unit);
-  document.getElementById('outCostPrepLabel').textContent = '여유 ' + spare + '개 포함 (' + (n + spare) + '개)';
+  document.getElementById('outCostExpr').textContent  = expr;
+  document.getElementById('outCostPrepLabel').textContent = '여유 ' + spare + '개 포함 (' + (built.n + spare) + '개)';
   document.getElementById('outCostPrep').textContent  = beadMoney(prep);
 }
 
@@ -4221,13 +4583,18 @@ function renderAll(){ renderBracelet(); renderRing(); }
 paintRange(wristRange);
 paintRange(ringRange);
 highlightWheel();
+document.getElementById('wristRange').value = state.wrist[state.gender];
+paintRange(wristRange);
+paintPattern();
+paintBeadLabels();
 renderAll();
 
 requestAnimationFrame(()=>{
-  const i = BEADS.indexOf(state.bead);
-  suppress = true;
-  wheel.scrollTop = i * ITEM_H;
-  setTimeout(()=>{ suppress = false; }, 200);
+  suppressMain = true;
+  suppressSide = true;
+  wheel.scrollTop = BEADS.indexOf(state.bead) * ITEM_H;
+  sideWheel.scrollTop = SIDE_VALS.indexOf(state.sideD) * ITEM_H;
+  setTimeout(()=>{ suppressMain = false; suppressSide = false; }, 220);
 });
 
 
@@ -4235,9 +4602,11 @@ requestAnimationFrame(()=>{
 document.addEventListener('jade:view', function(e){
   if (e.detail !== 'bead' && e.detail !== 'ring') return;
   highlightWheel();
-  suppress = true;
+  suppressMain = true;
+  suppressSide = true;
   wheel.scrollTop = BEADS.indexOf(state.bead) * ITEM_H;
-  setTimeout(function(){ suppress = false; }, 220);
+  sideWheel.scrollTop = SIDE_VALS.indexOf(state.sideD) * ITEM_H;
+  setTimeout(function(){ suppressMain = false; suppressSide = false; }, 240);
   renderAll();
 });
 
