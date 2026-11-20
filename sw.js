@@ -1,5 +1,5 @@
 /* JADE NARE 종합 계산기 — 서비스워커 */
-const VER = 'jn-suite-v10';
+const VER = 'jn-suite-v12';
 const SHELL = [
   './',
   './index.html',

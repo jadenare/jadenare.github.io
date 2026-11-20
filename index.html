@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f6f1e6">
 <link rel="manifest" href="./manifest.json">
+<script>
+/* Chrome/Edge 설치 프롬프트를 최대한 이르게 확보 (스크립트 위치와 무관하게 동작) */
+window.__jnBip = null;
+window.addEventListener('beforeinstallprompt', function (e) {
+  e.preventDefault();
+  window.__jnBip = e;
+  try { window.dispatchEvent(new Event('jn:bipready')); } catch (err) {}
+});
+window.addEventListener('appinstalled', function () { window.__jnInstalled = true; });
+</script>
 <meta name="application-name" content="JADE NARE">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -950,6 +960,32 @@ body{
     padding-left:9px;border-left:2px solid rgba(201,173,119,.55);position:relative;z-index:1;
   }
 
+  .v-size .bead-unit-wrap{
+    display:flex;align-items:baseline;justify-content:flex-end;gap:5px;margin-top:9px;padding:9px 14px;
+    border-radius:11px;background:#fbf8f0;border:1px solid rgba(169,138,82,.4);
+  }
+  .v-size .bead-unit-wrap input{
+    width:100%;max-width:160px;text-align:right;border:0;background:transparent;outline:none;
+    font-family:var(--serif);font-weight:800;font-size:19px;color:#1b3a30;letter-spacing:-.01em;
+    -webkit-appearance:none;appearance:textfield;
+  }
+  .v-size .bead-unit-wrap input::-webkit-outer-spin-button,
+  .v-size .bead-unit-wrap input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+  .v-size .bead-unit-wrap .u{font-size:11px;color:#7c6a4a;font-weight:700;}
+
+  .v-size .res-cost{
+    margin-top:12px;padding:11px 13px;border-radius:12px;position:relative;z-index:1;
+    background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);
+  }
+  .v-size .res-cost.off{display:none;}
+  .v-size .rc-main{display:flex;align-items:baseline;justify-content:space-between;gap:10px;}
+  .v-size .rc-main span{font-size:10.5px;letter-spacing:.1em;opacity:.72;}
+  .v-size .rc-main b{font-family:var(--serif);font-size:23px;font-weight:800;color:#f3e9cb;letter-spacing:-.01em;}
+  .v-size .rc-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:11.5px;opacity:.78;margin-top:5px;}
+  .v-size .rc-row em{font-style:normal;opacity:.85;}
+  .v-size .res-cost-guide{margin-top:8px;font-size:11px;opacity:.6;position:relative;z-index:1;}
+  .v-size .res-cost-guide.off{display:none;}
+
   .v-size .res-gender-tag{
     position:absolute;right:14px;bottom:12px;font-size:10px;letter-spacing:.12em;
     opacity:.45;z-index:1;
@@ -1561,9 +1597,9 @@ body{
       <div class="links">
         <p class="links-title">LINKS</p>
         <div class="links-row">
-          <a class="link-chip" href="https://open.kakao.com/me/jadenare" target="_blank" rel="noopener">KAKAO-TALK</a>
-          <a class="link-chip" href="https://www.youtube.com/@JADENARE" target="_blank" rel="noopener">YOUTUBE</a>
-          <a class="link-chip" href="https://cafe.naver.com/jadenare" target="_blank" rel="noopener">NAVER-CAFE</a>
+          <a class="link-chip" href="https://open.kakao.com/me/jadenare" target="_blank" rel="noopener">카카오톡</a>
+          <a class="link-chip" href="https://www.youtube.com/@JADENARE" target="_blank" rel="noopener">유튜브</a>
+          <a class="link-chip" href="https://cafe.naver.com/jadenare" target="_blank" rel="noopener">네이버카페</a>
           <button class="install-chip" id="installBtn" type="button">
 
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
@@ -1581,7 +1617,7 @@ body{
       <div class="home-foot">
         옥조각 창작소 · 참고용 계산 시뮬레이션<br>
         앱으로 설치 시 오프라인으로도 이용 가능합니다.<br>
-        <b>JADE NARE</b> · ver 2.4
+        <b>JADE NARE</b> · ver 2.6
       </div>
     </div>
   </div>
@@ -2106,6 +2142,12 @@ body{
     </div>
     <div class="slider-hint"><span>13 cm · 가는 손목</span><span>21 cm · 굵은 손목</span></div>
 
+    <div class="field-label"><span>비즈 개당 단가 (원)</span></div>
+    <div class="bead-unit-wrap">
+      <input type="number" id="beadUnit" value="0" min="0" max="1000000" step="100" inputmode="numeric" aria-label="비즈 개당 단가">
+      <span class="u">원</span>
+    </div>
+
     <div class="viz">
       <div class="bead-ring" id="beadRing">
         <div class="viz-label">
@@ -2126,6 +2168,12 @@ body{
         <div><span class="k">비즈 총 길이</span><span class="v" id="outLength">17.6 cm</span></div>
         <div><span class="k">여유 포함 준비</span><span class="v" id="outPrep">24 개</span></div>
       </div>
+      <div class="res-cost off" id="outCost">
+        <div class="rc-main"><span>비즈 원가</span><b id="outCostTotal">0 원</b></div>
+        <div class="rc-row"><em id="outCostExpr">사용 22개 × 0원</em></div>
+        <div class="rc-row"><em id="outCostPrepLabel">여유 2개 포함 (24개)</em><span id="outCostPrep">0 원</span></div>
+      </div>
+      <div class="res-cost-guide" id="outCostGuide">비즈 개당 단가를 입력하면 예상 원가가 표시됩니다.</div>
       <div class="res-note" id="outNote">둘레에 맞춰 22개가 계산되었습니다. 실제로는 ±1개 차이가 날 수 있어 여유분 2개를 함께 준비하세요.</div>
       <div class="res-gender-tag" id="outGenderTag">FEMALE · 15.5 CM</div>
     </div>
@@ -3727,8 +3775,16 @@ const EASE_MM = 3;              // 기본 여유 3mm
 const state = {
   gender: 'female',
   bead: 8,
-  wrist: { male: 17.5, female: 15.5 }
+  wrist: { male: 17.5, female: 15.5 },
+  unit: 0
 };
+
+/* 비즈 단가 저장/복원 */
+const UNIT_KEY = 'jn-bead-unit';
+try{
+  const savedUnit = Number(localStorage.getItem(UNIT_KEY));
+  if (isFinite(savedUnit) && savedUnit >= 0) state.unit = savedUnit;
+}catch(e){}
 
 const wheel    = document.getElementById('beadWheel');
 const beadList = document.getElementById('beadList');
@@ -3797,6 +3853,25 @@ wristRange.addEventListener('input', ()=>{
   renderAll();
 });
 
+/* 비즈 개당 단가 입력 */
+const beadUnitInput = document.getElementById('beadUnit');
+if (beadUnitInput){
+  beadUnitInput.value = state.unit || 0;
+  const applyUnit = (clamp)=>{
+    let v = Math.round(Number(beadUnitInput.value));
+    if (!isFinite(v)){ if (clamp) v = 0; else return; }
+    v = Math.max(0, Math.min(1000000, v));
+    if (clamp) beadUnitInput.value = v;
+    state.unit = v;
+    try{ localStorage.setItem(UNIT_KEY, String(v)); }catch(e){}
+    renderBracelet();
+  };
+  beadUnitInput.addEventListener('input', ()=>applyUnit(false));
+  beadUnitInput.addEventListener('change', ()=>applyUnit(true));
+  beadUnitInput.addEventListener('blur', ()=>applyUnit(true));
+}
+
+
 /* 비즈 링 시각화 */
 const ringEl = document.getElementById('beadRing');
 function drawRing(n, d){
@@ -3837,17 +3912,54 @@ function renderBracelet(){
   document.getElementById('outInner').textContent = fmt1(inner / 10) + ' cm';
   document.getElementById('outOuter').textContent = fmt1(outer / 10) + ' cm';
   document.getElementById('outLength').textContent = fmt1(n * d / 10) + ' cm';
-  document.getElementById('outPrep').textContent = (n + 2) + ' 개';
+  const spare = spareBeads(n, d);
+  document.getElementById('outPrep').textContent = (n + spare) + ' 개';
 
   const diffCM = fmt1((inner - wristMM) / 10);
   const feel = (inner - wristMM) < 0 ? '조금 타이트' : ((inner - wristMM) < 6 ? '딱 맞음' : '여유 있음');
   document.getElementById('outNote').textContent =
-    `완성 내경 ${fmt1(inner/10)}cm로 손목보다 ${diffCM}cm ${feel} 기준입니다. 실제로는 ±1개 차이가 날 수 있어 여유분 2개를 함께 준비하세요.`;
+    `완성 내경 ${fmt1(inner/10)}cm로 손목보다 ${diffCM}cm ${feel} 기준입니다. 실제로는 ±1개 차이가 날 수 있어 여유분 ${spare}개를 함께 준비하세요.`;
   document.getElementById('outGenderTag').textContent =
     (state.gender === 'male' ? 'MALE' : 'FEMALE') + ' · ' + fmt1(state.wrist[state.gender]) + ' CM';
 
   drawRing(n, d);
   renderTable();
+  renderBeadCost(n, spare, d);
+}
+
+/* ===== 여유분(예비 비즈) 자동 산정 ===== */
+function spareBeads(n, d){
+  var rate = d <= 4 ? 0.08 : d <= 6 ? 0.06 : d <= 9 ? 0.04 : d <= 12 ? 0.03 : 0.02;
+  var extra = Math.ceil(n * rate);
+  return Math.max(2, Math.min(8, extra));
+}
+
+/* ===== 비즈 개당 단가 → 원가 ===== */
+function beadMoney(v){
+  return Math.round(v || 0).toLocaleString('ko-KR') + ' 원';
+}
+function renderBeadCost(n, spare, d){
+  const unit = Number(state.unit) || 0;
+  const box  = document.getElementById('outCost');
+  const guide= document.getElementById('outCostGuide');
+
+  if (!box || !guide) return;
+
+  if (unit <= 0){
+    box.classList.add('off');
+    guide.classList.remove('off');
+    return;
+  }
+  box.classList.remove('off');
+  guide.classList.add('off');
+
+  const total = n * unit;
+  const prep  = (n + spare) * unit;
+
+  document.getElementById('outCostTotal').textContent = beadMoney(total);
+  document.getElementById('outCostExpr').textContent  = '사용 ' + n + '개 × ' + beadMoney(unit);
+  document.getElementById('outCostPrepLabel').textContent = '여유 ' + spare + '개 포함 (' + (n + spare) + '개)';
+  document.getElementById('outCostPrep').textContent  = beadMoney(prep);
 }
 
 /* 참고표 */
@@ -4087,21 +4199,30 @@ renderRingTable();
   }
   sheet.addEventListener('click', function(e){ if (e.target.dataset.close === '1') closeSheet(); });
 
-  window.addEventListener('beforeinstallprompt', function(e){
-    e.preventDefault();
-    deferred = e;
+  function currentEvent(){
+    return window.__jnBip || deferred || null;
+  }
+  window.addEventListener('jn:bipready', function(){
+    deferred = window.__jnBip;
+    if (btn) btn.classList.add('ready');
   });
   window.addEventListener('appinstalled', function(){
     installed = true; deferred = null; closeSheet(); refreshBtn();
   });
 
   if (btn) btn.addEventListener('click', function(){
-    if (deferred && deferred.prompt){
-      var d = deferred; deferred = null;
-      d.prompt();
-      d.userChoice.then(function(res){
-        if (res && res.outcome === 'accepted'){ installed = true; refreshBtn(); }
-      });
+    var d = currentEvent();
+    if (d && d.prompt){
+      window.__jnBip = null; deferred = null;
+      try {
+        d.prompt();
+        if (d.userChoice && d.userChoice.then){
+          d.userChoice.then(function(res){
+            if (res && res.outcome === 'accepted'){ installed = true; refreshBtn(); }
+            else if (btn) btn.classList.remove('ready');
+          });
+        }
+      } catch (err) {}
       return;
     }
     if (isIOS){
@@ -4114,8 +4235,9 @@ renderRingTable();
       openSheet([
         '브라우저 우측 상단 <b>⋮</b> 메뉴를 엽니다',
         '<b>앱 설치</b>(또는 <b>홈 화면에 추가</b>)를 선택합니다',
-        '설치 후에는 주소창 없는 전체화면으로 열립니다'
-      ], '이미 설치했다면 홈 화면의 JADE NARE 아이콘으로 실행하세요');
+        '설치 후에는 주소창 없는 전체화면으로 열립니다',
+        '설치 버튼이 보이지 않으면 <b>크롬(Chrome)</b>에서 접속하고, 로그인·시크릿모드를 끈 상태에서 다시 시도하세요'
+      ], '설치 안내 · 자동 설치 창은 브라우저가 직접 띄우며, 보안상 사이트가 임의로 띄울 수는 없습니다');
     }
   });
 
